@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:44:49 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/02/23 17:36:51 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/02/23 18:26:25 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,3 @@ char	*get_env_val(char **env, const char *var_name)
 	}
 	return (NULL);
 }
-
-// char	*get_current_dir(const char *pwd)
-// {
-// 	unsigned int	i;
-// 	unsigned int	c;
-
-// 	i = 0;
-// 	c = 0;
-// 	while (pwd[i])
-// 	{
-		
-// 	}
-// }
