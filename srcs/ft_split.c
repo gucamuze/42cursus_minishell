@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 15:16:58 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/02/23 16:54:51 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/02/23 18:50:25 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static char	*ft_strndup(const char *s, unsigned int n)
 		return (0);
 	i = n;
 	ft_memcpy(dup, s, n);
-	*(dup + n + 1) = 0;
+	*(dup + n) = 0;
 	return (dup);
 }
 
