@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 15:16:58 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/02/23 18:50:25 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/02/24 17:26:52 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,14 +43,12 @@ static unsigned int	get_word_count(const char *s, char c)
 static char	*ft_strndup(const char *s, unsigned int n)
 {
 	char			*dup;
-	unsigned int	i;
 
 	if (!s)
 		return (0);
 	dup = malloc((n + 1) * sizeof(char));
 	if (!dup)
 		return (0);
-	i = n;
 	ft_memcpy(dup, s, n);
 	*(dup + n) = 0;
 	return (dup);

@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:10 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/02/23 19:03:33 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/02/24 16:57:57 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,27 +15,33 @@
 int	test_command(char **env, char *command)
 {
 	char	**cmd_array;
-	char	*exe_path;
+	// char	*exe_path;
 
 	cmd_array = ft_split2(command, ' ');
-	exe_path = ft_strjoin("/usr/bin/", cmd_array[0]);
-	free(cmd_array[0]);
-	cmd_array[0] = ft_strdup("minishell");
-	if (!fork())
-		execve(exe_path, cmd_array, env);
+	if (!ft_strncmp(cmd_array[0], "cd", 2))
+		cd(env, cmd_array[1]);
+	else if (!ft_strncmp(cmd_array[0], "pwd", 3))
+		printf("pwd => %s\n", get_env_val(env, "PWD"));
+	// exe_path = ft_strjoin("/usr/bin/", cmd_array[0]);
+	// free(cmd_array[0]);
+	// cmd_array[0] = ft_strdup("minishell");
+	// if (!fork())
+	// 	execve(exe_path, cmd_array, env);
 
 	return (1);
 }
 
 int	main(int ac, char **av, char **env)
 {
-	char	*user_input;
-	char	*prompt;
+	char				*user_input;
+	char				*prompt;
+	struct sigaction	sa;
 
 	(void)ac;
 	(void)av;
 	if (!env[0])
 		return (0);
+	set_sigaction(&sa);
 	prompt = get_prompt(env, 0);
 	if (!prompt)
 		return (0);

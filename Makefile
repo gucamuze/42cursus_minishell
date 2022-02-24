@@ -6,7 +6,7 @@
 #    By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/07/15 02:21:09 by gucamuze          #+#    #+#              #
-#    Updated: 2022/02/23 18:25:38 by gucamuze         ###   ########.fr        #
+#    Updated: 2022/02/24 16:46:47 by gucamuze         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ LIBFT_PATH		=	./libft/
 LIBFT_A			=	./libft/libft.a
 INCLUDES		=	-Iincludes -lreadline $(LIBFT_A)
 					
-SRC_FILES		=	main.c getters.c ft_split.c prompt.c
+SRC_FILES		=	main.c getters.c ft_split.c prompt.c signals.c cd.c
 CFILES_PATH		=	$(addprefix ${SRCS_PATH}, ${SRC_FILES})
 OFILES_PATH		=	$(addprefix ${OBJ_PATH}, ${SRC_FILES})
 SRC_OFILES		= 	$(CFILES_PATH:.c=.o)

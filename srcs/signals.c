@@ -1,31 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   getters.c                                          :+:      :+:    :+:   */
+/*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/23 13:44:49 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/02/24 17:19:44 by gucamuze         ###   ########.fr       */
+/*   Created: 2022/02/24 15:45:10 by gucamuze          #+#    #+#             */
+/*   Updated: 2022/02/24 16:23:40 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// Gets value of ENV variable given in argument. 
-// Returns a pointer to it if found, NULL if not
-// CAREFUL: The returned pointer is a pointer to the actual env var, no memory
-// is allocated !!
-char	*get_env_val(char **env, const char *var_name)
+void	sig_handler(int sig)
 {
-	size_t	var_len;
-
-	var_len = ft_strlen(var_name);
-	while (*env)
+	if (sig == 2)
 	{
-		if (ft_strnstr(*env, var_name, var_len))
-			return ((*env) + var_len + 1);
-		env++;
+		printf("SIGINT signal received (TEMPORARY: quitting...)\n");
+		exit(0);
 	}
-	return (NULL);
+	else if (sig == 3)
+		printf("SIGQUIT signal received (TEMPORARY: quitting...\n");
+}
+
+void	set_sigaction(struct sigaction *sa)
+{
+	sa->sa_handler = &sig_handler;
+	sigaction(SIGINT, sa, 0);
+	sigaction(SIGQUIT, sa, 0);
 }
