@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 16:46:35 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/02/24 17:28:16 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/02/24 19:20:19 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,9 @@ char	*del_last_path_dir(char *chdir_path)
 	unsigned int	i;
 
 	i = ft_strlen(chdir_path);
-	while (chdir_path[--i] && chdir_path[--i] != '/')
+	while (chdir_path[--i] && chdir_path[i] != '/')
 		chdir_path[i] = 0;
+	chdir_path[i] = 0;
 	return (chdir_path);
 }
 
@@ -33,25 +34,23 @@ char	*add_to_path(char *chdir_path, char *dir)
 	updated_path = malloc(cp_len + dir_len + 2);
 	if (!updated_path)
 		return (0);
-	ft_memcpy(updated_path, chdir_path, cp_len);
-	updated_path[cp_len] = '/';
-	ft_memcpy(&updated_path[cp_len + 1], dir, dir_len);
-	updated_path[cp_len + dir_len + 1] = 0;
-	printf("updated path = %s\n", updated_path);
-	free(chdir_path);
+	updated_path = ft_strjoin3(chdir_path, "/", dir);
 	return (updated_path);
 }
 
-void	cd(char **env, const char *path)
+int	cd(t_list *env, char *path)
 {
 	char			**split;
 	char			*chdir_path;
 	unsigned int	i;
 
-	(void)env;
 	chdir_path = ft_strdup(get_env_val(env, "PWD"));
-	printf("c_p = %s\n", chdir_path);
+	// if (path[ft_strlen(path) - 1] == '/') // to avoid segfault
+	// 	path[ft_strlen(path) - 1] = 0;
 	split = ft_split2(path, '/');
+	if (!split)
+		return(!printf("Error with split !\n"));
+	printf("pre parsing cd => %s\n", chdir_path);
 	i = 0;
 	while (split[i])
 	{
@@ -61,5 +60,16 @@ void	cd(char **env, const char *path)
 			chdir_path = add_to_path(chdir_path, split[i]);
 		i++;
 	}
-	chdir(chdir_path);
+	printf("post parsing cd => %s\n", chdir_path);
+	if (!chdir(chdir_path))
+	{
+		update_env(env, "PWD", chdir_path);
+		return(0);
+	}
+	else
+	{
+		printf("cd: no such file or directory: %s\n", path);
+		return(1);
+	}
+	
 }

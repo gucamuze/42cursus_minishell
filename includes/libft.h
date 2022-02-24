@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/06 22:12:12 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/01/27 17:31:40 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/02/24 18:16:36 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 typedef struct s_list
 {
 	struct s_list	*next;
-	void			*content;
+	char			*content;
 }	t_list;
 
 int					ft_isalpha(int c);
@@ -61,7 +61,7 @@ void				ft_putchar_fd(char c, int fd);
 void				ft_putstr_fd(char *s, int fd);
 void				ft_putendl_fd(char *s, int fd);
 void				ft_putnbr_fd(int n, int fd);
-t_list				*ft_lstnew(void *content);
+t_list				*ft_lstnew(char *content);
 void				ft_lstadd_front(t_list **alist, t_list *new);
 void				ft_lstadd_back(t_list **alst, t_list *new);
 t_list				*ft_lstlast(t_list *lst);

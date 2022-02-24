@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 15:16:58 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/02/24 17:26:52 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/02/24 19:21:47 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,14 @@ static char	*ft_strndup(const char *s, unsigned int n)
 
 static char	**abort_and_free(char **tab)
 {
+	unsigned int	i;
+
+	i = 0;
 	printf("aborting split\n");
 	if (tab)
 	{
-		while (*tab)
-			free(*tab++);
+		while (tab[i])
+			free(tab[i++]);
 		free(tab);
 	}
 	return (0);
@@ -84,7 +87,10 @@ char	**ft_split2(const char *s, char c)
 		while (is_separator(*s, c))
 			s++;
 		while (*(s + str_l) && !is_separator(*(s + str_l), c))
+		{
+			printf("%c is not a separator (?)\n", *(s + str_l));
 			str_l++;
+		}
 		if (str_l)
 			tab[i] = ft_strndup(s, str_l);
 		if (!tab[i++])

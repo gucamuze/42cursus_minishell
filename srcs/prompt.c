@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 18:22:30 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/02/23 18:22:51 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/02/24 18:29:01 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static char	*set_prompt(char *pwd, size_t len, int home)
 	return (prompt);
 }
 
-char	*get_prompt(char **env, char *prev_prompt)
+char	*get_prompt(t_list *env, char *prev_prompt)
 {
 	char	*prompt;
 	char	*pwd;
