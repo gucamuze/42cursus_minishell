@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:29 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/02/24 19:18:25 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/02/24 23:29:00 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,10 @@ typedef struct s_data
 
 // env
 t_list	*env_to_lst(char **env);
+void	unset(t_list **env, const char *var_name);
 void	update_env(t_list *env, char *var_name, char *value);
 char	*get_env_val(t_list *env, const char *var_name);
+void	print_env(t_list *env);
 // prompt
 char	*get_prompt(t_list *env, char *prev_prompt);
 // signals

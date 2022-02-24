@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 18:30:56 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/02/24 18:53:38 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/02/24 23:40:13 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,36 @@ t_list	*env_to_lst(char **env)
 		while (*env)
 			ft_lstadd_back(&lst, ft_lstnew(ft_strdup(*env++)));
 	return (lst);
+}
+
+void	unset(t_list **env, const char *var_name)
+{
+	t_list	*prev;
+
+	prev = 0;
+	while (*env)
+	{
+		if (!ft_strncmp(var_name, (*env)->content, ft_strlen(var_name)))
+		{
+			if (!prev)
+				env = &(*env)->next;
+			else
+				prev->next = (*env)->next;
+			free(*env);
+			return ;			
+		}
+		prev = *env;
+		*env = (*env)->next;
+	}
+}
+
+void	print_env(t_list *env)
+{
+	if (env)
+	{
+		printf("%s\n", env->content);
+		print_env(env->next);
+	}
 }
 
 void	update_env(t_list *env, char *var_name, char *value)

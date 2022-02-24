@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 16:46:35 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/02/24 19:20:19 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/02/24 23:11:19 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	cd(t_list *env, char *path)
 	chdir_path = ft_strdup(get_env_val(env, "PWD"));
 	// if (path[ft_strlen(path) - 1] == '/') // to avoid segfault
 	// 	path[ft_strlen(path) - 1] = 0;
-	split = ft_split2(path, '/');
+	split = ft_split(path, '/');
 	if (!split)
 		return(!printf("Error with split !\n"));
 	printf("pre parsing cd => %s\n", chdir_path);
