@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 18:30:56 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/02/24 23:40:13 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/02/24 23:48:34 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,6 @@ void	update_env(t_list *env, char *var_name, char *value)
 	free(value);
 }
 
-// Gets value of ENV variable given in argument. 
-// Returns a pointer to it if found, NULL if not
 // CAREFUL: The returned pointer is a pointer to the actual env var, no memory
 // is allocated !!
 char	*get_env_val(t_list *env, const char *var_name)
