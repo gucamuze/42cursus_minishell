@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:10 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/02/24 23:43:08 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/03 00:31:14 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ int	test_command(t_list *env, char *command)
 		unset(&env, cmd_array[1]);
 	else if (!ft_strncmp(cmd_array[0], "export", 5))
 		ft_lstadd_back(&env, ft_lstnew(ft_strdup(cmd_array[1])));
-
+	else if (!ft_strncmp(cmd_array[0], "echo", 4))
+		echo(env, &command[5]);
 	return (1);
 }
 

@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 16:46:35 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/02/25 00:02:26 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/02 22:51:46 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,24 +40,20 @@ char	*add_to_path(char *chdir_path, char *dir)
 
 int	cd(t_list *env, char *path)
 {
-	char			**split;
-	char			*chdir_path;
-	unsigned int	i;
+	char	*oldpwd;
 
-	chdir_path = ft_strdup(get_env_val(env, "PWD"));
-	split = ft_split(path, '/');
-	if (!split)
-		return(!printf("Error with split !\n"));
-	i = 0;
+	oldpwd = getcwd(0, 0);
+	if (!path)
+		path = get_env_val(env, "HOME");
+	if (!ft_strncmp(path, "-", 1))
+		path = get_env_val(env, "OLDPWD");
 	if (!chdir(path))
 	{
 		update_env(env, "PWD", getcwd(0, 0));
+		update_env(env, "OLDPWD", oldpwd);
 		return(0);
 	}
-	else
-	{
-		printf("cd: no such file or directory: %s\n", path);
-		return(1);
-	}
-	
+	printf("cd: no such file or directory: %s\n", path);
+	free(oldpwd);
+	return(1);
 }

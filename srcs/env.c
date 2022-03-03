@@ -6,11 +6,54 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 18:30:56 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/02/24 23:48:34 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/03 00:48:45 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char	*ft_strncpy(char *str, size_t size)
+{
+	char	*cpy;
+	int		i;
+
+	cpy = malloc(size + 1);
+	if (!cpy)
+		return (0);
+	i = -1;
+	while (str[++i] && size--)
+		cpy[i] = str[i];
+	cpy[i] = 0;
+	printf("cpy done => %s\n", cpy);
+	return (cpy);
+}
+
+unsigned int expand_env_var(t_list *env, char *var, char **expanded)
+{
+	int		k;
+	char	*tmp;
+
+	printf("expand env var\n");
+	k = 0;
+	if (var[1] == '$')
+		; // getpid
+	else if (var[1] == '?')
+		; // last exit code
+	else if (var[1] == '#')
+		; // number of args in $*
+	else if (var[1] == '*')
+		; // list of args passed to processs
+	else
+	{
+		while (var[++k] && ft_isalpha(var[k]))
+			;
+		tmp = ft_strncpy(&var[1], k - 1);
+		*expanded = get_env_val(env, tmp);
+		printf("copying '%s' for %d char\ntmp = %s\texpanded => %s\n", var, k, tmp, *expanded);
+		free(tmp);
+	}
+	return (k);
+}
 
 t_list	*env_to_lst(char **env)
 {
@@ -71,7 +114,7 @@ char	*get_env_val(t_list *env, const char *var_name)
 	var_len = ft_strlen(var_name);
 	while (env)
 	{
-		if (ft_strnstr(env->content, var_name, var_len))
+		if (!ft_strncmp(env->content, var_name, var_len))
 			return (env->content + var_len + 1);
 		env = env->next;
 	}
