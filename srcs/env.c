@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 18:30:56 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/03 00:48:45 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/03 02:58:18 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char	*ft_strncpy(char *str, size_t size)
 	while (str[++i] && size--)
 		cpy[i] = str[i];
 	cpy[i] = 0;
-	printf("cpy done => %s\n", cpy);
+	// printf("cpy done => %s\n", cpy);
 	return (cpy);
 }
 
@@ -33,23 +33,17 @@ unsigned int expand_env_var(t_list *env, char *var, char **expanded)
 	int		k;
 	char	*tmp;
 
-	printf("expand env var\n");
+	// printf("expand env var\n");
 	k = 0;
-	if (var[1] == '$')
-		; // getpid
-	else if (var[1] == '?')
+	if (var[1] == '?')
 		; // last exit code
-	else if (var[1] == '#')
-		; // number of args in $*
-	else if (var[1] == '*')
-		; // list of args passed to processs
 	else
 	{
 		while (var[++k] && ft_isalpha(var[k]))
 			;
 		tmp = ft_strncpy(&var[1], k - 1);
 		*expanded = get_env_val(env, tmp);
-		printf("copying '%s' for %d char\ntmp = %s\texpanded => %s\n", var, k, tmp, *expanded);
+		// printf("copying '%s' for %d char\ntmp = %s\texpanded => %s\n", var, k, tmp, *expanded);
 		free(tmp);
 	}
 	return (k);
@@ -98,10 +92,19 @@ void	print_env(t_list *env)
 
 void	update_env(t_list *env, char *var_name, char *value)
 {
-	while (ft_strncmp(env->content, var_name, ft_strlen(var_name)))
-		env = env->next;
-	free(env->content);
-	env->content = ft_strjoin3(var_name, "=", value);
+	t_list	*iterator;
+
+	iterator = env;
+	while (iterator
+			&& ft_strncmp(iterator->content, var_name, ft_strlen(var_name)))
+		iterator = iterator->next;
+	if (iterator)
+	{
+		free(iterator->content);
+		iterator->content = ft_strjoin3(var_name, "=", value);
+	}
+	else
+		ft_lstadd_back(&env, ft_lstnew(ft_strjoin3(var_name, "=", value)));
 	free(value);
 }
 

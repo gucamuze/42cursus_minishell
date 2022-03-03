@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:29 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/03 00:31:29 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/03 02:47:36 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ void	set_sigaction(struct sigaction *sigaction);
 int		cd(t_list *env, char *path);
 // echo
 void	echo(t_list *env, char *str);
-// TBD
+// ft_split
+void	free_split(char **split);
 char	**ft_split2(const char *s, char c);
 // utils
 char	*ft_strjoin3(const char *s1, const char *s2, const char *s3);

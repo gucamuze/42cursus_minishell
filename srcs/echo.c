@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/02 23:30:11 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/03 00:59:10 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/03 02:48:30 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static char	*expand(t_list *env, char *str)
 		if (str[i] == '$' && str[i + 1])
 		{
 			k = expand_env_var(env, &str[i], &tmp);
-			printf("expand function done, i + %d\n", k);
+			// printf("expand function done, i + %d\n", k);
 			if (tmp)
 				while (*tmp)
 					expanded[j++] = *tmp++;
@@ -37,7 +37,7 @@ static char	*expand(t_list *env, char *str)
 		else
 			expanded[j++] = str[i++];
 	}
-	printf("end, returning dup of %s\n", expanded);
+	// printf("end, returning dup of %s\n", expanded);
 	return (ft_strdup(expanded));
 }
 
@@ -54,16 +54,20 @@ void	echo(t_list *env, char *str)
 	i = -1;
 	if (output[0] && output[0][0] == '-')
 	{
-		if (output[0][1] == 'n')
+		if (output[0][1] == 'n') 
+		{
 			space_flag = 1;
-		i++;	
+			i++;
+		}
 	}
-	printf("wtf is going on, string '%s'\n", str);
+	// printf("wtf is going on, string '%s'\n", str);
 	while (output[++i])
 	{
-		char *test = expand(env, output[i]);
-		printf("expanding %s => %s", output[i], test);
+		// char *test = expand(env, output[i]);
+		// printf("expanding %s => %s", output[i], test);
+		printf("%s", expand(env, output[i]));
 	}
 	if (!space_flag)
 		printf("\n");
+	free_split(output);
 }

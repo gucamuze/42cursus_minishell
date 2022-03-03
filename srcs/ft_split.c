@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 15:16:58 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/03 00:10:00 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/03 02:47:20 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,20 +54,18 @@ static char	*ft_strndup(const char *s, unsigned int n)
 	return (dup);
 }
 
-// static char	**abort_and_free(char **tab)
-// {
-// 	unsigned int	i;
+void	free_split(char **split)
+{
+	unsigned int	i;
 
-// 	i = 0;
-// 	printf("aborting split\n");
-// 	if (tab)
-// 	{
-// 		while (tab[i])
-// 			free(tab[i++]);
-// 		free(tab);
-// 	}
-// 	return (0);
-// }
+	i = 0;
+	if (split)
+	{
+		while (split[i])
+			free(split[i++]);
+		free(split);
+	}
+}
 
 char	**ft_split2(const char *s, char c)
 {
