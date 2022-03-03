@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 16:46:35 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/03 03:09:46 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/03 04:52:58 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@
 
 // LEGACY CODE OFF
 
-int	cd(t_list *env, char *path)
+int	cd(t_env *env, char *path)
 {
 	char	*oldpwd;
 	int		flag;

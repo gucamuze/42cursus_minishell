@@ -6,29 +6,13 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 18:30:56 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/03 02:58:18 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/03 05:57:46 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*ft_strncpy(char *str, size_t size)
-{
-	char	*cpy;
-	int		i;
-
-	cpy = malloc(size + 1);
-	if (!cpy)
-		return (0);
-	i = -1;
-	while (str[++i] && size--)
-		cpy[i] = str[i];
-	cpy[i] = 0;
-	// printf("cpy done => %s\n", cpy);
-	return (cpy);
-}
-
-unsigned int expand_env_var(t_list *env, char *var, char **expanded)
+unsigned int expand_env_var(t_env *env, char *var, char **expanded)
 {
 	int		k;
 	char	*tmp;
@@ -49,25 +33,82 @@ unsigned int expand_env_var(t_list *env, char *var, char **expanded)
 	return (k);
 }
 
-t_list	*env_to_lst(char **env)
+char	*get_env_name_from_string(char *str)
 {
-	t_list	*lst;
+	char	*env_name;
+	unsigned int	i;
+
+	i = 0;
+	env_name = NULL;
+	while (str[i])
+	{
+		if (str[i] == '=')
+		{
+			env_name = malloc(i + 1);
+			if (env_name)
+			{
+				ft_memcpy(env_name, str, i);
+				env_name[i] = 0;
+			}
+			break ;	
+		}
+		i++;
+	}
+	return (env_name);
+}
+
+t_env	*env_to_lst(char **env)
+{
+	t_env	*lst;
+	char	*var_name;
+	char	*var_value;
 	
 	lst = NULL;
 	if (env)
+	{
 		while (*env)
-			ft_lstadd_back(&lst, ft_lstnew(ft_strdup(*env++)));
+		{
+			var_name = get_env_name_from_string(*env);
+			var_value = ft_strdup(&(*env)[ft_strlen(var_name) + 1]);
+			envlst_add_back(&lst, envlst_new(var_name, var_value));
+			// printf("adding [%s]=[%s] to lst\n", var_name, var_value);
+			env++;
+		}
+	}
 	return (lst);
 }
 
-void	unset(t_list **env, const char *var_name)
+// int	export(t_list **env, const char *str)
+// {
+// 	char	*var_name;
+// 	char	**split;
+
+// 	split = ft_split(str, ' ');
+// 	while (*split)
+// 	{
+// 		var_name = get_env_name_from_string(*split);
+// 		while (*env)
+// 		{
+// 			if (!ft_strncmp(var_name, (*env)->content, ft_strlen(var_name)))
+// 				update_env(*env, var_name, &str[ft_strlen(var_name) + 1]);
+// 		}
+// 		if (var_name)
+// 			free(var_name);
+// 		split++;
+// 	}
+// 	free_split(split);
+// 	return (0);
+// }
+
+// NEED TO IMPLEMENT MULTIPLE UNSETS
+void	unset(t_env **env, const char *var_name)
 {
-	t_list	*prev;
+	t_env	*prev;
 
 	prev = 0;
 	while (*env)
 	{
-		if (!ft_strncmp(var_name, (*env)->content, ft_strlen(var_name)))
+		if (!ft_strncmp(var_name, (*env)->name, ft_strlen(var_name)))
 		{
 			if (!prev)
 				env = &(*env)->next;
@@ -81,44 +122,43 @@ void	unset(t_list **env, const char *var_name)
 	}
 }
 
-void	print_env(t_list *env)
+void	print_env(t_env *env)
 {
 	if (env)
 	{
-		printf("%s\n", env->content);
+		printf("%s=%s\n", env->name, env->value);
 		print_env(env->next);
 	}
 }
 
-void	update_env(t_list *env, char *var_name, char *value)
+// !! var_name and value MUST BE malloc'd if value is 
+// to be created and not updated !!
+void	update_env(t_env *env, char *var_name, char *value)
 {
-	t_list	*iterator;
+	t_env	*iterator;
 
 	iterator = env;
 	while (iterator
-			&& ft_strncmp(iterator->content, var_name, ft_strlen(var_name)))
+			&& ft_strncmp(iterator->name, var_name, ft_strlen(var_name)))
 		iterator = iterator->next;
 	if (iterator)
 	{
-		free(iterator->content);
-		iterator->content = ft_strjoin3(var_name, "=", value);
+		free(iterator->value);
+		iterator->value = value;
 	}
 	else
-		ft_lstadd_back(&env, ft_lstnew(ft_strjoin3(var_name, "=", value)));
-	free(value);
+		envlst_add_back(&env, envlst_new(var_name, value));
 }
 
-// CAREFUL: The returned pointer is a pointer to the actual env var, no memory
-// is allocated !!
-char	*get_env_val(t_list *env, const char *var_name)
+char	*get_env_val(t_env *env, const char *var_name)
 {
 	size_t	var_len;
 
 	var_len = ft_strlen(var_name);
 	while (env)
 	{
-		if (!ft_strncmp(env->content, var_name, var_len))
-			return (env->content + var_len + 1);
+		if (!ft_strncmp(env->name, var_name, var_len))
+			return (env->value);
 		env = env->next;
 	}
 	return (NULL);

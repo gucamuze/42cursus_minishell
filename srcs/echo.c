@@ -6,13 +6,13 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/02 23:30:11 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/03 02:48:30 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/03 05:36:31 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*expand(t_list *env, char *str)
+static char	*expand(t_env *env, char *str)
 {
 	char	expanded[2048];
 	char	*tmp;
@@ -41,14 +41,14 @@ static char	*expand(t_list *env, char *str)
 	return (ft_strdup(expanded));
 }
 
-void	echo(t_list *env, char *str)
+void	echo(t_env *env, char *str)
 {
 	char	**output;
 	int		space_flag;
 	int		i;
 
 	space_flag = 0;
-	output = ft_split2(str, ' ');
+	output = ft_split(str, ' ');
 	if (!output)
 		printf("no output for '%s'", str);
 	i = -1;

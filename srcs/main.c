@@ -6,40 +6,47 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:10 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/03 03:19:16 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/03 05:55:18 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	test_command(t_list *env, char *command)
+int	test_command(t_env *env, char *command)
 {
-	char	**cmd_array;
 
-	cmd_array = ft_split(command, ' ');
-	if (!ft_strncmp(cmd_array[0], "cd", 2))
-		cd(env, cmd_array[1]);
-	else if (!ft_strncmp(cmd_array[0], "pwd", 3))
-		printf("pwd => %s\n", get_env_val(env, "PWD"));
-	else if (!ft_strncmp(cmd_array[0], "env", 3))
-		print_env(env);
-	else if (!ft_strncmp(cmd_array[0], "unset", 5))
-		unset(&env, cmd_array[1]);
-	else if (!ft_strncmp(cmd_array[0], "export", 5))
-		ft_lstadd_back(&env, ft_lstnew(ft_strdup(cmd_array[1])));
-	else if (!ft_strncmp(cmd_array[0], "echo", 4))
-		echo(env, &command[5]);
-	else if (!ft_strncmp(cmd_array[0], "exit", 4))
-		; // exit
-	else
-		; // execve
-	free_split(cmd_array);
+	// int pid = fork();
+	// if (!pid)
+	// {
+		if (!ft_strncmp(command, "cd", 2))
+			cd(env, &command[2]);
+		else if (!ft_strncmp(command, "pwd", 3))
+			printf("pwd => %s\n", get_env_val(env, "PWD"));
+		else if (!ft_strncmp(command, "env", 3))
+			print_env(env);
+		else if (!ft_strncmp(command, "unset", 5))
+			unset(&env, &command[5]);
+		/** TEMPORARLY DISABLED BECAUSE OF T_ENV UPDATE **/
+		// else if (!ft_strncmp(command, "export", 5))
+			// ft_lstadd_back(&env, ft_lstnew(ft_strdup(cmd_array[1])));
+		/** **/
+		else if (!ft_strncmp(command, "echo", 4))
+			echo(env, &command[5]);
+		else if (!ft_strncmp(command, "exit", 4))
+			; // exit
+		else
+			; // execve
+	// }
+	// else {
+	// 	waitpid(0, &pid, 0);
+	// 	printf("parent done waiting, child exited with code %d\n", pid / 256);
+	// }
 	return (1);
 }
 
-void	cleanup(char *prompt, t_list *env)
+void	cleanup(char *prompt, t_env *env)
 {
-	t_list	*env_tmp;
+	t_env	*env_tmp;
 
 	env_tmp = env;
 	if (prompt)
@@ -49,7 +56,8 @@ void	cleanup(char *prompt, t_list *env)
 		while (env)
 		{
 			env_tmp = env->next;
-			free(env->content);
+			free(env->name);
+			free(env->value);
 			free(env);
 			env = env_tmp;
 		}
@@ -61,7 +69,7 @@ int	main(int ac, char **av, char **env)
 	char				*user_input;
 	char				*prompt;
 	struct sigaction	sa;
-	t_list				*env_lst;
+	t_env				*env_lst;
 
 	(void)ac;
 	(void)av;

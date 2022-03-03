@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 18:37:46 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/02/24 18:50:09 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/03 05:44:40 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,4 +32,20 @@ char	*ft_strjoin3(const char *s1, const char *s2, const char *s3)
 	ft_memcpy(new_str + len1 + len2, s3, len3);
 	new_str[total_len] = 0;
 	return (new_str);
+}
+
+char	*ft_strncpy(char *str, size_t size)
+{
+	char	*cpy;
+	int		i;
+
+	cpy = malloc(size + 1);
+	if (!cpy)
+		return (0);
+	i = -1;
+	while (str[++i] && size--)
+		cpy[i] = str[i];
+	cpy[i] = 0;
+	// printf("cpy done => %s\n", cpy);
+	return (cpy);
 }
