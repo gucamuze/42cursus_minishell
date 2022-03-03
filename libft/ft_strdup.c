@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/17 22:49:29 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/02/24 18:08:22 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/02 23:35:32 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@ char	*ft_strdup(const char *s)
 	char			*dup;
 	size_t			len;
 
-	if (!s)
-		return (0);
 	len = ft_strlen(s);
 	dup = malloc(len + 1);
 	if (!dup)

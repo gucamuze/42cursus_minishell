@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:29 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/02/24 23:29:00 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/03 02:47:36 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ typedef struct s_data
 }		t_data;
 
 // env
+unsigned int expand_env_var(t_list *env, char *var, char **expanded);
 t_list	*env_to_lst(char **env);
 void	unset(t_list **env, const char *var_name);
 void	update_env(t_list *env, char *var_name, char *value);
@@ -36,7 +37,10 @@ char	*get_prompt(t_list *env, char *prev_prompt);
 void	set_sigaction(struct sigaction *sigaction);
 // cd
 int		cd(t_list *env, char *path);
-// TBD
+// echo
+void	echo(t_list *env, char *str);
+// ft_split
+void	free_split(char **split);
 char	**ft_split2(const char *s, char c);
 // utils
 char	*ft_strjoin3(const char *s1, const char *s2, const char *s3);

@@ -6,70 +6,68 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 16:46:35 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/02/24 23:11:19 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/03 03:09:46 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*del_last_path_dir(char *chdir_path)
-{
-	unsigned int	i;
+// LEGACY CODE
 
-	i = ft_strlen(chdir_path);
-	while (chdir_path[--i] && chdir_path[i] != '/')
-		chdir_path[i] = 0;
-	chdir_path[i] = 0;
-	return (chdir_path);
-}
+// char	*del_last_path_dir(char *chdir_path)
+// {
+// 	unsigned int	i;
 
-char	*add_to_path(char *chdir_path, char *dir)
-{
-	unsigned int	cp_len;
-	unsigned int	dir_len;
-	char			*updated_path;
+// 	i = ft_strlen(chdir_path);
+// 	while (chdir_path[--i] && chdir_path[i] != '/')
+// 		chdir_path[i] = 0;
+// 	chdir_path[i] = 0;
+// 	return (chdir_path);
+// }
 
-	cp_len = ft_strlen(chdir_path);
-	dir_len = ft_strlen(dir);
-	updated_path = malloc(cp_len + dir_len + 2);
-	if (!updated_path)
-		return (0);
-	updated_path = ft_strjoin3(chdir_path, "/", dir);
-	return (updated_path);
-}
+// char	*add_to_path(char *chdir_path, char *dir)
+// {
+// 	unsigned int	cp_len;
+// 	unsigned int	dir_len;
+// 	char			*updated_path;
+
+// 	cp_len = ft_strlen(chdir_path);
+// 	dir_len = ft_strlen(dir);
+// 	updated_path = malloc(cp_len + dir_len + 2);
+// 	if (!updated_path)
+// 		return (0);
+// 	updated_path = ft_strjoin3(chdir_path, "/", dir);
+// 	return (updated_path);
+// }
+
+// LEGACY CODE OFF
 
 int	cd(t_list *env, char *path)
 {
-	char			**split;
-	char			*chdir_path;
-	unsigned int	i;
+	char	*oldpwd;
+	int		flag;
 
-	chdir_path = ft_strdup(get_env_val(env, "PWD"));
-	// if (path[ft_strlen(path) - 1] == '/') // to avoid segfault
-	// 	path[ft_strlen(path) - 1] = 0;
-	split = ft_split(path, '/');
-	if (!split)
-		return(!printf("Error with split !\n"));
-	printf("pre parsing cd => %s\n", chdir_path);
-	i = 0;
-	while (split[i])
+	oldpwd = getcwd(0, 0);
+	flag = 0;
+	if (!path)
+		path = get_env_val(env, "HOME");
+	if (!ft_strncmp(path, "-", 1))
 	{
-		if (!ft_strncmp(split[i], "..", 2))
-			chdir_path = del_last_path_dir(chdir_path);
-		else
-			chdir_path = add_to_path(chdir_path, split[i]);
-		i++;
+		path = get_env_val(env, "OLDPWD");
+		flag = 1;
 	}
-	printf("post parsing cd => %s\n", chdir_path);
-	if (!chdir(chdir_path))
+	if (!chdir(path))
 	{
-		update_env(env, "PWD", chdir_path);
-		return(0);
+		update_env(env, "PWD", getcwd(0, 0));
+		update_env(env, "OLDPWD", oldpwd);
+		if (flag)
+			printf("%s\n", get_env_val(env, "PWD"));
+		return (0);
 	}
-	else
-	{
+	if (path)
 		printf("cd: no such file or directory: %s\n", path);
-		return(1);
-	}
-	
+	else
+		printf("cd: no such file or directory:\n");
+	free(oldpwd);
+	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 15:16:58 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/02/24 19:21:47 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/03 02:47:20 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,19 +54,17 @@ static char	*ft_strndup(const char *s, unsigned int n)
 	return (dup);
 }
 
-static char	**abort_and_free(char **tab)
+void	free_split(char **split)
 {
 	unsigned int	i;
 
 	i = 0;
-	printf("aborting split\n");
-	if (tab)
+	if (split)
 	{
-		while (tab[i])
-			free(tab[i++]);
-		free(tab);
+		while (split[i])
+			free(split[i++]);
+		free(split);
 	}
-	return (0);
 }
 
 char	**ft_split2(const char *s, char c)
@@ -77,24 +75,18 @@ char	**ft_split2(const char *s, char c)
 
 	if (!s)
 		return (NULL);
-	i = 0;
-	tab = malloc(get_word_count(s, c) * sizeof(char *));
+	tab = malloc(get_word_count(s, c) + 1 * sizeof(char *));
 	if (!tab)
 		return (NULL);
+	i = 0;
 	while (*s)
 	{
 		str_l = 0;
 		while (is_separator(*s, c))
 			s++;
 		while (*(s + str_l) && !is_separator(*(s + str_l), c))
-		{
-			printf("%c is not a separator (?)\n", *(s + str_l));
 			str_l++;
-		}
-		if (str_l)
-			tab[i] = ft_strndup(s, str_l);
-		if (!tab[i++])
-			return (abort_and_free(tab));
+		tab[i++] = ft_strndup(s, str_l);
 		s += str_l;
 	}
 	tab[i] = 0;
