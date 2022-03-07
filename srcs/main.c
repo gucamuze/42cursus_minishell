@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:10 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/03 05:55:18 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/07 14:35:00 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,33 +14,28 @@
 
 int	test_command(t_env *env, char *command)
 {
+	t_command	*cmd;
 
-	// int pid = fork();
-	// if (!pid)
-	// {
-		if (!ft_strncmp(command, "cd", 2))
-			cd(env, &command[2]);
-		else if (!ft_strncmp(command, "pwd", 3))
-			printf("pwd => %s\n", get_env_val(env, "PWD"));
-		else if (!ft_strncmp(command, "env", 3))
-			print_env(env);
-		else if (!ft_strncmp(command, "unset", 5))
-			unset(&env, &command[5]);
-		/** TEMPORARLY DISABLED BECAUSE OF T_ENV UPDATE **/
-		// else if (!ft_strncmp(command, "export", 5))
-			// ft_lstadd_back(&env, ft_lstnew(ft_strdup(cmd_array[1])));
-		/** **/
-		else if (!ft_strncmp(command, "echo", 4))
-			echo(env, &command[5]);
-		else if (!ft_strncmp(command, "exit", 4))
-			; // exit
-		else
-			; // execve
-	// }
-	// else {
-	// 	waitpid(0, &pid, 0);
-	// 	printf("parent done waiting, child exited with code %d\n", pid / 256);
-	// }
+	cmd = cmd_create(env, command);
+	__DEBUG_output_cmd(cmd);
+	if (!ft_strncmp(cmd->command, "cd", 2))
+		cd(env, &command[2]);
+	else if (!ft_strncmp(cmd->command, "pwd", 3))
+		printf("pwd => %s\n", get_env_val(env, "PWD"));
+	else if (!ft_strncmp(cmd->command, "env", 3))
+		print_env(env);
+	else if (!ft_strncmp(cmd->command, "unset", 5))
+		unset(&env, &command[5]);
+	/** TEMPORARLY DISABLED BECAUSE OF T_ENV UPDATE **/
+	// else if (!ft_strncmp(command, "export", 5))
+		// ft_lstadd_back(&env, ft_lstnew(ft_strdup(cmd_array[1])));
+	/** **/
+	else if (!ft_strncmp(cmd->command, "echo", 4))
+		echo(env, &command[5]);
+	else if (!ft_strncmp(cmd->command, "exit", 4))
+		; // exit
+	else
+		; // execve
 	return (1);
 }
 

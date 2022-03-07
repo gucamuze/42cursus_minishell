@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:29 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/03 05:45:11 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/07 14:32:17 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,7 @@
 # include <signal.h>
 # include <errno.h>
 
-typedef struct s_data
-{
-	char	**env;
-}		t_data;
-
+// Env
 typedef struct s_env
 {
 	struct s_env	*next;
@@ -32,9 +28,29 @@ typedef struct s_env
 	char			*value;
 }	t_env;
 
+typedef struct s_command
+{
+	char				*command;
+	char				**args;
+	t_env				*env;
+	// Token is to potentially expand to a redirect. 
+	// Default value is 0 (nothing)
+	int					token;
+	struct s_command	*next;
+}	t_command;
+
+// Future struct to use for free in case of an unexpected exit or sigdie 
+typedef struct s_data
+{
+	t_env	*env;
+}		t_data;
+
 // env_lst_utils
 t_env	*envlst_new(char *var_name, char *var_value);
 void	envlst_add_back(t_env **env, t_env *new);
+// command_utils
+t_command		*cmd_create(t_env *env, char *user_input);
+void			__DEBUG_output_cmd(t_command *cmd);
 // env
 unsigned int	expand_env_var(t_env *env, char *var, char **expanded);
 t_env	*env_to_lst(char **env);

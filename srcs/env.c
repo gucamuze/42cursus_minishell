@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 18:30:56 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/03 05:57:46 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/07 12:49:14 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,25 +101,36 @@ t_env	*env_to_lst(char **env)
 // }
 
 // NEED TO IMPLEMENT MULTIPLE UNSETS
-void	unset(t_env **env, const char *var_name)
+// from *varn_name to a split ?
+void	unset(t_env **env, const char *command)
 {
 	t_env	*prev;
+	t_env	*iterator;
+	char	**vars;
+	int		i;
 
 	prev = 0;
-	while (*env)
+	vars = ft_split(command, ' ');
+	i = -1;
+	while (vars[++i])
 	{
-		if (!ft_strncmp(var_name, (*env)->name, ft_strlen(var_name)))
+		iterator = *env;
+		while (iterator)
 		{
-			if (!prev)
-				env = &(*env)->next;
-			else
-				prev->next = (*env)->next;
-			free(*env);
-			return ;			
+			if (!ft_strncmp(vars[i], iterator->name, ft_strlen(vars[i])))
+			{
+				if (!prev)
+					env = &(iterator)->next;
+				else
+					prev->next = iterator->next;
+				free(iterator);
+				break ;			
+			}
+			prev = iterator;
+			iterator = iterator->next;
 		}
-		prev = *env;
-		*env = (*env)->next;
 	}
+	free_split(vars);
 }
 
 void	print_env(t_env *env)
