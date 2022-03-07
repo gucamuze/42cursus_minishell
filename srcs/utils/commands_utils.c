@@ -6,11 +6,25 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 13:24:53 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/07 14:33:53 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/07 15:53:38 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void		cmd_free(t_command *cmd)
+{
+	if (cmd)
+	{
+		if (cmd->command)
+			free(cmd->command);
+		if (cmd->args)
+			free_split(cmd->args);
+		if (cmd->next)
+			cmd_free(cmd->next);
+		free(cmd);
+	}
+}
 
 t_command	*cmd_create(t_env *env, char *user_input)
 {

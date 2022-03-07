@@ -6,7 +6,7 @@
 #    By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/07/15 02:21:09 by gucamuze          #+#    #+#              #
-#    Updated: 2022/03/07 15:25:56 by gucamuze         ###   ########.fr        #
+#    Updated: 2022/03/07 17:50:03 by gucamuze         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,12 +23,13 @@ LIBFT_PATH		=	./libft/
 LIBFT_A			=	./libft/libft.a
 INCLUDES		=	-Iincludes -lreadline $(LIBFT_A)
 			
-BUILTINS		=	env.c cd.c echo.c
+BUILTINS		=	cd.c echo.c pwd.c unset.c export.c env.c
 BUILTINS_W_PATH	=	$(addprefix ${BUILTINS_PATH}, ${BUILTINS})
 BUILTINS_OFILES	=	$(BUILTINS_W_PATH:.c=.o)
 ALL_OFILES		+=	$(BUILTINS_OFILES)
 
-UTILS			=	getters.c env_lst_utils.c utils.c commands_utils.c ft_split.c
+UTILS			=	getters.c env_lst_utils.c utils.c commands_utils.c ft_split.c \
+					env_utils.c
 UTILS_W_PATH	=	$(addprefix ${UTILS_PATH}, ${UTILS})
 UTILS_OFILES	=	$(UTILS_W_PATH:.c=.o)
 ALL_OFILES		+=	$(UTILS_OFILES)
@@ -51,7 +52,7 @@ $(LIBFT_A):
 
 clean:
 				make clean --directory=libft
-				$(RM) $(SRC_OFILES)
+				$(RM) $(ALL_OFILES)
 
 fclean:		clean
 				$(RM) $(LIBFT_A) ${EXEC_NAME}

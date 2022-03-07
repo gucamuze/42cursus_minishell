@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/02 23:30:11 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/03 05:36:31 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/07 16:46:19 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ static char	*expand(t_env *env, char *str)
 	return (ft_strdup(expanded));
 }
 
+// CHANGES NEEDING TO BE MADE: echo uses an expand function to expand env variables,
+// in the future, the parser will take care of this instead
 void	echo(t_env *env, char *str)
 {
 	char	**output;

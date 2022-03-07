@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:10 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/07 14:35:00 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/07 17:48:19 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,13 @@ int	test_command(t_env *env, char *command)
 	cmd = cmd_create(env, command);
 	__DEBUG_output_cmd(cmd);
 	if (!ft_strncmp(cmd->command, "cd", 2))
-		cd(env, &command[2]);
+		cd(cmd);
 	else if (!ft_strncmp(cmd->command, "pwd", 3))
-		printf("pwd => %s\n", get_env_val(env, "PWD"));
+		pwd(cmd);
 	else if (!ft_strncmp(cmd->command, "env", 3))
 		print_env(env);
 	else if (!ft_strncmp(cmd->command, "unset", 5))
-		unset(&env, &command[5]);
+		unset(cmd);
 	/** TEMPORARLY DISABLED BECAUSE OF T_ENV UPDATE **/
 	// else if (!ft_strncmp(command, "export", 5))
 		// ft_lstadd_back(&env, ft_lstnew(ft_strdup(cmd_array[1])));
@@ -36,6 +36,7 @@ int	test_command(t_env *env, char *command)
 		; // exit
 	else
 		; // execve
+	cmd_free(cmd);
 	return (1);
 }
 
@@ -86,6 +87,7 @@ int	main(int ac, char **av, char **env)
 		prompt = get_prompt(env_lst, prompt);
 		if (!prompt)
 			return (0);
+		free(user_input);
 	}
 	cleanup(prompt, env_lst);
 	return (1);

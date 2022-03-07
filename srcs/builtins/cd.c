@@ -6,68 +6,55 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 16:46:35 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/03 04:52:58 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/07 17:38:12 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// LEGACY CODE
+// Returns -1 for a critical error, 0 if too many args, 1 if everything is ok
+static int	check_cd(t_command *cmd)
+{
+	if (!cmd || !cmd->args)
+		return (-1);
+	if (!cmd->args[0])
+		cmd->args[0] = get_env_val(cmd->env, "HOME");
+	else if (cmd->args[1])
+		return (0);
+	return (1);
+}
 
-// char	*del_last_path_dir(char *chdir_path)
-// {
-// 	unsigned int	i;
-
-// 	i = ft_strlen(chdir_path);
-// 	while (chdir_path[--i] && chdir_path[i] != '/')
-// 		chdir_path[i] = 0;
-// 	chdir_path[i] = 0;
-// 	return (chdir_path);
-// }
-
-// char	*add_to_path(char *chdir_path, char *dir)
-// {
-// 	unsigned int	cp_len;
-// 	unsigned int	dir_len;
-// 	char			*updated_path;
-
-// 	cp_len = ft_strlen(chdir_path);
-// 	dir_len = ft_strlen(dir);
-// 	updated_path = malloc(cp_len + dir_len + 2);
-// 	if (!updated_path)
-// 		return (0);
-// 	updated_path = ft_strjoin3(chdir_path, "/", dir);
-// 	return (updated_path);
-// }
-
-// LEGACY CODE OFF
-
-int	cd(t_env *env, char *path)
+static int	exec_cd(t_command *cmd)
 {
 	char	*oldpwd;
 	int		flag;
 
-	oldpwd = getcwd(0, 0);
 	flag = 0;
-	if (!path)
-		path = get_env_val(env, "HOME");
-	if (!ft_strncmp(path, "-", 1))
+	oldpwd = getcwd(0, 0);
+	if (!chdir(cmd->args[0]))
 	{
-		path = get_env_val(env, "OLDPWD");
-		flag = 1;
-	}
-	if (!chdir(path))
-	{
-		update_env(env, "PWD", getcwd(0, 0));
-		update_env(env, "OLDPWD", oldpwd);
+		update_env(cmd->env, "PWD", getcwd(0, 0));
+		update_env(cmd->env, "OLDPWD", oldpwd);
 		if (flag)
-			printf("%s\n", get_env_val(env, "PWD"));
+			printf("%s\n", get_env_val(cmd->env, "PWD"));
 		return (0);
 	}
-	if (path)
-		printf("cd: no such file or directory: %s\n", path);
-	else
-		printf("cd: no such file or directory:\n");
+	if (cmd->args[0])
+		printf("cd: no such file or directory: %s\n", cmd->args[0]);
 	free(oldpwd);
 	return (1);
+}
+
+int	cd(t_command *cmd)
+{
+	int		chk_ret;
+
+	chk_ret = check_cd(cmd);
+	if (chk_ret < 1)
+	{
+		if (chk_ret == 0)
+			printf("cd: too many arguments\n");
+		return (0);
+	}
+	return (exec_cd(cmd));
 }

@@ -1,23 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/07 16:54:37 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/07 17:38:02 by gucamuze         ###   ########.fr       */
+/*   Created: 2022/03/07 16:47:10 by gucamuze          #+#    #+#             */
+/*   Updated: 2022/03/07 17:38:04 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	env(t_command *cmd)
+int	pwd(t_command *cmd)
 {
 	if (!cmd->args[0])
 	{
-		print_env(cmd->env);
+		printf("pwd => %s\n", get_env_val(cmd->env, "PWD"));
 		return (0);
 	}
-	return (1);
+	else
+	{
+		printf("pwd: too many arguments\n");
+		return (1);
+	}
 }
