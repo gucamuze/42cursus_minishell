@@ -1,41 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 18:30:56 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/07 16:53:09 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/08 17:07:24 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-unsigned int expand_env_var(t_env *env, char *var, char **expanded)
-{
-	int		k;
-	char	*tmp;
-
-	// printf("expand env var\n");
-	k = 0;
-	if (var[1] == '?')
-		; // last exit code
-	else
-	{
-		while (var[++k] && ft_isalpha(var[k]))
-			;
-		tmp = ft_strncpy(&var[1], k - 1);
-		*expanded = get_env_val(env, tmp);
-		// printf("copying '%s' for %d char\ntmp = %s\texpanded => %s\n", var, k, tmp, *expanded);
-		free(tmp);
-	}
-	return (k);
-}
-
 char	*get_env_name_from_string(char *str)
 {
-	char	*env_name;
+	char			*env_name;
 	unsigned int	i;
 
 	i = 0;
@@ -71,13 +50,11 @@ t_env	*env_to_lst(char **env)
 			var_name = get_env_name_from_string(*env);
 			var_value = ft_strdup(&(*env)[ft_strlen(var_name) + 1]);
 			envlst_add_back(&lst, envlst_new(var_name, var_value));
-			// printf("adding [%s]=[%s] to lst\n", var_name, var_value);
 			env++;
 		}
 	}
 	return (lst);
 }
-
 
 void	print_env(t_env *env)
 {
@@ -95,8 +72,9 @@ void	update_env(t_env *env, char *var_name, char *value)
 	t_env	*iterator;
 
 	iterator = env;
-	while (iterator
-			&& ft_strncmp(iterator->name, var_name, ft_strlen(var_name)))
+	while (iterator && 
+			!(!ft_strncmp(iterator->name, var_name, ft_strlen(var_name))
+			&& ft_strlen(iterator->name) == ft_strlen(var_name)))
 		iterator = iterator->next;
 	if (iterator)
 	{

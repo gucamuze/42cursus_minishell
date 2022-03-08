@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 16:46:35 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/07 17:38:12 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/08 15:51:28 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static int	exec_cd(t_command *cmd)
 	return (1);
 }
 
-int	cd(t_command *cmd)
+unsigned int	_cd(t_command *cmd)
 {
 	int		chk_ret;
 

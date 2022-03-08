@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:29 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/07 17:37:46 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/08 16:41:37 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ typedef struct s_command
 	char				*command;
 	char				**args;
 	t_env				*env;
+	// A implementer
+	char				*redirection;
 	// Token is to potentially expand to a redirect. 
 	// Default value is 0 (nothing)
 	int					token;
@@ -47,17 +49,19 @@ typedef struct s_data
 
 // BUILTINS
 // cd
-int		cd(t_command *cmd);
+unsigned int	_cd(t_command *cmd);
 // echo
-void	echo(t_env *env, char *str);
+unsigned int	_echo(t_command *cmd);
 // pwd
-int		pwd(t_command *cmd);
+unsigned int	_pwd(t_command *cmd);
 // env
-int		env(t_command *cmd);
+unsigned int	_env(t_command *cmd);
 // unset
-int		unset(t_command *cmd);
+unsigned int	_unset(t_command *cmd);
 // export
-void	export(t_env **env, const char *str);
+unsigned int	_export(t_command *cmd);
+// exit
+// unsigned int	exit();
 // END BUILTINS
 
 // UTILS
@@ -69,6 +73,8 @@ void			cmd_free(t_command *cmd);
 t_command		*cmd_create(t_env *env, char *user_input);
 void			__DEBUG_output_cmd(t_command *cmd);
 // env_utils
+char	*get_env_name_from_string(char *str);
+char	*get_env_value_from_string(char *str);
 unsigned int	expand_env_var(t_env *env, char *var, char **expanded);
 t_env	*env_to_lst(char **env);
 void	update_env(t_env *env, char *var_name, char *value);

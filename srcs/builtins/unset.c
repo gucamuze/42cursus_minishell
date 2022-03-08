@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:51:26 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/07 17:46:50 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/08 15:51:18 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static void	unset_exec(t_command *cmd, t_env *iterator, int i)
 	}
 }
 
-int	unset(t_command *cmd)
+unsigned int	_unset(t_command *cmd)
 {
 	t_env	*iterator;
 	int		i;

@@ -6,38 +6,38 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:10 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/07 17:48:19 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/08 15:52:52 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	test_command(t_env *env, char *command)
+int	command_dispatcher(t_env *env, char *command)
 {
-	t_command	*cmd;
+	t_command		*cmd;
+	unsigned int	return_value;
 
 	cmd = cmd_create(env, command);
 	__DEBUG_output_cmd(cmd);
+	return_value = -1;
 	if (!ft_strncmp(cmd->command, "cd", 2))
-		cd(cmd);
+		return_value = _cd(cmd);
 	else if (!ft_strncmp(cmd->command, "pwd", 3))
-		pwd(cmd);
+		return_value = _pwd(cmd);
 	else if (!ft_strncmp(cmd->command, "env", 3))
-		print_env(env);
+		return_value = _env(cmd);
 	else if (!ft_strncmp(cmd->command, "unset", 5))
-		unset(cmd);
-	/** TEMPORARLY DISABLED BECAUSE OF T_ENV UPDATE **/
-	// else if (!ft_strncmp(command, "export", 5))
-		// ft_lstadd_back(&env, ft_lstnew(ft_strdup(cmd_array[1])));
-	/** **/
+		return_value = _unset(cmd);
+	else if (!ft_strncmp(cmd->command, "export", 5))
+		return_value = _export(cmd);
 	else if (!ft_strncmp(cmd->command, "echo", 4))
-		echo(env, &command[5]);
+		return_value = _echo(cmd);
 	else if (!ft_strncmp(cmd->command, "exit", 4))
 		; // exit
 	else
 		; // execve
 	cmd_free(cmd);
-	return (1);
+	return (return_value);
 }
 
 void	cleanup(char *prompt, t_env *env)
@@ -82,7 +82,7 @@ int	main(int ac, char **av, char **env)
 		if (!user_input)
 			break ;
 		if (user_input[0] != 0)
-			test_command(env_lst, user_input);
+			command_dispatcher(env_lst, user_input);
 		add_history(user_input);
 		prompt = get_prompt(env_lst, prompt);
 		if (!prompt)

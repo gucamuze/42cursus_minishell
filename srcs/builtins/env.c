@@ -6,18 +6,18 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:54:37 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/07 17:38:02 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/08 15:50:47 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	env(t_command *cmd)
+unsigned int	_env(t_command *cmd)
 {
 	if (!cmd->args[0])
 	{
 		print_env(cmd->env);
 		return (0);
 	}
-	return (1);
+	return (127);
 }

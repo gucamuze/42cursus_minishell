@@ -6,7 +6,7 @@
 #    By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/07/15 02:21:09 by gucamuze          #+#    #+#              #
-#    Updated: 2022/03/07 17:50:03 by gucamuze         ###   ########.fr        #
+#    Updated: 2022/03/08 15:30:08 by gucamuze         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,7 @@ RM				=	rm -f
 SRCS_PATH		=	./srcs/
 BUILTINS_PATH	=	./srcs/builtins/
 UTILS_PATH		=	./srcs/utils/
+PARSER_PATH		=	./srcs/parser/
 
 LIBFT_PATH		=	./libft/
 LIBFT_A			=	./libft/libft.a
@@ -27,6 +28,11 @@ BUILTINS		=	cd.c echo.c pwd.c unset.c export.c env.c
 BUILTINS_W_PATH	=	$(addprefix ${BUILTINS_PATH}, ${BUILTINS})
 BUILTINS_OFILES	=	$(BUILTINS_W_PATH:.c=.o)
 ALL_OFILES		+=	$(BUILTINS_OFILES)
+			
+PARSER			=	parser.c
+PARSER_W_PATH	=	$(addprefix ${PARSER_PATH}, ${PARSER})
+PARSER_OFILES	=	$(PARSER_W_PATH:.c=.o)
+ALL_OFILES		+=	$(PARSER_OFILES)
 
 UTILS			=	getters.c env_lst_utils.c utils.c commands_utils.c ft_split.c \
 					env_utils.c
@@ -34,7 +40,7 @@ UTILS_W_PATH	=	$(addprefix ${UTILS_PATH}, ${UTILS})
 UTILS_OFILES	=	$(UTILS_W_PATH:.c=.o)
 ALL_OFILES		+=	$(UTILS_OFILES)
 
-SRC_FILES		=	main.c prompt.c signals.c parser.c
+SRC_FILES		=	main.c prompt.c signals.c
 SRC_PATH		=	$(addprefix ${SRCS_PATH}, ${SRC_FILES})
 SRC_OFILES		= 	$(SRC_PATH:.c=.o)
 ALL_OFILES		+=	$(SRC_OFILES)
@@ -44,7 +50,7 @@ ALL_OFILES		+=	$(SRC_OFILES)
 
 all:			${EXEC_NAME}
 
-$(EXEC_NAME):	$(LIBFT_A) $(SRC_OFILES) $(BUILTINS_OFILES) $(UTILS_OFILES)
+$(EXEC_NAME):	$(LIBFT_A) $(SRC_OFILES) $(BUILTINS_OFILES) $(UTILS_OFILES) $(PARSER_OFILES)
 				$(CC) $(ALL_OFILES) $(INCLUDES) -o $(EXEC_NAME)
 
 $(LIBFT_A):

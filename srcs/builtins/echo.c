@@ -6,70 +6,31 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/02 23:30:11 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/07 16:46:19 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/08 15:51:58 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*expand(t_env *env, char *str)
+unsigned int	_echo(t_command *cmd)
 {
-	char	expanded[2048];
-	char	*tmp;
-	int		i;
-	int		j;
-	unsigned int	k;
+	int	newline;
+	int	i;
 
+	newline = 1;
 	i = 0;
-	j = 0;
-	ft_memset(expanded, 0, 2048);
-	while (str[i])
+	while (cmd->args[i] && !ft_strncmp(cmd->args[i], "-n", 2))
 	{
-		if (str[i] == '$' && str[i + 1])
-		{
-			k = expand_env_var(env, &str[i], &tmp);
-			// printf("expand function done, i + %d\n", k);
-			if (tmp)
-				while (*tmp)
-					expanded[j++] = *tmp++;
-			i += k;
-		}
-		else
-			expanded[j++] = str[i++];
+		newline = 0;
+		i++;
 	}
-	// printf("end, returning dup of %s\n", expanded);
-	return (ft_strdup(expanded));
-}
-
-// CHANGES NEEDING TO BE MADE: echo uses an expand function to expand env variables,
-// in the future, the parser will take care of this instead
-void	echo(t_env *env, char *str)
-{
-	char	**output;
-	int		space_flag;
-	int		i;
-
-	space_flag = 0;
-	output = ft_split(str, ' ');
-	if (!output)
-		printf("no output for '%s'", str);
-	i = -1;
-	if (output[0] && output[0][0] == '-')
+	while (cmd->args[i])
 	{
-		if (output[0][1] == 'n') 
-		{
-			space_flag = 1;
-			i++;
-		}
+		printf("%s", cmd->args[i++]);
+		if (cmd->args[i])
+			printf(" ");
 	}
-	// printf("wtf is going on, string '%s'\n", str);
-	while (output[++i])
-	{
-		// char *test = expand(env, output[i]);
-		// printf("expanding %s => %s", output[i], test);
-		printf("%s", expand(env, output[i]));
-	}
-	if (!space_flag)
+	if (newline)
 		printf("\n");
-	free_split(output);
+	return (0);
 }

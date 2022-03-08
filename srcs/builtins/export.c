@@ -6,30 +6,31 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:51:34 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/07 16:53:12 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/08 17:07:34 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// int	export(t_list **env, const char *str)
-// {
-// 	char	*var_name;
-// 	char	**split;
+// Possible difference compared to the real export command :
+// this version ignores input like "export =j", zsh and bash throw an error 
+// beforehand and doesn't execute the export command
+unsigned int	_export(t_command *cmd)
+{
+	char				*env_name;
+	char				*env_value;
+	unsigned int		i;
 
-// 	split = ft_split(str, ' ');
-// 	while (*split)
-// 	{
-// 		var_name = get_env_name_from_string(*split);
-// 		while (*env)
-// 		{
-// 			if (!ft_strncmp(var_name, (*env)->content, ft_strlen(var_name)))
-// 				update_env(*env, var_name, &str[ft_strlen(var_name) + 1]);
-// 		}
-// 		if (var_name)
-// 			free(var_name);
-// 		split++;
-// 	}
-// 	free_split(split);
-// 	return (0);
-// }
+	i = 0;
+	while (cmd->args[i])
+	{
+		env_name = get_env_name_from_string(cmd->args[i]);
+		if (env_name)
+		{
+			env_value = ft_strdup(&cmd->args[i][ft_strlen(env_name) + 1]);
+			update_env(cmd->env, env_name, env_value);
+		}
+		i++;
+	}
+	return (0);
+}
