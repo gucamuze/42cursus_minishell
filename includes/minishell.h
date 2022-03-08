@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:29 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/08 16:41:37 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/08 19:05:59 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ typedef struct s_command
 	char				**args;
 	t_env				*env;
 	// A implementer
-	char				*redirection;
+		//char				*redirection;
 	// Token is to potentially expand to a redirect. 
 	// Default value is 0 (nothing)
 	int					token;
@@ -72,6 +72,7 @@ void	envlst_add_back(t_env **env, t_env *new);
 void			cmd_free(t_command *cmd);
 t_command		*cmd_create(t_env *env, char *user_input);
 void			__DEBUG_output_cmd(t_command *cmd);
+void			__DEBUG_output_split(char **split);
 // env_utils
 char	*get_env_name_from_string(char *str);
 char	*get_env_value_from_string(char *str);
@@ -82,6 +83,12 @@ char	*get_env_val(t_env *env, const char *var_name);
 void	print_env(t_env *env);
 // END UTILS
 
+// PARSER
+// parser
+char	**create_args(t_env *env, char *user_input);
+
+// END PARSER
+
 // prompt
 char	*get_prompt(t_env *env, char *prev_prompt);
 // signals
@@ -90,6 +97,7 @@ void	set_sigaction(struct sigaction *sigaction);
 void	free_split(char **split);
 char	**ft_split2(const char *s, char c);
 // utils
+int		ft_strcmp(const char *s1, const char *s2);
 char	*ft_strjoin3(const char *s1, const char *s2, const char *s3);
 char	*ft_strncpy(char *str, size_t size);
 

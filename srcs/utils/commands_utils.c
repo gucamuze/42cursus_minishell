@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 13:24:53 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/07 15:53:38 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/08 18:04:27 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@ void		cmd_free(t_command *cmd)
 {
 	if (cmd)
 	{
-		if (cmd->command)
-			free(cmd->command);
 		if (cmd->args)
 			free_split(cmd->args);
 		if (cmd->next)
@@ -35,15 +33,13 @@ t_command	*cmd_create(t_env *env, char *user_input)
 	if (!cmd)
 		return (0);
 	i = 0;
-	while (*user_input && *user_input == ' ')
-		user_input++;
-	while (user_input[i] && user_input[i] != ' ')
-		i++;
-	cmd->command = ft_strncpy(user_input, i);
 	/** NEED TO REPLACE THIS SPLIT BY A REAL PARSER !! **/
-	if (&user_input[i])
-		cmd->args = ft_split(&user_input[i], ' ');
+	cmd->args = create_args(env, user_input);
 	/** ^this one **/
+	if (cmd->args)
+		cmd->command = cmd->args[0];
+	else
+		cmd->command = 0;
 	cmd->env = env;
 	cmd->token = 0;
 	cmd->next = 0;
@@ -58,4 +54,10 @@ void	__DEBUG_output_cmd(t_command *cmd)
 	printf("token => %d\n", cmd->token);
 	if (cmd->next)
 		__DEBUG_output_cmd(cmd->next);
+}
+
+void	__DEBUG_output_split(char **split)
+{
+	for (size_t i = 0; split[i]; i++)
+		printf("split[%zu] => %s\n", i, split[i]);
 }

@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 18:30:56 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/08 17:07:24 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/08 19:07:31 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,9 +92,9 @@ char	*get_env_val(t_env *env, const char *var_name)
 	var_len = ft_strlen(var_name);
 	while (env)
 	{
-		if (!ft_strncmp(env->name, var_name, var_len))
+		if (!ft_strcmp(env->name, var_name))
 			return (env->value);
 		env = env->next;
 	}
-	return (NULL);
+	return (0);
 }

@@ -6,7 +6,7 @@
 #    By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/07/15 02:21:09 by gucamuze          #+#    #+#              #
-#    Updated: 2022/03/08 15:30:08 by gucamuze         ###   ########.fr        #
+#    Updated: 2022/03/08 17:13:30 by gucamuze         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,7 @@ PARSER_W_PATH	=	$(addprefix ${PARSER_PATH}, ${PARSER})
 PARSER_OFILES	=	$(PARSER_W_PATH:.c=.o)
 ALL_OFILES		+=	$(PARSER_OFILES)
 
-UTILS			=	getters.c env_lst_utils.c utils.c commands_utils.c ft_split.c \
+UTILS			=	env_lst_utils.c utils.c commands_utils.c ft_split.c \
 					env_utils.c
 UTILS_W_PATH	=	$(addprefix ${UTILS_PATH}, ${UTILS})
 UTILS_OFILES	=	$(UTILS_W_PATH:.c=.o)

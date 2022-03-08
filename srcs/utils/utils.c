@@ -6,11 +6,23 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 18:37:46 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/03 05:44:40 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/08 19:05:26 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	ft_strcmp(const char *s1, const char *s2)
+{
+	while (*s1 || *s2)
+	{
+		if (*s1 != *s2)
+			return (1);
+		s1++;
+		s2++;
+	}
+	return (0);
+}
 
 char	*ft_strjoin3(const char *s1, const char *s2, const char *s3)
 {

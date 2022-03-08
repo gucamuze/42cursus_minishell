@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:10 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/08 15:52:52 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/08 19:05:37 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,22 +20,25 @@ int	command_dispatcher(t_env *env, char *command)
 	cmd = cmd_create(env, command);
 	__DEBUG_output_cmd(cmd);
 	return_value = -1;
-	if (!ft_strncmp(cmd->command, "cd", 2))
-		return_value = _cd(cmd);
-	else if (!ft_strncmp(cmd->command, "pwd", 3))
-		return_value = _pwd(cmd);
-	else if (!ft_strncmp(cmd->command, "env", 3))
-		return_value = _env(cmd);
-	else if (!ft_strncmp(cmd->command, "unset", 5))
-		return_value = _unset(cmd);
-	else if (!ft_strncmp(cmd->command, "export", 5))
-		return_value = _export(cmd);
-	else if (!ft_strncmp(cmd->command, "echo", 4))
-		return_value = _echo(cmd);
-	else if (!ft_strncmp(cmd->command, "exit", 4))
-		; // exit
-	else
-		; // execve
+	if (cmd->command)
+	{
+		if (!ft_strcmp(cmd->command, "cd"))
+			return_value = _cd(cmd);
+		else if (!ft_strcmp(cmd->command, "pwd"))
+			return_value = _pwd(cmd);
+		else if (!ft_strcmp(cmd->command, "env"))
+			return_value = _env(cmd);
+		else if (!ft_strcmp(cmd->command, "unset"))
+			return_value = _unset(cmd);
+		else if (!ft_strcmp(cmd->command, "export"))
+			return_value = _export(cmd);
+		else if (!ft_strcmp(cmd->command, "echo"))
+			return_value = _echo(cmd);
+		else if (!ft_strcmp(cmd->command, "exit"))
+			; // exit
+		else
+			; // execve
+	}
 	cmd_free(cmd);
 	return (return_value);
 }

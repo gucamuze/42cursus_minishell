@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:51:34 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/08 17:07:34 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/08 18:48:37 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ unsigned int	_export(t_command *cmd)
 	char				*env_value;
 	unsigned int		i;
 
-	i = 0;
+	i = 1;
 	while (cmd->args[i])
 	{
 		env_name = get_env_name_from_string(cmd->args[i]);

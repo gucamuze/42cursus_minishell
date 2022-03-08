@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:47:10 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/08 15:51:26 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/08 18:48:12 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 unsigned int	_pwd(t_command *cmd)
 {
-	if (!cmd->args[0])
+	if (!cmd->args[1])
 	{
 		printf("pwd => %s\n", get_env_val(cmd->env, "PWD"));
 		return (0);

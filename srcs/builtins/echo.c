@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/02 23:30:11 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/08 15:51:58 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/08 19:10:33 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ unsigned int	_echo(t_command *cmd)
 	int	i;
 
 	newline = 1;
-	i = 0;
+	i = 1;
 	while (cmd->args[i] && !ft_strncmp(cmd->args[i], "-n", 2))
 	{
 		newline = 0;
@@ -26,9 +26,13 @@ unsigned int	_echo(t_command *cmd)
 	}
 	while (cmd->args[i])
 	{
-		printf("%s", cmd->args[i++]);
-		if (cmd->args[i])
-			printf(" ");
+		if (cmd->args[i][0] != 0)
+		{
+			printf("%s", cmd->args[i]);
+			if (cmd->args[i + 1])
+				printf(" ");
+		}
+		i++;
 	}
 	if (newline)
 		printf("\n");
