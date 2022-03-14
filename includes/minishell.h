@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:29 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/08 19:05:59 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/14 18:39:16 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ typedef struct s_command
 		//char				*redirection;
 	// Token is to potentially expand to a redirect. 
 	// Default value is 0 (nothing)
-	int					token;
 	struct s_command	*next;
 }	t_command;
 
@@ -69,10 +68,14 @@ unsigned int	_export(t_command *cmd);
 t_env	*envlst_new(char *var_name, char *var_value);
 void	envlst_add_back(t_env **env, t_env *new);
 // command_utils
-void			cmd_free(t_command *cmd);
-t_command		*cmd_create(t_env *env, char *user_input);
-void			__DEBUG_output_cmd(t_command *cmd);
+void			cmd_lst_free(t_command *cmd);
+t_command		*cmd_lst_create(t_env *env, const char *user_input);
+// __DEBUG
+void			__DEBUG_output_cmd_lst(t_command *cmd);
 void			__DEBUG_output_split(char **split);
+// commands_lst_utils
+t_command		*cmdlst_new(t_env *env, const char *user_input);
+void			cmdlst_add_back(t_command **cmd_lst, t_command *new);
 // env_utils
 char	*get_env_name_from_string(char *str);
 char	*get_env_value_from_string(char *str);
@@ -85,7 +88,7 @@ void	print_env(t_env *env);
 
 // PARSER
 // parser
-char	**create_args(t_env *env, char *user_input);
+char	**create_args(t_env *env, const char *user_input);
 
 // END PARSER
 

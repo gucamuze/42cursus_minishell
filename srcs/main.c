@@ -6,40 +6,44 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:10 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/08 19:05:37 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/14 18:40:04 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// for now, command_dispatcher creates the command but this needs to be changed
+// in the future, the parser should create the chained list of commands, and 
+// send it to the dispatcher
 int	command_dispatcher(t_env *env, char *command)
 {
-	t_command		*cmd;
+	t_command		*cmd_lst;
 	unsigned int	return_value;
 
-	cmd = cmd_create(env, command);
-	__DEBUG_output_cmd(cmd);
+	cmd_lst = cmd_lst_create(env, command);
 	return_value = -1;
-	if (cmd->command)
+	if (cmd_lst)
 	{
-		if (!ft_strcmp(cmd->command, "cd"))
-			return_value = _cd(cmd);
-		else if (!ft_strcmp(cmd->command, "pwd"))
-			return_value = _pwd(cmd);
-		else if (!ft_strcmp(cmd->command, "env"))
-			return_value = _env(cmd);
-		else if (!ft_strcmp(cmd->command, "unset"))
-			return_value = _unset(cmd);
-		else if (!ft_strcmp(cmd->command, "export"))
-			return_value = _export(cmd);
-		else if (!ft_strcmp(cmd->command, "echo"))
-			return_value = _echo(cmd);
-		else if (!ft_strcmp(cmd->command, "exit"))
+		printf("\ncmd_list w/ pipes :\n");
+		__DEBUG_output_cmd_lst(cmd_lst);
+		if (!ft_strcmp(cmd_lst->command, "cd"))
+			return_value = _cd(cmd_lst);
+		else if (!ft_strcmp(cmd_lst->command, "pwd"))
+			return_value = _pwd(cmd_lst);
+		else if (!ft_strcmp(cmd_lst->command, "env"))
+			return_value = _env(cmd_lst);
+		else if (!ft_strcmp(cmd_lst->command, "unset"))
+			return_value = _unset(cmd_lst);
+		else if (!ft_strcmp(cmd_lst->command, "export"))
+			return_value = _export(cmd_lst);
+		else if (!ft_strcmp(cmd_lst->command, "echo"))
+			return_value = _echo(cmd_lst);
+		else if (!ft_strcmp(cmd_lst->command, "exit"))
 			; // exit
 		else
 			; // execve
 	}
-	cmd_free(cmd);
+	cmd_lst_free(cmd_lst);
 	return (return_value);
 }
 
@@ -61,6 +65,7 @@ void	cleanup(char *prompt, t_env *env)
 			env = env_tmp;
 		}
 	}
+	rl_clear_history();
 }
 
 int	main(int ac, char **av, char **env)

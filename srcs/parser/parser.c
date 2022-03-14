@@ -6,12 +6,13 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 12:28:01 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/08 19:27:53 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/14 17:37:05 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// Returns the length of the env variable it expanded
 unsigned int expand_env_var(t_env *env, char *var, char **expanded)
 {
 	int		i;
@@ -67,7 +68,7 @@ static char	*expand(t_env *env, char *str)
 	return (ft_strdup(expanded));
 }
 
-char	**create_args(t_env *env, char *user_input)
+char	**create_args(t_env *env, const char *user_input)
 {
 	char			**args;
 	char			*expanded_str;
@@ -75,8 +76,10 @@ char	**create_args(t_env *env, char *user_input)
 
 	if (!user_input)
 		return (0);
-	args = ft_split(user_input, ' ');
 	i = 1;
+	// ???
+	args = ft_split(user_input, ' '); // ???
+	// ???
 	while (args[i])
 	{
 		expanded_str = expand(env, args[i]);
