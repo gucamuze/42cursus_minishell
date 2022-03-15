@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 13:24:53 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/14 18:39:01 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/14 18:58:15 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static unsigned int	str_is_empty(char *str)
 	return (1);
 }
 
-static unsigned int	check_empty_pipes(char **input_split, unsigned int pipes_nbr)
+unsigned int	check_empty_pipes(char **input_split, unsigned int pipes_nbr)
 {
 	unsigned int	i;
 	unsigned int	count;

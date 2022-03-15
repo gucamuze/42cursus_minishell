@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:10 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/14 18:40:04 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/15 22:24:57 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	command_dispatcher(t_env *env, char *command)
 		else if (!ft_strcmp(cmd_lst->command, "echo"))
 			return_value = _echo(cmd_lst);
 		else if (!ft_strcmp(cmd_lst->command, "exit"))
-			; // exit
+			; // exitA
 		else
 			; // execve
 	}
