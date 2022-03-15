@@ -6,7 +6,7 @@
 #    By: adben-mc <adben-mc@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/07/15 02:21:09 by gucamuze          #+#    #+#              #
-#    Updated: 2022/03/15 23:18:28 by adben-mc         ###   ########.fr        #
+#    Updated: 2022/03/16 00:21:40 by adben-mc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,7 @@ SRCS_PATH		=	./srcs/
 BUILTINS_PATH	=	./srcs/builtins/
 UTILS_PATH		=	./srcs/utils/
 PARSER_PATH		=	./srcs/parser/
+EXEC_PATH		=	./srcs/exec/
 
 LIBFT_PATH		=	./libft/
 LIBFT_A			=	./libft/libft.a
@@ -33,6 +34,11 @@ PARSER			=	parser.c
 PARSER_W_PATH	=	$(addprefix ${PARSER_PATH}, ${PARSER})
 PARSER_OFILES	=	$(PARSER_W_PATH:.c=.o)
 ALL_OFILES		+=	$(PARSER_OFILES)
+
+EXEC			=	exec.c fd.c path.c utils.c
+EXEC_W_PATH	=	$(addprefix ${EXEC_PATH}, ${EXEC})
+EXEC_OFILES	=	$(EXEC_W_PATH:.c=.o)
+ALL_OFILES		+=	$(EXEC_OFILES)
 
 UTILS			=	env_lst_utils.c utils.c commands_utils.c ft_split.c \
 					env_utils.c commands_lst_utils.c __DEBUG.c
@@ -50,7 +56,7 @@ ALL_OFILES		+=	$(SRC_OFILES)
 
 all:			${EXEC_NAME}
 
-$(EXEC_NAME):	$(LIBFT_A) $(SRC_OFILES) $(BUILTINS_OFILES) $(UTILS_OFILES) $(PARSER_OFILES)
+$(EXEC_NAME):	$(LIBFT_A) $(SRC_OFILES) $(BUILTINS_OFILES) $(UTILS_OFILES) $(PARSER_OFILES) $(EXEC_OFILES)
 				$(CC) $(ALL_OFILES) $(INCLUDES) -o $(EXEC_NAME)
 
 $(LIBFT_A):

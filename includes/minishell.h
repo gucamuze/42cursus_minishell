@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adben-mc <adben-mc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:29 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/14 18:39:16 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/16 00:18:58 by adben-mc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,5 +103,26 @@ char	**ft_split2(const char *s, char c);
 int		ft_strcmp(const char *s1, const char *s2);
 char	*ft_strjoin3(const char *s1, const char *s2, const char *s3);
 char	*ft_strncpy(char *str, size_t size);
+
+
+/******************************************************************************/
+/***************************	EXECUTION	***********************************/
+//exec
+void	ft_execbuiltin(t_command	*cmd_lst);
+int		havebuiltin(t_command	*cmd_lst);
+void	exec_cmd(t_command *cmd, char **env, t_env *envt);
+//fd
+int		*initfd(size_t size);
+void	ft_dup2(int *fd, int i, t_command *command, int size);
+void	ft_closefd(int *fd);
+//path
+char	*get_absolute_path(char **cmd, t_env *envp);
+//utils
+void	free_array(char **array);
+char	*ft_strcat(char *dest, char *src);
+char    **ft_lstsplit(t_env **lst);
+size_t	_lst_size(t_env *command);
+size_t	cmdlst_size(t_command *command);
+/******************************************************************************/
 
 #endif
