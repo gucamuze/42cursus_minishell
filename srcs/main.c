@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:10 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/16 03:54:56 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/16 04:26:07 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ int	command_dispatcher(t_command *command)
 	return_value = -1;
 	if (command)
 	{
-		printf("\ncmd_list w/ pipes :\n");
 		if (!ft_strcmp(command->command, "cd"))
 			return_value = _cd(command);
 		else if (!ft_strcmp(command->command, "pwd"))

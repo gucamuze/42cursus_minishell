@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 18:38:51 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/16 04:17:30 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/16 04:24:50 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	__DEBUG_output_cmd_lst(t_command *cmd)
 	{
 		for (size_t i = 0; cmd->redirects; i++)
 		{
-			printf("redirect %zu => type %d, filename %s\n", i, 
+			printf("redirect %zu => type %d, name %s\n", i, 
 				cmd->redirects->redir_type, cmd->redirects->redir_name);
 			cmd->redirects = cmd->redirects->next;
 		}
