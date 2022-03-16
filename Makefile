@@ -6,7 +6,7 @@
 #    By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/07/15 02:21:09 by gucamuze          #+#    #+#              #
-#    Updated: 2022/03/16 03:55:22 by gucamuze         ###   ########.fr        #
+#    Updated: 2022/03/16 05:35:05 by gucamuze         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,8 @@ BUILTINS_W_PATH	=	$(addprefix ${BUILTINS_PATH}, ${BUILTINS})
 BUILTINS_OFILES	=	$(BUILTINS_W_PATH:.c=.o)
 ALL_OFILES		+=	$(BUILTINS_OFILES)
 			
-PARSER			=	parser.c parse_pipes.c parse_quotes.c parse_redirects.c
+PARSER			=	parser.c parse_pipes.c parse_quotes.c parse_redirects.c \
+					parse_redirects_utils.c
 PARSER_W_PATH	=	$(addprefix ${PARSER_PATH}, ${PARSER})
 PARSER_OFILES	=	$(PARSER_W_PATH:.c=.o)
 ALL_OFILES		+=	$(PARSER_OFILES)

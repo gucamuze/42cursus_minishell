@@ -6,11 +6,18 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 18:57:05 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/16 02:37:52 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/16 05:18:58 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+unsigned int	is_quote(char c)
+{
+	if (c == '\'' || c == '\"')
+		return (1);
+	return (0);
+}
 
 unsigned int	get_next_quote_pos(char *str)
 {
@@ -32,7 +39,7 @@ int	check_unending_quotes(char *command)
 	i = 0;
 	while (command[i])
 	{
-		if (command[i] == '\'' || command[i] == '\"')
+		if (is_quote(command[i]))
 		{
 			j = get_next_quote_pos(&command[i]);
 			if (!command[i + j])

@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 18:38:51 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/16 04:24:50 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/16 05:50:52 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@ void	__DEBUG_output_cmd_lst(t_command *cmd)
 	printf("command => %s\n", cmd->command);
 	if (cmd->args)
 		for (size_t i = 0; cmd->args[i]; i++)
-			printf("arg[%zu] => %s\n", i, cmd->args[i]);
+			printf("arg[%zu] => {%s}\n", i, cmd->args[i]);
 	if (cmd->redirects)
 	{
 		for (size_t i = 0; cmd->redirects; i++)
 		{
-			printf("redirect %zu => type %d, name %s\n", i, 
+			printf("redirect %zu => type %d, name {%s}\n", i, 
 				cmd->redirects->redir_type, cmd->redirects->redir_name);
 			cmd->redirects = cmd->redirects->next;
 		}
@@ -34,5 +34,5 @@ void	__DEBUG_output_cmd_lst(t_command *cmd)
 void	__DEBUG_output_split(char **split)
 {
 	for (size_t i = 0; split[i]; i++)
-		printf("split[%zu] => %s\n", i, split[i]);
+		printf("split[%zu] => {%s}\n", i, split[i]);
 }

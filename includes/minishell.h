@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:29 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/16 05:01:25 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/16 05:43:08 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,13 @@
 // Env
 typedef struct s_env
 {
-	struct s_env	*next;
-	char			*name;
-	char			*value;
+	struct s_env		*next;
+	char				*name;
+	char				*value;
 }	t_env;
 
 // Redir type : 0 for >, 1 for >>, 2 for <, 3 for heredoc
-typedef struct	s_redirect
+typedef struct s_redirect
 {
 	unsigned int		redir_type;
 	char				*redir_name;
@@ -49,7 +49,7 @@ typedef struct s_command
 typedef struct s_data
 {
 	t_env	**env;
-}		t_data;
+}	t_data;
 
 // BUILTINS
 // cd
@@ -70,8 +70,8 @@ unsigned int	_export(t_command *cmd);
 
 // UTILS
 // env_lst_utils
-t_env	*envlst_new(char *var_name, char *var_value);
-void	envlst_add_back(t_env **env, t_env *new);
+t_env			*envlst_new(char *var_name, char *var_value);
+void			envlst_add_back(t_env **env, t_env *new);
 // command_utils
 void			cmd_lst_free(t_command *cmd);
 t_command		*cmd_lst_create(t_env *env, t_list *parsed_pipes);
@@ -82,39 +82,44 @@ void			__DEBUG_output_split(char **split);
 t_command		*cmdlst_new(t_env *env, char *command);
 void			cmdlst_add_back(t_command **cmd_lst, t_command *new);
 // redir_lst_utils
-void		redir_lst_free(t_redirect *redir_lst);
-t_redirect	*redir_lst_new(unsigned int redir_type, char *redir_name);
-void		redir_lst_add_back(t_redirect **cmd_lst, t_redirect *new);
+void			redir_lst_free(t_redirect *redir_lst);
+t_redirect		*redir_lst_new(unsigned int redir_type, char *redir_name);
+void			redir_lst_add_back(t_redirect **cmd_lst, t_redirect *new);
 // env_utils
-char	*get_env_name_from_string(char *str);
-char	*get_env_value_from_string(char *str);
+char			*get_env_name_from_string(char *str);
+char			*get_env_value_from_string(char *str);
 unsigned int	expand_env_var(t_env *env, char *var, char **expanded);
-t_env	*env_to_lst(char **env);
-void	update_env(t_env *env, char *var_name, char *value);
-char	*get_env_val(t_env *env, const char *var_name);
-void	print_env(t_env *env);
+t_env			*env_to_lst(char **env);
+void			update_env(t_env *env, char *var_name, char *value);
+char			*get_env_val(t_env *env, const char *var_name);
+void			print_env(t_env *env);
 // END UTILS
 
 // PARSER
 // parser
-char	**create_args(t_env *env, const char *user_input);
+char			**create_args(t_env *env, const char *user_input);
 // parse_quotes
+unsigned int	is_quote(char c);
 unsigned int	get_next_quote_pos(char *str);
 int				check_unending_quotes(char *command);
 // parse_pipes
-int		check_invalid_pipes(t_list *parsed_pipes);
-t_list *parse_pipes(char *user_input);
+int				check_invalid_pipes(t_list *parsed_pipes);
+t_list 			*parse_pipes(char *user_input);
 // parse_redirects
-int		parse_redirects(t_command *cmd_lst);
+int				parse_redirects(t_command *cmd_lst);
 
+// parse_redirects_utils
+unsigned int	is_valid_redir_char(char c);
+char			*get_redirect_name(char *str);
+void			update_command(char *str);
 // END PARSER
 
 // prompt
-char	*get_prompt(t_env *env, char *prev_prompt);
+char			*get_prompt(t_env *env, char *prev_prompt);
 // signals
-void	set_sigaction(struct sigaction *sigaction);
+void			set_sigaction(struct sigaction *sigaction);
 // ft_split
-char		*ft_strndup(const char *s, unsigned int n);
+char			*ft_strndup(const char *s, unsigned int n);
 void			free_split(char **split);
 // utils
 unsigned int	str_is_empty(char *str);

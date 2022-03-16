@@ -6,84 +6,69 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/16 00:12:56 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/16 05:11:57 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/16 05:33:11 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static unsigned int	is_valid_redir_char(char c)
-{
-	if (c == ' ' || c == '<' || c == '>')
-		return (0);
-	return (1);
-}
-
-// The char *str parameter should be right after the last redirect character
-static char	*get_redirect_name(char *str)
-{
-	unsigned int	j;
-
-	while (*str == ' ')
-		str++;
-	if (*str == '>' || *str == '<')
-		return (0);
-	while (*str)
-	{
-		j = 0;
-		if (*str == '\'' || *str == '\"')
-			j += get_next_quote_pos(str);
-		else
-			while (str[j] && is_valid_redir_char(str[j]))
-				j++;
-		if (j)
-			return (ft_strndup(str, j + 1));
-		str++;
-	}
-	return (0);
-}
-
-// The char *str parameter should be on the first redirect character
-static void	update_command(char *str)
-{
-	unsigned int	j;
-
-	j = 0;
-	while (str[j] && !is_valid_redir_char(str[j]))
-		j++;
-	if (str[j] == '\'' || str[j] == '\"')
-		j += get_next_quote_pos(&str[j]) + 1; // je sais pas pourquoi faut +1 tbh mais ca marche
-	else
-		while (str[j] && is_valid_redir_char(str[j]))
-			j++;
-	if (!str[j])
-		str[0] = 0;
-	else
-		ft_memmove(str, &str[j], ft_strlen(&str[j]) + 1); // memory magic, +1 to include the null char
-}
-
-static unsigned int create_output_redirects(t_command *cmd, char *str)
+static unsigned int	create_output_redirect(t_command *cmd, char *str)
 {
 	unsigned int	j;
 	unsigned int	type;
 	char			*name;
+	
+	j = 1;
+	type = 0;
+	if (str[j] == '>')
+	{
+		type = 1;
+		j++;
+	}
+	name = get_redirect_name(&str[j]);
+	if (!name)
+		return (0);
+	redir_lst_add_back(&cmd->redirects, redir_lst_new(type, name));
+	update_command(str);
+	return (1);
+}
 
+static unsigned int	create_input_redirect(t_command *cmd, char *str)
+{
+	unsigned int	j;
+	unsigned int	type;
+	char			*name;
+	
+	j = 1;
+	type = 2;
+	if (str[j] == '<')
+	{
+		type = 3;
+		j++;
+	}
+	name = get_redirect_name(&str[j]);
+	if (!name)
+		return (0);
+	redir_lst_add_back(&cmd->redirects, redir_lst_new(type, name));
+	update_command(str);
+	return (1);
+}
+
+static unsigned int create_redirects(t_command *cmd, char *str)
+{
 	while (*str)
 	{
-		if (*str == '>')
+		if (is_quote(*str))
+			str += get_next_quote_pos(str) + 1;
+		else if (*str == '>')
 		{
-			j = 1;
-			type = 0;
-			if (str[j] == '>')
-			{
-				type = 1;
-				j++;
-			}
-			name = get_redirect_name(&str[j]);
-			if (!name)
+			if (!create_output_redirect(cmd, str))
 				return (0);
-			redir_lst_add_back(&cmd->redirects, redir_lst_new(type, name));
-			update_command(str);
+		}		
+		else if (*str == '<')
+		{
+			if (!create_input_redirect(cmd, str))
+				return (0);
 		}
 		else
 			str++;
@@ -95,7 +80,7 @@ int	parse_redirects(t_command *cmd_lst)
 {
 	while (cmd_lst)
 	{
-		if (!create_output_redirects(cmd_lst, cmd_lst->command))
+		if (!create_redirects(cmd_lst, cmd_lst->command))
 			return (0);
 		cmd_lst = cmd_lst->next;
 	}
