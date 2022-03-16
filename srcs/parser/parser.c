@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 12:28:01 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/14 17:37:05 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/15 23:30:26 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,7 @@ unsigned int expand_env_var(t_env *env, char *var, char **expanded)
 			free(tmp);
 		}
 	}
-	else if (var[0] == '~')
-	{
+	else if (var[0] == '~') {
 		*expanded = get_env_val(env, "HOME");
 		i = 1;
 	}

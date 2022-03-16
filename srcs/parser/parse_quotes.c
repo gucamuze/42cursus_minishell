@@ -6,40 +6,41 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 18:57:05 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/15 22:17:33 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/16 02:37:52 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*parse_single_quotes(char *str)
+unsigned int	get_next_quote_pos(char *str)
 {
-	
+	unsigned int	j;
+	char			quote;
+
+	j = 1;
+	quote = str[0];
+	while (str[j] && str[j] != quote)
+		j++;
+	return (j);
 }
 
-static char *parse_double_quotes(char *str)
-{
-	
-}
-
-char	*parse_quotes(t_env *env, char *user_input)
+int	check_unending_quotes(char *command)
 {
 	unsigned int	i;
-	t_list			*lst;
-	char			*str;
+	unsigned int	j;
 
 	i = 0;
-	lst = 0;
-	while (*user_input)
+	while (command[i])
 	{
-		if (user_input[i] == '\'' || user_input[i] == '\"')
+		if (command[i] == '\'' || command[i] == '\"')
 		{
-			str = malloc(i + 2);
-			if (!str)
+			j = get_next_quote_pos(&command[i]);
+			if (!command[i + j])
 				return (0);
-			ft_lstadd_back(&lst, ft_lstnew());
+			else
+				i += j;
 		}
-		user_input++;
 		i++;
 	}
+	return (1);
 }

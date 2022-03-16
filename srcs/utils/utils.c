@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 18:37:46 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/08 19:05:26 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/16 00:23:40 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,28 @@ int	ft_strcmp(const char *s1, const char *s2)
 		s2++;
 	}
 	return (0);
+}
+
+char	*ft_strndup(const char *s, unsigned int n)
+{
+	char			*dup;
+
+	if (!s)
+		return (0);
+	dup = malloc((n + 1) * sizeof(char));
+	if (!dup)
+		return (0);
+	ft_memcpy(dup, s, n);
+	*(dup + n) = 0;
+	return (dup);
+}
+
+unsigned int	str_is_empty(char *str)
+{
+	while (*str)
+		if (*str++ != ' ')
+			return (0);
+	return (1);
 }
 
 char	*ft_strjoin3(const char *s1, const char *s2, const char *s3)

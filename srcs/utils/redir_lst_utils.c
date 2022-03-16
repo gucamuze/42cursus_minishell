@@ -1,34 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   commands_lst_utils.c                               :+:      :+:    :+:   */
+/*   redir_lst_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/14 17:13:41 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/16 04:00:43 by gucamuze         ###   ########.fr       */
+/*   Created: 2022/03/15 23:37:17 by gucamuze          #+#    #+#             */
+/*   Updated: 2022/03/15 23:50:48 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	cmd_lst_free(t_command *cmd_lst)
+void	redir_lst_free(t_redirect *redir_lst)
 {
-	if (cmd_lst)
+	if (redir_lst)
 	{
-		if (cmd_lst->args)
-			free_split(cmd_lst->args);
-		if (cmd_lst->next)
-			cmd_lst_free(cmd_lst->next);
-		free(cmd_lst);
+		if (redir_lst->redir_name)
+			free(redir_lst->redir_name);
+		if (redir_lst->next)
+			redir_lst_free(redir_lst->next);
+		free(redir_lst);
 	}
 }
 
-static t_command	*cmdlst_last(t_command *lst)
+static t_redirect	*redir_lst_last(t_redirect *lst)
 {
-	t_command	*last;
+	t_redirect	*last;
 
-	last = 0;
+	last = NULL;
 	if (lst)
 	{
 		last = lst;
@@ -38,28 +38,26 @@ static t_command	*cmdlst_last(t_command *lst)
 	return (last);
 }
 
-t_command	*cmdlst_new(t_env *env, char *command)
+t_redirect	*redir_lst_new(unsigned int redir_type, char *redir_name)
 {
-	t_command	*new;
+	t_redirect	*new;
 
-	new = malloc(sizeof(t_command));
+	new = malloc(sizeof(t_redirect));
 	if (!new)
-		return (0);
-	new->command = command;
-	new->args = 0;
-	new->env = env;
-	new->redirects = 0;
+		return (NULL);
+	new->redir_type = redir_type;
+	new->redir_name = redir_name;
 	new->next = 0;
 	return (new);
 }
 
-void	cmdlst_add_back(t_command **cmd_lst, t_command *new)
+void	redir_lst_add_back(t_redirect **cmd_lst, t_redirect *new)
 {
-	t_command	*last;
+	t_redirect	*last;
 	
 	if (*cmd_lst)
 	{
-		last = cmdlst_last(*cmd_lst);
+		last = redir_lst_last(*cmd_lst);
 		last->next = new;
 	}
 	else
