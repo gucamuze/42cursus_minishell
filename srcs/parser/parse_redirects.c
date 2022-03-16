@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/16 00:12:56 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/16 04:45:05 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/16 05:11:57 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,11 @@ static char	*get_redirect_name(char *str)
 	while (*str)
 	{
 		j = 0;
-		while (str[j] && is_valid_redir_char(str[j]))
-			j++;
+		if (*str == '\'' || *str == '\"')
+			j += get_next_quote_pos(str);
+		else
+			while (str[j] && is_valid_redir_char(str[j]))
+				j++;
 		if (j)
 			return (ft_strndup(str, j + 1));
 		str++;
@@ -48,12 +51,15 @@ static void	update_command(char *str)
 	j = 0;
 	while (str[j] && !is_valid_redir_char(str[j]))
 		j++;
-	while (str[j] && is_valid_redir_char(str[j]))
-		j++;
+	if (str[j] == '\'' || str[j] == '\"')
+		j += get_next_quote_pos(&str[j]) + 1; // je sais pas pourquoi faut +1 tbh mais ca marche
+	else
+		while (str[j] && is_valid_redir_char(str[j]))
+			j++;
 	if (!str[j])
 		str[0] = 0;
 	else
-		ft_memmove(str, &str[j], ft_strlen(&str[j]) + 1); // magie noire eh
+		ft_memmove(str, &str[j], ft_strlen(&str[j]) + 1); // memory magic, +1 to include the null char
 }
 
 static unsigned int create_output_redirects(t_command *cmd, char *str)

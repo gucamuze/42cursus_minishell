@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:29 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/16 03:37:43 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/16 05:01:25 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,8 @@ void	print_env(t_env *env);
 // parser
 char	**create_args(t_env *env, const char *user_input);
 // parse_quotes
-int		check_unending_quotes(char *command);
+unsigned int	get_next_quote_pos(char *str);
+int				check_unending_quotes(char *command);
 // parse_pipes
 int		check_invalid_pipes(t_list *parsed_pipes);
 t_list *parse_pipes(char *user_input);
