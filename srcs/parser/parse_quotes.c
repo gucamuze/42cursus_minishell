@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 18:57:05 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/17 05:54:30 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/17 06:18:46 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ void	parse_quotes(t_command *cmd_lst)
 		i = 0;
 		while (cmd_lst->args[i])
 		{
+			// printf("sending arg[%u] to expand {%s}\n", i, cmd_lst->args[i]);
 			extract_and_expand(cmd_lst->env, &cmd_lst->args[i]);
 			i++;
 		}

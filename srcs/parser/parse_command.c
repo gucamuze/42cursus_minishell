@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/17 00:38:16 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/17 04:44:29 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/17 06:17:05 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static t_list	*command_to_lst(char *str)
 		while (str[j] && str[j] != ' ')
 		{
 			if (is_quote(str[j]))
-				j += get_next_quote_pos(str) + 1;
+				j += get_next_quote_pos(&str[j]) + 1;
 			else
 				j++;
 		}
