@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:29 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/17 05:15:05 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/17 18:40:17 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ typedef struct s_command
 // Future struct to use for free in case of an unexpected exit or sigdie 
 typedef struct s_data
 {
-	t_env	**env;
+	t_env		**env;
+	t_command	*cmd_lst;
 }	t_data;
 
 // BUILTINS

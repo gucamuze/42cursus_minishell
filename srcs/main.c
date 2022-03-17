@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:10 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/17 03:49:46 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/17 18:56:36 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	command_dispatcher(t_command *command)
 	unsigned int	return_value;
 
 	return_value = -1;
-	if (command)
+	if (command && command->command)
 	{
 		if (!ft_strcmp(command->command, "cd"))
 			return_value = _cd(command);
