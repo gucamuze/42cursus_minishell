@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:29 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/16 05:43:08 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/17 05:15:05 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,31 +93,36 @@ t_env			*env_to_lst(char **env);
 void			update_env(t_env *env, char *var_name, char *value);
 char			*get_env_val(t_env *env, const char *var_name);
 void			print_env(t_env *env);
+// quotes_utils
+unsigned int	is_quote(char c);
+unsigned int	get_next_quote_pos(char *str);
+int				check_unending_quotes(char *command);
 // END UTILS
 
 // PARSER
 // parser
 char			**create_args(t_env *env, const char *user_input);
 // parse_quotes
-unsigned int	is_quote(char c);
-unsigned int	get_next_quote_pos(char *str);
-int				check_unending_quotes(char *command);
+void			parse_quotes(t_command *cmd_lst);
 // parse_pipes
 int				check_invalid_pipes(t_list *parsed_pipes);
 t_list 			*parse_pipes(char *user_input);
 // parse_redirects
 int				parse_redirects(t_command *cmd_lst);
-
 // parse_redirects_utils
 unsigned int	is_valid_redir_char(char c);
 char			*get_redirect_name(char *str);
 void			update_command(char *str);
+// parse_command
+unsigned int	parse_commands(t_command *cmd_lst);
+// expand
+char			*expand(t_env *env, char *str);
 // END PARSER
 
 // prompt
 char			*get_prompt(t_env *env, char *prev_prompt);
 // signals
-void			set_sigaction(struct sigaction *sigaction);
+void			set_sigaction(struct sigaction *sa);
 // ft_split
 char			*ft_strndup(const char *s, unsigned int n);
 void			free_split(char **split);

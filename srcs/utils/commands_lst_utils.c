@@ -6,12 +6,13 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 17:13:41 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/16 05:42:21 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/17 05:53:16 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// No need to free command as its a pointer to args[0]
 void	cmd_lst_free(t_command *cmd_lst)
 {
 	if (cmd_lst)

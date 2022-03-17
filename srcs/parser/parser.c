@@ -6,11 +6,13 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 12:28:01 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/15 23:30:26 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/17 04:05:10 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+// now literally useless
 
 // Returns the length of the env variable it expanded
 unsigned int expand_env_var(t_env *env, char *var, char **expanded)

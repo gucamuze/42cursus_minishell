@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:10 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/16 04:26:07 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/17 03:49:46 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,12 @@ int	parse_and_dispatch(t_env *env, char *user_input)
 	cmd_lst = cmd_lst_create(env, parsed_pipes);
 	if (!parse_redirects(cmd_lst))
 		return (!printf("Syntax error: invalid redirect !\n"));
+	parse_commands(cmd_lst);
+	parse_quotes(cmd_lst);
 	__DEBUG_output_cmd_lst(cmd_lst);
-	return (command_dispatcher(cmd_lst));
+	command_dispatcher(cmd_lst);
+	cmd_lst_free(cmd_lst);
+	return (1);
 }
 
 void	cleanup(char *prompt, t_env *env)
