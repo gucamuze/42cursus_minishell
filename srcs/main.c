@@ -6,41 +6,39 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:10 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/17 18:56:36 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/25 15:35:28 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// for now, command_dispatcher creates the command but this needs to be changed
-// in the future, the parser should create the chained list of commands, and 
-// send it to the dispatcher
+// last exit code global
+unsigned int	g_exit;
+
 int	command_dispatcher(t_command *command)
 {
-	unsigned int	return_value;
-
-	return_value = -1;
 	if (command && command->command)
 	{
 		if (!ft_strcmp(command->command, "cd"))
-			return_value = _cd(command);
+			g_exit = _cd(command);
 		else if (!ft_strcmp(command->command, "pwd"))
-			return_value = _pwd(command);
+			g_exit = _pwd(command);
 		else if (!ft_strcmp(command->command, "env"))
-			return_value = _env(command);
+			g_exit = _env(command);
 		else if (!ft_strcmp(command->command, "unset"))
-			return_value = _unset(command);
+			g_exit = _unset(command);
 		else if (!ft_strcmp(command->command, "export"))
-			return_value = _export(command);
+			g_exit = _export(command);
 		else if (!ft_strcmp(command->command, "echo"))
-			return_value = _echo(command);
+			g_exit = _echo(command);
 		else if (!ft_strcmp(command->command, "exit"))
 			; // exitA
 		else
-			; // execve
-		// cmd
+			exec(command); // execve
+		if (command->next)
+			command_dispatcher(command->next);
 	}
-	return (return_value);
+	return (g_exit);
 }
 
 int	parse_and_dispatch(t_env *env, char *user_input)

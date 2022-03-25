@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 04:39:56 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/03 05:02:41 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/25 15:00:51 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,19 @@ static t_env	*envlst_last(t_env *lst)
 			last = last->next;
 	}
 	return (last);
+}
+
+size_t	envlst_size(t_env *env)
+{
+	size_t	size;
+
+	size = 0;
+	while (env)
+	{
+		size++;
+		env = env->next;
+	}
+	return (size);
 }
 
 t_env	*envlst_new(char *var_name, char *var_value)

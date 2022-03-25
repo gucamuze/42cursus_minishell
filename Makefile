@@ -6,7 +6,7 @@
 #    By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/07/15 02:21:09 by gucamuze          #+#    #+#              #
-#    Updated: 2022/03/17 05:15:21 by gucamuze         ###   ########.fr        #
+#    Updated: 2022/03/25 15:05:09 by gucamuze         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,13 +16,19 @@ CC				=	clang -Wall -Wextra -Werror -g
 RM				=	rm -f
 
 SRCS_PATH		=	./srcs/
-BUILTINS_PATH	=	./srcs/builtins/
+EXEC_PATH		=	./srcs/exec/
+BUILTINS_PATH	=	./srcs/exec/builtins/
 UTILS_PATH		=	./srcs/utils/
 PARSER_PATH		=	./srcs/parser/
 
 LIBFT_PATH		=	./libft/
 LIBFT_A			=	./libft/libft.a
 INCLUDES		=	-Iincludes -lreadline $(LIBFT_A)
+			
+EXEC			=	exec.c
+EXEC_W_PATH		=	$(addprefix ${EXEC_PATH}, ${EXEC})
+EXEC_OFILES		=	$(EXEC_W_PATH:.c=.o)
+ALL_OFILES		+=	$(EXEC_OFILES)
 			
 BUILTINS		=	cd.c echo.c pwd.c unset.c export.c env.c
 BUILTINS_W_PATH	=	$(addprefix ${BUILTINS_PATH}, ${BUILTINS})
@@ -52,7 +58,7 @@ ALL_OFILES		+=	$(SRC_OFILES)
 
 all:			${EXEC_NAME}
 
-$(EXEC_NAME):	$(LIBFT_A) $(SRC_OFILES) $(BUILTINS_OFILES) $(UTILS_OFILES) $(PARSER_OFILES)
+$(EXEC_NAME):	$(LIBFT_A) $(SRC_OFILES) $(EXEC_OFILES) $(BUILTINS_OFILES) $(UTILS_OFILES) $(PARSER_OFILES)
 				$(CC) $(ALL_OFILES) $(INCLUDES) -o $(EXEC_NAME)
 
 $(LIBFT_A):

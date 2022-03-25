@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:29 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/17 18:40:17 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/25 16:46:25 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 # include <sys/wait.h>
 # include <signal.h>
 # include <errno.h>
+# include <fcntl.h>
+# include <unistd.h>
 
 // Env
 typedef struct s_env
@@ -31,6 +33,7 @@ typedef struct s_env
 // Redir type : 0 for >, 1 for >>, 2 for <, 3 for heredoc
 typedef struct s_redirect
 {
+	int					fd;
 	unsigned int		redir_type;
 	char				*redir_name;
 	struct s_redirect	*next;
@@ -52,6 +55,10 @@ typedef struct s_data
 	t_command	*cmd_lst;
 }	t_data;
 
+// EXEC
+int	exec(t_command *cmd);
+// END EXEC
+
 // BUILTINS
 // cd
 unsigned int	_cd(t_command *cmd);
@@ -72,6 +79,7 @@ unsigned int	_export(t_command *cmd);
 // UTILS
 // env_lst_utils
 t_env			*envlst_new(char *var_name, char *var_value);
+size_t			envlst_size(t_env *env);
 void			envlst_add_back(t_env **env, t_env *new);
 // command_utils
 void			cmd_lst_free(t_command *cmd);
@@ -90,6 +98,7 @@ void			redir_lst_add_back(t_redirect **cmd_lst, t_redirect *new);
 char			*get_env_name_from_string(char *str);
 char			*get_env_value_from_string(char *str);
 unsigned int	expand_env_var(t_env *env, char *var, char **expanded);
+char			**envlst_to_tab(t_env *env);
 t_env			*env_to_lst(char **env);
 void			update_env(t_env *env, char *var_name, char *value);
 char			*get_env_val(t_env *env, const char *var_name);
