@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/16 05:14:01 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/17 05:14:58 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/25 17:08:10 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,13 @@ unsigned int expand_env_var(t_env *env, char *var, char **expanded)
 	char	*tmp;
 
 	i = 0;
-	if (var[0] == '$')
+	if (var[i++] == '$')
 	{
-		if (var[1] == '?')
-			; // last exit code
+		if (var[i++] == '?')
+			*expanded = ft_itoa(g_exit); // last exit code
 		else
 		{
+			i = 0;
 			while (var[++i] && ft_isalpha(var[i]))
 				;
 			tmp = ft_strncpy(&var[1], i - 1);

@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 18:30:56 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/25 15:04:11 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/25 18:45:43 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,10 @@ char	**envlst_to_tab(t_env *env)
 		return (0);
 	i = 0;
 	while (i < size)
+	{
 		tab[i++] = ft_strjoin3(env->name, "=", env->value);
+		env = env->next;
+	}
 	tab[i] = 0;
 	return (tab);
 }

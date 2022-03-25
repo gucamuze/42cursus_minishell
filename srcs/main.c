@@ -6,35 +6,19 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:10 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/25 15:35:28 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/25 18:43:44 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// last exit code global
-unsigned int	g_exit;
+int	g_exit = 0;
 
 int	command_dispatcher(t_command *command)
 {
 	if (command && command->command)
 	{
-		if (!ft_strcmp(command->command, "cd"))
-			g_exit = _cd(command);
-		else if (!ft_strcmp(command->command, "pwd"))
-			g_exit = _pwd(command);
-		else if (!ft_strcmp(command->command, "env"))
-			g_exit = _env(command);
-		else if (!ft_strcmp(command->command, "unset"))
-			g_exit = _unset(command);
-		else if (!ft_strcmp(command->command, "export"))
-			g_exit = _export(command);
-		else if (!ft_strcmp(command->command, "echo"))
-			g_exit = _echo(command);
-		else if (!ft_strcmp(command->command, "exit"))
-			; // exitA
-		else
-			exec(command); // execve
+		exec(command);
 		if (command->next)
 			command_dispatcher(command->next);
 	}
@@ -83,6 +67,14 @@ void	cleanup(char *prompt, t_env *env)
 	rl_clear_history();
 }
 
+void	update_shlvl(t_env *env)
+{
+	int	shlvl;
+
+	shlvl = ft_atoi(get_env_val(env, "SHLVL"));
+	shlvl++;
+	update_env(env, "SHLVL", ft_itoa(shlvl));
+}
 
 int	main(int ac, char **av, char **env)
 {
@@ -95,7 +87,11 @@ int	main(int ac, char **av, char **env)
 	(void)av;
 	if (!env[0])
 		return (0);
+	printf("coucou from minishell\n");
 	env_lst = env_to_lst(env);
+	printf("shlvl before => %s\n", get_env_val(env_lst, "SHLVL"));
+	update_shlvl(env_lst);
+	printf("shlvl after => %s\n", get_env_val(env_lst, "SHLVL"));
 	set_sigaction(&sa);
 	prompt = get_prompt(env_lst, 0);
 	if (!prompt)
@@ -117,5 +113,5 @@ int	main(int ac, char **av, char **env)
 		free(user_input);
 	}
 	cleanup(prompt, env_lst);
-	return (1);
+	exit (0);
 }

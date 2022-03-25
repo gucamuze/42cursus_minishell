@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 15:45:10 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/07 13:37:22 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/25 20:14:14 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	set_sigaction(struct sigaction *sa)
 	sa->sa_handler = &sig_handler;
 	// sa->sa_mask = 0;
 	// sa->sa_flags = 0;
+	sa->sa_mask = sigemptyset(0);
 	sigaction(SIGINT, sa, 0);
 	sigaction(SIGQUIT, sa, 0);
 }

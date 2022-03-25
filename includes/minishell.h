@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:29 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/25 16:46:25 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/25 18:08:57 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <fcntl.h>
 # include <unistd.h>
 
+extern int	g_exit;
 // Env
 typedef struct s_env
 {
@@ -56,10 +57,11 @@ typedef struct s_data
 }	t_data;
 
 // EXEC
-int	exec(t_command *cmd);
+int				exec(t_command *cmd);
 // END EXEC
 
 // BUILTINS
+int				exec_builtin(t_command *cmd);
 // cd
 unsigned int	_cd(t_command *cmd);
 // echo
