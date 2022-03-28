@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:54:37 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/28 19:02:26 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/28 21:36:18 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ unsigned int	_env(t_command *cmd)
 	if (!cmd->args[1])
 	{
 		print_env(cmd->env);
-		exit(0);
+		return (0);
 	}
-	exit(127);
+	return (127);
 }

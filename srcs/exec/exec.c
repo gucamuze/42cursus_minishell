@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 14:50:32 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/28 20:05:34 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/28 21:34:00 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,9 @@ int	exec(t_command *cmd)
 	ret = -1;
 	if (!envp)
 		return (ret);
-	if (is_builtin(cmd->command) || !access(cmd->command, F_OK))
+	if (is_builtin(cmd->command))
+		exec_builtin(cmd);
+	else if (!access(cmd->command, F_OK))
 		ret = fork_it(cmd->command, cmd, envp);
 	else
 	{

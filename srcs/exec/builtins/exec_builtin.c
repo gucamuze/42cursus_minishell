@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 17:46:16 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/28 20:04:30 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/28 21:38:31 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ unsigned int	is_builtin(const char *command)
 
 int	exec_builtin(t_command *command)
 {
+	setup_input_redir(command);
+	setup_output_redir(command);
 	if (!ft_strcmp(command->command, "cd"))
 		g_exit = _cd(command);
 	else if (!ft_strcmp(command->command, "pwd"))

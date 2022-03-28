@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 18:57:05 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/17 06:27:20 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/28 20:49:02 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,11 +68,9 @@ static char	*parsed_lst_to_str(t_list *lst)
 		return (0);
 	while (lst)
 	{
-		// printf("adding {%s} to {%s}\n", lst->content, str);
 		ft_strlcat(str, lst->content, len);
 		lst = lst->next;
 	}
-	// printf("final string => {%s}\n", str);
 	return (str);
 }
 
@@ -92,7 +90,7 @@ static void	extract_and_expand(t_env *env, char **str)
 	}
 	free(*str);
 	*str = parsed_lst_to_str(lst);
-
+	ft_lstclear(&lst, &free);
 }
 
 // Parses the quotes, and also sets the command
