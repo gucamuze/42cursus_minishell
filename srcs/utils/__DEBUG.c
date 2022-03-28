@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 18:38:51 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/16 05:50:52 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/26 20:10:15 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,12 @@ void	__DEBUG_output_cmd_lst(t_command *cmd)
 			printf("arg[%zu] => {%s}\n", i, cmd->args[i]);
 	if (cmd->redirects)
 	{
-		for (size_t i = 0; cmd->redirects; i++)
+		t_redirect *iterator = cmd->redirects;
+		for (size_t i = 0; iterator; i++)
 		{
 			printf("redirect %zu => type %d, name {%s}\n", i, 
-				cmd->redirects->redir_type, cmd->redirects->redir_name);
-			cmd->redirects = cmd->redirects->next;
+				iterator->redir_type, iterator->redir_name);
+			iterator = iterator->next;
 		}
 	}
 	if (cmd->next)

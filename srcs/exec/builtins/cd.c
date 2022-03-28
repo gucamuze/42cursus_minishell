@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 16:46:35 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/08 19:21:18 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/28 19:02:05 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ unsigned int	_cd(t_command *cmd)
 	{
 		if (chk_ret == 0)
 			printf("cd: too many arguments\n");
-		return (0);
+		exit(0);
 	}
-	return (exec_cd(cmd));
+	exit(exec_cd(cmd));
 }

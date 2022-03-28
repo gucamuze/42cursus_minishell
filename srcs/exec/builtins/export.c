@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:51:34 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/08 18:48:37 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/28 19:03:10 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,5 +32,5 @@ unsigned int	_export(t_command *cmd)
 		}
 		i++;
 	}
-	return (0);
+	exit(0);
 }

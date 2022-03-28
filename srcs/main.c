@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:10 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/25 18:43:44 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/26 17:04:24 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,11 +87,8 @@ int	main(int ac, char **av, char **env)
 	(void)av;
 	if (!env[0])
 		return (0);
-	printf("coucou from minishell\n");
 	env_lst = env_to_lst(env);
-	printf("shlvl before => %s\n", get_env_val(env_lst, "SHLVL"));
 	update_shlvl(env_lst);
-	printf("shlvl after => %s\n", get_env_val(env_lst, "SHLVL"));
 	set_sigaction(&sa);
 	prompt = get_prompt(env_lst, 0);
 	if (!prompt)

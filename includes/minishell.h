@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:29 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/25 18:08:57 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/26 17:19:26 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ typedef struct s_env
 // Redir type : 0 for >, 1 for >>, 2 for <, 3 for heredoc
 typedef struct s_redirect
 {
-	int					fd;
 	unsigned int		redir_type;
 	char				*redir_name;
 	struct s_redirect	*next;
@@ -42,6 +41,7 @@ typedef struct s_redirect
 
 typedef struct s_command
 {
+	int					fds[2];
 	char				*command;
 	char				**args;
 	t_env				*env;

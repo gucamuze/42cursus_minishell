@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:51:26 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/08 18:48:30 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/28 19:03:23 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ unsigned int	_unset(t_command *cmd)
 	if (!cmd->args[1])
 	{
 		printf("unset: not enough arguments\n");
-		return (1);
+		exit(1);
 	}
 	i = 0;
 	while (cmd->args[++i])
@@ -51,5 +51,5 @@ unsigned int	_unset(t_command *cmd)
 		iterator = cmd->env;
 		unset_exec(cmd, iterator, i);
 	}
-	return (0);
+	exit(0);
 }
