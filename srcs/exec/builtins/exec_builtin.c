@@ -6,11 +6,24 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 17:46:16 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/25 17:54:18 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/28 20:04:30 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+unsigned int	is_builtin(const char *command)
+{
+	if (!ft_strcmp(command, "cd")
+		|| !ft_strcmp(command, "pwd")
+		|| !ft_strcmp(command, "env")
+		|| !ft_strcmp(command, "unset")
+		|| !ft_strcmp(command, "export")
+		|| !ft_strcmp(command, "echo")
+		|| !ft_strcmp(command, "exit"))
+		return (1);
+	return (0);
+}
 
 int	exec_builtin(t_command *command)
 {

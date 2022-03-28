@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:29 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/26 17:19:26 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/28 20:06:57 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,16 @@ typedef struct s_data
 }	t_data;
 
 // EXEC
+// exec
 int				exec(t_command *cmd);
+// exec_fd_utils
+unsigned int	close_all_fds(t_command *cmd);
+int				setup_input_redir(t_command *cmd);
+int				setup_output_redir(t_command *cmd);
 // END EXEC
 
 // BUILTINS
+unsigned int	is_builtin(const char *command);
 int				exec_builtin(t_command *cmd);
 // cd
 unsigned int	_cd(t_command *cmd);
