@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 17:46:16 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/28 21:38:31 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/29 16:39:42 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,5 +43,8 @@ int	exec_builtin(t_command *command)
 		g_exit = _echo(command);
 	else if (!ft_strcmp(command->command, "exit"))
 		;
+	close(command->fds[0]);
+	close(command->fds[1]);
+	printf("closing fd %d..\n", command->fds[1]);
 	return (g_exit);
 }

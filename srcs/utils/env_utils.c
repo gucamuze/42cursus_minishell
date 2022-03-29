@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 18:30:56 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/26 20:04:21 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/29 17:42:20 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,12 +76,15 @@ t_env	*env_to_lst(char **env)
 	return (lst);
 }
 
-void	print_env(t_env *env)
+void	print_env(t_env *env, int fd)
 {
 	if (env)
 	{
-		printf("%s=%s\n", env->name, env->value);
-		print_env(env->next);
+		ft_putstr_fd(env->name, fd);
+		write(fd, "=", 1);
+		ft_putstr_fd(env->value, fd);
+		write(fd, "\n", 1);
+		print_env(env->next, fd);
 	}
 }
 

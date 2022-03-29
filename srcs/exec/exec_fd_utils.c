@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 20:05:05 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/28 21:23:36 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/29 16:33:51 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,28 @@
 
 int	setup_output_redir(t_command *cmd)
 {
-	int	fd;
+	int			fd;
+	t_redirect	*iterator;
 	
 	fd = -1;
-	while (cmd->redirects)
+	iterator = cmd->redirects;
+	while (iterator)
 	{
-		if (cmd->redirects->redir_type == 0 || cmd->redirects->redir_type == 1)
+		if (iterator->redir_type == 0 || iterator->redir_type == 1)
 		{
 			if (fd != -1)
 				close(fd);
-			if (cmd->redirects->redir_type == 0)
-				fd = open(cmd->redirects->redir_name, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+			if (iterator->redir_type == 0)
+				fd = open(iterator->redir_name, 01101, 0644);
 			else
-				fd = open(cmd->redirects->redir_name, 02101, 0644);
+				fd = open(iterator->redir_name, 02101, 0644);
 		}
-		cmd->redirects = cmd->redirects->next;
+		iterator = iterator->next;
 	}
 	if (fd > -1)
 	{
 		close(cmd->fds[1]);
+		printf("file fd => %d\n", fd);
 		cmd->fds[1] = fd;
 		dup2(cmd->fds[1], STDOUT_FILENO);
 	}
@@ -41,18 +44,20 @@ int	setup_output_redir(t_command *cmd)
 
 int	setup_input_redir(t_command *cmd)
 {
-	int	fd;
+	int			fd;
+	t_redirect	*iterator;
 	
 	fd = -1;
-	while (cmd->redirects)
+	iterator = cmd->redirects;
+	while (iterator)
 	{
-		if (cmd->redirects->redir_type == 2)
+		if (iterator->redir_type == 2)
 		{
 			if (fd != -1)
 				close(fd);
-			fd = open(cmd->redirects->redir_name, O_RDONLY, 0644);
+			fd = open(iterator->redir_name, O_RDONLY, 0644);
 		}
-		cmd->redirects = cmd->redirects->next;
+		iterator = iterator->next;
 	}
 	if (fd > -1)
 	{

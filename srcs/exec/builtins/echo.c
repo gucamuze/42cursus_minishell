@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/02 23:30:11 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/28 21:36:08 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/29 17:12:08 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,13 @@ unsigned int	_echo(t_command *cmd)
 	{
 		if (cmd->args[i][0] != 0)
 		{
-			printf("%s", cmd->args[i]);
+			ft_putstr_fd(cmd->args[i], cmd->fds[1]);
 			if (cmd->args[i + 1])
-				printf(" ");
+				write(cmd->fds[1], " ", 1);
 		}
 		i++;
 	}
 	if (newline)
-		printf("\n");
+		write(cmd->fds[1], "\n", 1);
 	return (0);
 }

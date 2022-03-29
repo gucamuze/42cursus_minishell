@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 16:46:35 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/28 21:37:26 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/29 17:02:25 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,11 @@ static int	exec_cd(t_command *cmd)
 		return (0);
 	}
 	if (cmd->args[1])
-		printf("cd: no such file or directory: %s\n", cmd->args[1]);
+	{
+		ft_putstr_fd("cd: no such file or directory: ", cmd->fds[1]);
+		ft_putstr_fd(cmd->args[1], cmd->fds[1]);
+		write(cmd->fds[1], "\n", 1);
+	}
 	free(oldpwd);
 	return (1);
 }
@@ -71,7 +75,7 @@ unsigned int	_cd(t_command *cmd)
 	if (chk_ret < 1)
 	{
 		if (chk_ret == 0)
-			printf("cd: too many arguments\n");
+			ft_putstr_fd("cd: too many arguments\n", cmd->fds[1]);
 		return (0);
 	}
 	return (exec_cd(cmd));
