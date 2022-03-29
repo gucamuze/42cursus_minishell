@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 18:30:56 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/29 17:42:20 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/29 23:00:44 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,9 +110,6 @@ void	update_env(t_env *env, char *var_name, char *value)
 
 char	*get_env_val(t_env *env, const char *var_name)
 {
-	size_t	var_len;
-
-	var_len = ft_strlen(var_name);
 	while (env)
 	{
 		if (!ft_strcmp(env->name, var_name))
