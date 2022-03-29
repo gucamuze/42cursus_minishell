@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 14:50:32 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/29 16:36:01 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/29 19:05:58 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,6 @@ static int	fork_it(const char *exec_name, t_command *cmd, char **envp)
 	pid_t	pid;
 	int		fork_ret;
 
-	if (pipe(cmd->fds) == -1)
-		return (-1);
 	pid = fork();
 	fork_ret = -1;
 	if (pid == -1)
@@ -51,6 +49,9 @@ static int	fork_it(const char *exec_name, t_command *cmd, char **envp)
 	{
 		setup_input_redir(cmd);
 		setup_output_redir(cmd);
+		printf("duping fd %d to stdout\n", cmd->fds[1]);
+		dup2(cmd->fds[1], STDOUT_FILENO);
+		dup2(cmd->fds[0], STDIN_FILENO);
 		execve(exec_name, cmd->args, envp);
 	}
 	else
@@ -68,6 +69,8 @@ int	exec(t_command *cmd)
 	char	*path;
 	int		ret;
 
+	if (pipe(cmd->fds) == -1)
+		return (-1);
 	envp = envlst_to_tab(cmd->env);
 	ret = -1;
 	if (!envp)

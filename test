@@ -1,28 +1,24 @@
-coucou
-closing fd 3..
-~/cursus42/repos_git/42cursus_minishell$ 
-
-int fd_in = dup(0);
-int fd_out = dup(1);
-
-...
-
-dup2(fd_in, 0);
-dup2(fd_out, 1);
-
-0 1 2
-
-pipe(pipefd);
-
-3 4
-
-cmd1 : dup2(pipefd[1], 1);
-
-4
-fd_in = pipefd[0]
-
-pipe(pipefd)
-
-4 5
-
-cmd2 : dup2(pipefd[0], 0);
+includes
+libft
+Makefile
+minishell
+README.md
+srcs
+test
+test2
+includes
+libft
+Makefile
+minishell
+README.md
+srcs
+test
+test2
+includes
+libft
+Makefile
+minishell
+README.md
+srcs
+test
+test2

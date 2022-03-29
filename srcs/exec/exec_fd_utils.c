@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 20:05:05 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/29 16:33:51 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/29 18:44:23 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ int	setup_output_redir(t_command *cmd)
 		close(cmd->fds[1]);
 		printf("file fd => %d\n", fd);
 		cmd->fds[1] = fd;
-		dup2(cmd->fds[1], STDOUT_FILENO);
 	}
 	return (fd);
 }
@@ -63,7 +62,6 @@ int	setup_input_redir(t_command *cmd)
 	{
 		close(cmd->fds[0]);
 		cmd->fds[0] = fd;
-		dup2(cmd->fds[0], STDIN_FILENO);
 	}
 	return (fd);
 }

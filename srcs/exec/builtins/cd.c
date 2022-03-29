@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 16:46:35 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/29 17:02:25 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/29 17:59:58 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,7 @@ static int	exec_cd(t_command *cmd)
 {
 	char	*oldpwd;
 	char	*cd_dir;
-	int		flag;
 
-	flag = 0;
 	oldpwd = getcwd(0, 0);
 	if (!cmd->args[1])
 		cd_dir = get_env_val(cmd->env, "HOME");
@@ -53,15 +51,12 @@ static int	exec_cd(t_command *cmd)
 	{
 		update_env(cmd->env, "PWD", getcwd(0, 0));
 		update_env(cmd->env, "OLDPWD", oldpwd);
-		if (flag)
-			printf("%s\n", get_env_val(cmd->env, "PWD"));
 		return (0);
 	}
 	if (cmd->args[1])
 	{
 		ft_putstr_fd("cd: no such file or directory: ", cmd->fds[1]);
-		ft_putstr_fd(cmd->args[1], cmd->fds[1]);
-		write(cmd->fds[1], "\n", 1);
+		ft_putendl_fd(cmd->args[1], cmd->fds[1]);
 	}
 	free(oldpwd);
 	return (1);
