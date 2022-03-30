@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:29 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/29 17:41:15 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/30 19:13:10 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ typedef struct s_command
 {
 	int					fds[2];
 	int					fd_in;
+	pid_t				pid;
 	char				*command;
 	char				**args;
 	t_env				*env;

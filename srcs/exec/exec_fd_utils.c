@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 20:05:05 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/30 17:55:14 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/30 17:59:50 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,7 @@ int	setup_input_redir(t_command *cmd)
 		iterator = iterator->next;
 	}
 	if (fd > -1)
-	{
 		cmd->fd_in = fd;
-	}
 	return (fd);
 }
 
