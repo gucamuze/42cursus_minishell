@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 17:46:16 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/30 17:26:58 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/30 17:44:01 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ unsigned int	is_builtin(const char *command)
 
 int	exec_builtin(t_command *cmd)
 {
-	printf("builtins fds => %d, %d\n", cmd->fds[0], cmd->fds[1]);
+	// printf("builtins fds => %d, %d\n", cmd->fds[0], cmd->fds[1]);
 	if (!ft_strcmp(cmd->command, "cd"))
 		g_exit = _cd(cmd);
 	else if (!ft_strcmp(cmd->command, "pwd"))
