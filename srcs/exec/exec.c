@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 14:50:32 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/30 13:10:56 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/30 13:35:22 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,11 @@ static int	fork_it(const char *exec_name, t_command *cmd, char **envp)
 	else if (pid == 0)
 	{
 		if (cmd->fds[1] != STDOUT_FILENO)
+		{
+			printf("pre dup => %d\n", cmd->fds[1]);
 			dup2(cmd->fds[1], STDOUT_FILENO);
+			printf("post dup => %d\n", cmd->fds[1]);
+		}
 		execve(exec_name, cmd->args, envp);
 	}
 	else

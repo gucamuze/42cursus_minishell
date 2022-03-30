@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:10 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/30 13:27:24 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/30 13:44:39 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,11 @@ int	setup_pipe_fds(t_command *cmd, int *fd0, int *fd1)
 
 	if (pipe(fds) == -1)
 		return (0);
+	printf("pipe created: %d and %d\n", fds[0], fds[1]);
 	while (cmd)
 	{
 		cmd->pipefds[0] = fds[0];
-		if (cmd->next)
-			cmd->pipefds[1] = fds[1];
-		else
-			cmd->pipefds[1] = dup(STDOUT_FILENO);
+		cmd->pipefds[1] = fds[1];
  		cmd = cmd->next;
 	}
 	*fd0 = fds[0];

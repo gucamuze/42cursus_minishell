@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 20:05:05 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/30 13:05:32 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/30 13:46:31 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,12 @@ int	setup_output_redir(t_command *cmd)
 	if (fd > -1)
 		cmd->fds[1] = fd;
 	else
-		cmd->fds[1] = cmd->pipefds[1];
-	// dup2(cmd->fds[1], STDOUT_FILENO);
+	{
+		if (cmd->next)
+			cmd->fds[1] = cmd->pipefds[1];
+		else
+			cmd->fds[1] = dup(STDOUT_FILENO);
+	}
 	return (fd);
 }
 
