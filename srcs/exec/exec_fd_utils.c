@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 20:05:05 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/29 18:44:23 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/30 13:05:32 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,10 @@ int	setup_output_redir(t_command *cmd)
 		iterator = iterator->next;
 	}
 	if (fd > -1)
-	{
-		close(cmd->fds[1]);
-		printf("file fd => %d\n", fd);
 		cmd->fds[1] = fd;
-	}
+	else
+		cmd->fds[1] = cmd->pipefds[1];
+	// dup2(cmd->fds[1], STDOUT_FILENO);
 	return (fd);
 }
 
@@ -59,22 +58,28 @@ int	setup_input_redir(t_command *cmd)
 		iterator = iterator->next;
 	}
 	if (fd > -1)
-	{
-		close(cmd->fds[0]);
 		cmd->fds[0] = fd;
-	}
+	else
+		cmd->fds[0] = cmd->pipefds[0];
 	return (fd);
 }
 
 unsigned int	close_all_fds(t_command *cmd)
 {
+	int	fd0;
+	int	fd1;
+
+	fd0 = cmd->pipefds[0];
+	fd1 = cmd->pipefds[1];
 	while (cmd)
 	{
-		if (cmd->fds[0] != -1)
+		if (cmd->fds[0] != cmd->pipefds[0])
 			close(cmd->fds[0]);
-		if (cmd->fds[1] != -1)
+		if (cmd->fds[1] != cmd->pipefds[1])
 			close(cmd->fds[1]);
 		cmd = cmd->next;
 	}
+	close(fd0);
+	close(fd1);
 	return (0);
 }

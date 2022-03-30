@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:10 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/26 17:04:24 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/30 13:27:24 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,31 @@ int	command_dispatcher(t_command *command)
 	return (g_exit);
 }
 
+int	setup_pipe_fds(t_command *cmd, int *fd0, int *fd1)
+{
+	int	fds[2];
+
+	if (pipe(fds) == -1)
+		return (0);
+	while (cmd)
+	{
+		cmd->pipefds[0] = fds[0];
+		if (cmd->next)
+			cmd->pipefds[1] = fds[1];
+		else
+			cmd->pipefds[1] = dup(STDOUT_FILENO);
+ 		cmd = cmd->next;
+	}
+	*fd0 = fds[0];
+	*fd1 = fds[1];
+	return (1);
+}
+
 int	parse_and_dispatch(t_env *env, char *user_input)
 {
 	t_list		*parsed_pipes;
 	t_command	*cmd_lst;
+	int			pipe_fds[2];
 
 	if (!check_unending_quotes(user_input))
 		return(!printf("Syntax error: invalid quotes !\n"));
@@ -41,7 +62,9 @@ int	parse_and_dispatch(t_env *env, char *user_input)
 	parse_commands(cmd_lst);
 	parse_quotes(cmd_lst);
 	__DEBUG_output_cmd_lst(cmd_lst);
+	setup_pipe_fds(cmd_lst, &pipe_fds[0], &pipe_fds[1]);
 	command_dispatcher(cmd_lst);
+	close_all_fds(cmd_lst);
 	cmd_lst_free(cmd_lst);
 	return (1);
 }

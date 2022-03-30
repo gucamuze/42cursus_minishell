@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 16:46:35 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/29 17:59:58 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/30 12:46:28 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,7 @@ static int	exec_cd(t_command *cmd)
 		return (0);
 	}
 	if (cmd->args[1])
-	{
-		ft_putstr_fd("cd: no such file or directory: ", cmd->fds[1]);
-		ft_putendl_fd(cmd->args[1], cmd->fds[1]);
-	}
+		printf("cd: no such file or directory: %s\n", cmd->args[1]);
 	free(oldpwd);
 	return (1);
 }
