@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:10 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/26 17:04:24 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/30 17:25:28 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,15 @@ int	command_dispatcher(t_command *command)
 	return (g_exit);
 }
 
+void	set_fdin(t_command *cmd)
+{
+	if (cmd)
+	{
+		cmd->fd_in = -1;
+		set_fdin(cmd->next);
+	}
+}
+
 int	parse_and_dispatch(t_env *env, char *user_input)
 {
 	t_list		*parsed_pipes;
@@ -41,7 +50,9 @@ int	parse_and_dispatch(t_env *env, char *user_input)
 	parse_commands(cmd_lst);
 	parse_quotes(cmd_lst);
 	__DEBUG_output_cmd_lst(cmd_lst);
+	set_fdin(cmd_lst);
 	command_dispatcher(cmd_lst);
+	// close_all_fds(cmd_lst);
 	cmd_lst_free(cmd_lst);
 	return (1);
 }

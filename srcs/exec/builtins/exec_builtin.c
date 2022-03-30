@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 17:46:16 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/29 18:42:03 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/30 17:26:58 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,29 +25,27 @@ unsigned int	is_builtin(const char *command)
 	return (0);
 }
 
-int	exec_builtin(t_command *command)
+int	exec_builtin(t_command *cmd)
 {
-	setup_input_redir(command);
-	if (setup_output_redir(command) == -1)
-		command->fds[1] = 1;
-	printf("builtins fds => %d and %d\n", command->fds[0], command->fds[1]);
-	if (!ft_strcmp(command->command, "cd"))
-		g_exit = _cd(command);
-	else if (!ft_strcmp(command->command, "pwd"))
-		g_exit = _pwd(command);
-	else if (!ft_strcmp(command->command, "env"))
-		g_exit = _env(command);
-	else if (!ft_strcmp(command->command, "unset"))
-		g_exit = _unset(command);
-	else if (!ft_strcmp(command->command, "export"))
-		g_exit = _export(command);
-	else if (!ft_strcmp(command->command, "echo"))
-		g_exit = _echo(command);
-	else if (!ft_strcmp(command->command, "exit"))
+	printf("builtins fds => %d, %d\n", cmd->fds[0], cmd->fds[1]);
+	if (!ft_strcmp(cmd->command, "cd"))
+		g_exit = _cd(cmd);
+	else if (!ft_strcmp(cmd->command, "pwd"))
+		g_exit = _pwd(cmd);
+	else if (!ft_strcmp(cmd->command, "env"))
+		g_exit = _env(cmd);
+	else if (!ft_strcmp(cmd->command, "unset"))
+		g_exit = _unset(cmd);
+	else if (!ft_strcmp(cmd->command, "export"))
+		g_exit = _export(cmd);
+	else if (!ft_strcmp(cmd->command, "echo"))
+		g_exit = _echo(cmd);
+	else if (!ft_strcmp(cmd->command, "exit"))
 		;
-	if (command->fds[0] > 1)
-		close(command->fds[0]);
-	if (command->fds[1] > 1)
-		close(command->fds[1]);
+	close(cmd->fds[1]);
+	if (cmd->fd_in != -1)
+		close(cmd->fd_in);
+	if (!cmd->next)
+		close(cmd->fds[0]);
 	return (g_exit);
 }

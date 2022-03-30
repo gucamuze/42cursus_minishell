@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 20:05:05 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/29 18:44:23 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/30 17:25:15 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,12 @@ int	setup_output_redir(t_command *cmd)
 	if (fd > -1)
 	{
 		close(cmd->fds[1]);
-		printf("file fd => %d\n", fd);
 		cmd->fds[1] = fd;
+	}
+	else if (!cmd->next)
+	{
+		close(cmd->fds[1]);
+		cmd->fds[1] = dup(STDOUT_FILENO);
 	}
 	return (fd);
 }
@@ -48,6 +52,8 @@ int	setup_input_redir(t_command *cmd)
 	
 	fd = -1;
 	iterator = cmd->redirects;
+	if (cmd->next)
+		cmd->next->fd_in = cmd->fds[0];
 	while (iterator)
 	{
 		if (iterator->redir_type == 2)
@@ -61,7 +67,7 @@ int	setup_input_redir(t_command *cmd)
 	if (fd > -1)
 	{
 		close(cmd->fds[0]);
-		cmd->fds[0] = fd;
+		cmd->fd_in = fd;
 	}
 	return (fd);
 }
@@ -70,11 +76,10 @@ unsigned int	close_all_fds(t_command *cmd)
 {
 	while (cmd)
 	{
-		if (cmd->fds[0] != -1)
-			close(cmd->fds[0]);
-		if (cmd->fds[1] != -1)
+		close(cmd->fds[0]);
+		if (cmd->next)
 			close(cmd->fds[1]);
-		cmd = cmd->next;
+		close(cmd->fd_in);
 	}
 	return (0);
 }
