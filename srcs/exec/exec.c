@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 14:50:32 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/30 13:35:22 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/30 14:52:17 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,23 +41,27 @@ static int	fork_it(const char *exec_name, t_command *cmd, char **envp)
 	pid_t	pid;
 	int		fork_ret;
 
-	printf("exec fds => %d and %d\n", cmd->fds[0], cmd->fds[1]);
 	pid = fork();
 	fork_ret = -1;
+	int test = dup(cmd->fds[1]);
 	if (pid == -1)
 		return (printf("fork error !\n"));
 	else if (pid == 0)
 	{
-		if (cmd->fds[1] != STDOUT_FILENO)
-		{
-			printf("pre dup => %d\n", cmd->fds[1]);
-			dup2(cmd->fds[1], STDOUT_FILENO);
-			printf("post dup => %d\n", cmd->fds[1]);
-		}
+		dup2(cmd->fds[0], STDIN_FILENO);
+		dup2(test, STDOUT_FILENO);
+		printf("exec input fd %d output %d\n", cmd->fds[0], test);
 		execve(exec_name, cmd->args, envp);
 	}
 	else
+	{
+		// close(cmd->fds[0]);
+		close(cmd->fds[1]);
+		close(test);
+		printf("closing fd %d in parent...\n", cmd->fds[1]);
 		waitpid(0, &fork_ret, 0);
+		// if (cmd->fds[1] == cmd->pipefds[1])
+	}
 	return (fork_ret);
 }
 
