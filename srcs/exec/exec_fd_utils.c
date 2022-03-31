@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 20:05:05 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/31 20:20:00 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/31 22:25:03 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,11 @@ int	setup_output_redir(t_command *cmd)
 				fd = open(iterator->redir_name, 01101, 0644);
 			else
 				fd = open(iterator->redir_name, 02101, 0644);
+			if (fd == -1)
+			{
+				perror(iterator->redir_name);
+				return (0);
+			}
 		}
 		iterator = iterator->next;
 	}
@@ -42,7 +47,7 @@ int	setup_output_redir(t_command *cmd)
 		close(cmd->fds[1]);
 		cmd->fds[1] = dup(STDOUT_FILENO);
 	}
-	return (fd);
+	return (1);
 }
 
 int	setup_input_redir(t_command *cmd)
@@ -61,12 +66,17 @@ int	setup_input_redir(t_command *cmd)
 			if (fd != -1)
 				close(fd);
 			fd = open(iterator->redir_name, O_RDONLY, 0644);
+			if (fd == -1)
+			{
+				perror(iterator->redir_name);
+				return (0);
+			}
 		}
 		iterator = iterator->next;
 	}
 	if (fd > -1)
 		cmd->fd_in = fd;
-	return (fd);
+	return (1);
 }
 
 unsigned int	close_all_fds(t_command *cmd)

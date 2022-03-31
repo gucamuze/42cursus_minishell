@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:29 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/30 19:13:10 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/31 22:35:04 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,8 @@ void			print_env(t_env *env, int fd);
 unsigned int	is_quote(char c);
 unsigned int	get_next_quote_pos(char *str);
 int				check_unending_quotes(char *command);
+// error_handling_utils
+int				_error(const char *s, int ret);
 // END UTILS
 
 // PARSER

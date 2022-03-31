@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 14:50:32 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/31 20:30:08 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/31 22:49:08 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,22 +39,18 @@ char	*get_absolute_path(const char *command, const char *paths)
 static int	fork_it(const char *exec_name, t_command *cmd, char **envp)
 {
 	pid_t	pid;
-	int		fork_ret;
 
 	pid = fork();
-	fork_ret = -1;
 	if (pid == -1)
-		return (printf("fork error !\n"));
+		return (_error("fork error !", 0));
 	else if (pid == 0)
 	{
 		close(cmd->fds[0]);
 		dup2(cmd->fd_in, STDIN_FILENO);
-		// if (cmd->next)
 		dup2(cmd->fds[1], STDOUT_FILENO);
-		// else
-		// 	cmd->fds[1] = dup(STDOUT_FILENO);
-			
-		execve(exec_name, cmd->args, envp);
+			// return (_error("dup2 error !", -1));
+		if (execve(exec_name, cmd->args, envp) == -1)
+			return (_error("", -1));
 	}
 	else
 	{
@@ -65,35 +61,33 @@ static int	fork_it(const char *exec_name, t_command *cmd, char **envp)
 			close(cmd->fds[0]);
 		cmd->pid = pid;
 	}
-	return (fork_ret);
+	return (0);
 }
 
 int	exec(t_command *cmd)
 {
 	char	**envp;
 	char	*path;
-	int		ret;
 
 	if (pipe(cmd->fds) == -1)
 		return (-1);
-	setup_input_redir(cmd);
-	setup_output_redir(cmd);
+	if (!setup_input_redir(cmd) || !setup_output_redir(cmd))
+		return (-1); // should close the pipe fd
 	envp = envlst_to_tab(cmd->env);
-	ret = -1;
 	if (!envp)
-		return (ret);
+		return (-1);
 	if (is_builtin(cmd->command))
 		exec_builtin(cmd);
 	else if (!access(cmd->command, F_OK))
-		ret = fork_it(cmd->command, cmd, envp);
+		fork_it(cmd->command, cmd, envp);
 	else
 	{
 		path = get_absolute_path(cmd->command, get_env_val(cmd->env, "PATH"));
 		if (!path)
 			return (printf("command not found: %s\n", cmd->command));
-		ret = fork_it(path, cmd, envp);
+		fork_it(path, cmd, envp);
 		free(path);
 	}
 	free_split(envp);
-	return (ret / 256);
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:10 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/31 20:38:50 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/31 22:43:27 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ int	command_dispatcher(t_command *command)
 	cmd = command;
 	while (command && command->command)
 	{
-		exec(command);
+		if (exec(command) == -1)
+			return (-1);
 		command = command->next;
 	}
 	while (cmd)
@@ -29,10 +30,10 @@ int	command_dispatcher(t_command *command)
 		printf("fds in cleanup: %d, %d, %d\n",
 			cmd->fds[0], cmd->fds[1], cmd->fd_in);
 		printf("pid => %d\n", cmd->pid);
-		waitpid(0, &g_exit, 0);
+		waitpid(0, &g_exit, WUNTRACED);
 		cmd = cmd->next;
 	}
-	return (g_exit);
+	return (0);
 }
 
 void	set_fdin(t_command *cmd)

@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 18:37:46 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/16 00:23:40 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/31 22:31:44 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,5 @@ char	*ft_strncpy(char *str, size_t size)
 	while (str[++i] && size--)
 		cpy[i] = str[i];
 	cpy[i] = 0;
-	// printf("cpy done => %s\n", cpy);
 	return (cpy);
 }
