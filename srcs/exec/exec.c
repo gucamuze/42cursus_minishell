@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 14:50:32 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/30 20:05:46 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/03/31 20:30:08 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,22 @@ static int	fork_it(const char *exec_name, t_command *cmd, char **envp)
 		return (printf("fork error !\n"));
 	else if (pid == 0)
 	{
+		close(cmd->fds[0]);
 		dup2(cmd->fd_in, STDIN_FILENO);
+		// if (cmd->next)
 		dup2(cmd->fds[1], STDOUT_FILENO);
+		// else
+		// 	cmd->fds[1] = dup(STDOUT_FILENO);
+			
 		execve(exec_name, cmd->args, envp);
 	}
 	else
 	{
-		// printf("fork parent process pid => %d\n", pid);
-		// printf("fds: %d, %d, %d\n", cmd->fds[0], cmd->fds[1], cmd->fd_in);
+		close(cmd->fds[1]);
+		if (cmd->fd_in != -1)
+			close(cmd->fd_in);
+		if (!cmd->next)
+			close(cmd->fds[0]);
 		cmd->pid = pid;
 	}
 	return (fork_ret);
@@ -87,5 +95,5 @@ int	exec(t_command *cmd)
 		free(path);
 	}
 	free_split(envp);
-	return (ret << 8);
+	return (ret / 256);
 }
