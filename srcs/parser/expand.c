@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/16 05:14:01 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/25 17:08:10 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/01 11:34:36 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ unsigned int expand_env_var(t_env *env, char *var, char **expanded)
 	if (var[i++] == '$')
 	{
 		if (var[i++] == '?')
-			*expanded = ft_itoa(g_exit); // last exit code
+			*expanded = ft_itoa(g_exit >> 8); // last exit code
 		else
 		{
 			i = 0;
