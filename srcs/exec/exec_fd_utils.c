@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 20:05:05 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/01 15:04:10 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/01 17:10:04 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,9 +78,12 @@ unsigned int	close_all_fds(t_command *cmd)
 	while (cmd)
 	{
 		// printf("closing fds => %d %d %d\n", cmd->fds[0], cmd->fds[1], cmd->fd_in);
-		close(cmd->fds[0]);
-		close(cmd->fds[1]);
-		close(cmd->fd_in);
+		if (cmd->fds[0] > 2)
+			close(cmd->fds[0]);
+		if (cmd->fds[1] > 2)
+			close(cmd->fds[1]);
+		if (cmd->fd_in > 2)
+			close(cmd->fd_in);
 		cmd = cmd->next;
 	}
 	return (0);

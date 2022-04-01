@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:10 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/01 16:58:11 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/01 17:11:25 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,7 @@ int	command_dispatcher(t_command *command)
 		{
 			while (command && command->command)
 			{
-				if (exec(command) == -1)
-				{
-					printf("exec problem, fds => %d %d %d\n", command->fds[0], command->fds[1], command->fd_in);
-					return (-1);
-				}
+				exec(command);
 				command = command->next;
 			}
 			while (cmd)
