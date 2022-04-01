@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 20:05:05 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/31 22:25:03 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/01 15:04:10 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,7 @@ int	setup_output_redir(t_command *cmd)
 			else
 				fd = open(iterator->redir_name, 02101, 0644);
 			if (fd == -1)
-			{
-				perror(iterator->redir_name);
-				return (0);
-			}
+				return (_error(iterator->redir_name, 0));
 		}
 		iterator = iterator->next;
 	}
@@ -67,10 +64,7 @@ int	setup_input_redir(t_command *cmd)
 				close(fd);
 			fd = open(iterator->redir_name, O_RDONLY, 0644);
 			if (fd == -1)
-			{
-				perror(iterator->redir_name);
-				return (0);
-			}
+				return (_error(iterator->redir_name, 0));
 		}
 		iterator = iterator->next;
 	}
@@ -83,10 +77,11 @@ unsigned int	close_all_fds(t_command *cmd)
 {
 	while (cmd)
 	{
+		// printf("closing fds => %d %d %d\n", cmd->fds[0], cmd->fds[1], cmd->fd_in);
 		close(cmd->fds[0]);
-		if (cmd->next)
-			close(cmd->fds[1]);
+		close(cmd->fds[1]);
 		close(cmd->fd_in);
+		cmd = cmd->next;
 	}
 	return (0);
 }

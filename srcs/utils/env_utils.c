@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 18:30:56 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/29 23:00:44 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/01 16:49:22 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ t_env	*env_to_lst(char **env)
 	char	*var_value;
 	
 	lst = NULL;
-	if (env)
+	if (*env)
 	{
 		while (*env)
 		{
@@ -72,6 +72,11 @@ t_env	*env_to_lst(char **env)
 			envlst_add_back(&lst, envlst_new(var_name, var_value));
 			env++;
 		}
+	}
+	else
+	{
+		envlst_add_back(&lst, envlst_new(ft_strdup("PWD"), getcwd(0, 0)));
+		envlst_add_back(&lst, envlst_new(ft_strdup("SHLVL"), ft_strdup("0")));
 	}
 	return (lst);
 }

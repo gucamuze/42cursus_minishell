@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:51:26 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/28 21:36:33 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/01 15:35:59 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ static void	unset_exec(t_command *cmd, t_env *iterator, int i)
 	prev = 0;
 	while (iterator)
 	{
-		if (!ft_strncmp(cmd->args[i], iterator->name, ft_strlen(cmd->args[i])))
+		if (!ft_strncmp(cmd->args[i], iterator->name, ft_strlen(cmd->args[i]))
+			&& ft_strlen(cmd->args[i]) == ft_strlen(iterator->name))
 		{
 			if (!prev)
 				cmd->env = iterator->next;
@@ -43,7 +44,7 @@ unsigned int	_unset(t_command *cmd)
 	if (!cmd->args[1])
 	{
 		printf("unset: not enough arguments\n");
-		exit(1);
+		return (1);
 	}
 	i = 0;
 	while (cmd->args[++i])

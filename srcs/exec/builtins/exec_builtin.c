@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 17:46:16 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/31 19:52:03 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/01 14:50:41 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,22 +25,25 @@ unsigned int	is_builtin(const char *command)
 	return (0);
 }
 
-int	exec_builtin(t_command *cmd)
+// mode 0 for standalone, mode 1 for forked
+int	exec_builtin(t_command *cmd, int mode)
 {
-	cmd->pid = -1;
-	// printf("builtins fds => %d, %d\n", cmd->fds[0], cmd->fds[1]);
+	if (!mode)
+		if (pipe(cmd->fds) == -1 || !setup_input_redir(cmd)
+			|| !setup_output_redir(cmd))
+			return (-1); // should close the pipe fd
 	if (!ft_strcmp(cmd->command, "cd"))
-		g_exit = _cd(cmd);
+		g_exit = _cd(cmd) << 8;
 	else if (!ft_strcmp(cmd->command, "pwd"))
-		g_exit = _pwd(cmd);
+		g_exit = _pwd(cmd) << 8;
 	else if (!ft_strcmp(cmd->command, "env"))
-		g_exit = _env(cmd);
+		g_exit = _env(cmd) << 8;
 	else if (!ft_strcmp(cmd->command, "unset"))
-		g_exit = _unset(cmd);
+		g_exit = _unset(cmd) << 8;
 	else if (!ft_strcmp(cmd->command, "export"))
-		g_exit = _export(cmd);
+		g_exit = _export(cmd) << 8;
 	else if (!ft_strcmp(cmd->command, "echo"))
-		g_exit = _echo(cmd);
+		g_exit = _echo(cmd) << 8;
 	else if (!ft_strcmp(cmd->command, "exit"))
 		;
 	close(cmd->fds[1]);
@@ -48,5 +51,7 @@ int	exec_builtin(t_command *cmd)
 		close(cmd->fd_in);
 	if (!cmd->next)
 		close(cmd->fds[0]);
-	return (g_exit);
+	if (mode)
+		exit(g_exit);
+	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:29 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/31 22:35:04 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/01 16:10:48 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int				setup_output_redir(t_command *cmd);
 
 // BUILTINS
 unsigned int	is_builtin(const char *command);
-int				exec_builtin(t_command *cmd);
+int				exec_builtin(t_command *cmd, int mode);
 // cd
 unsigned int	_cd(t_command *cmd);
 // echo
@@ -119,6 +119,7 @@ unsigned int	get_next_quote_pos(char *str);
 int				check_unending_quotes(char *command);
 // error_handling_utils
 int				_error(const char *s, int ret);
+int				_exit_err(char *err_msg, char *command, int exit_code, int ret);
 // END UTILS
 
 // PARSER

@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 16:46:35 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/29 17:59:58 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/01 13:32:25 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ static int	exec_cd(t_command *cmd)
 		update_env(cmd->env, "OLDPWD", oldpwd);
 		return (0);
 	}
+	else
+		return (_error(cmd->args[1], 1));
 	if (cmd->args[1])
 	{
 		ft_putstr_fd("cd: no such file or directory: ", cmd->fds[1]);
@@ -70,7 +72,10 @@ unsigned int	_cd(t_command *cmd)
 	if (chk_ret < 1)
 	{
 		if (chk_ret == 0)
+		{
 			ft_putstr_fd("cd: too many arguments\n", cmd->fds[1]);
+			return (1);
+		}
 		return (0);
 	}
 	return (exec_cd(cmd));

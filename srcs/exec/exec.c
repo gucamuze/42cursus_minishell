@@ -6,34 +6,42 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 14:50:32 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/31 22:49:08 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/01 16:10:22 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*get_absolute_path(const char *command, const char *paths)
+int	get_absolute_path(const char *command, const char *paths, char **abs_p)
 {
 	char			**paths_split;
-	char			*absolute_path;
 	unsigned int	i;
+	int				ret;
 
-	paths_split = ft_split(paths, ':');
-	// __DEBUG_output_split(paths_split);
-	absolute_path = 0;
-	i = 0;
-	while (paths_split[i])
+	if (!access(command, F_OK))
 	{
-		absolute_path = ft_strjoin3(paths_split[i], "/", command);
-		if (!access(absolute_path, F_OK))
-		{
-			free_split(paths_split);
-			return (absolute_path);
-		}
-		free(absolute_path);
-		i++;
+		*abs_p = ft_strdup(command);
+		return (1);
 	}
-	return (0);
+	// if (!paths)
+	// 	return (-1);
+	if (paths)
+	{
+		paths_split = ft_split(paths, ':');
+		i = -1;
+		while (paths_split[++i])
+		{
+			*abs_p = ft_strjoin3(paths_split[i], "/", command);
+			ret = access(*abs_p, F_OK);
+			if (!access(*abs_p, F_OK))
+			{
+				free_split(paths_split);
+				return (1);
+			}
+			free(*abs_p);
+		}
+	}
+	return (-1);
 }
 
 static int	fork_it(const char *exec_name, t_command *cmd, char **envp)
@@ -42,15 +50,17 @@ static int	fork_it(const char *exec_name, t_command *cmd, char **envp)
 
 	pid = fork();
 	if (pid == -1)
-		return (_error("fork error !", 0));
+		return (_error("fork", 0));
 	else if (pid == 0)
 	{
 		close(cmd->fds[0]);
 		dup2(cmd->fd_in, STDIN_FILENO);
 		dup2(cmd->fds[1], STDOUT_FILENO);
-			// return (_error("dup2 error !", -1));
-		if (execve(exec_name, cmd->args, envp) == -1)
-			return (_error("", -1));
+		if (is_builtin(exec_name))
+			exec_builtin(cmd, 1);
+		else if (execve(exec_name, cmd->args, envp) == -1)
+			// return (_error(exec_name, -1));
+			return (_error("caca", -1));
 	}
 	else
 	{
@@ -77,14 +87,11 @@ int	exec(t_command *cmd)
 	if (!envp)
 		return (-1);
 	if (is_builtin(cmd->command))
-		exec_builtin(cmd);
-	else if (!access(cmd->command, F_OK))
 		fork_it(cmd->command, cmd, envp);
 	else
 	{
-		path = get_absolute_path(cmd->command, get_env_val(cmd->env, "PATH"));
-		if (!path)
-			return (printf("command not found: %s\n", cmd->command));
+		if (get_absolute_path(cmd->command, get_env_val(cmd->env, "PATH"), &path) == -1)
+			return (_exit_err("command not found: ", cmd->command, 127, -1));			
 		fork_it(path, cmd, envp);
 		free(path);
 	}

@@ -6,11 +6,25 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/02 23:30:11 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/29 17:12:08 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/01 15:09:10 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+unsigned int	is_valid_arg(char *str)
+{
+	if (ft_strncmp(str, "-n", 2))
+		return (0);
+	str += 2;
+	while (*str)
+	{
+		if (*str != 'n')
+			return (0);
+		str++;
+	}
+	return (1);
+}
 
 unsigned int	_echo(t_command *cmd)
 {
@@ -19,7 +33,7 @@ unsigned int	_echo(t_command *cmd)
 
 	newline = 1;
 	i = 1;
-	while (cmd->args[i] && !ft_strncmp(cmd->args[i], "-n", 2))
+	while (cmd->args[i] && is_valid_arg(cmd->args[i]))
 	{
 		newline = 0;
 		i++;

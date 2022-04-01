@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:10 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/31 22:43:27 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/01 16:58:11 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,29 +19,39 @@ int	command_dispatcher(t_command *command)
 	t_command	*cmd;
 	
 	cmd = command;
-	while (command && command->command)
+	if (command && command->command)
 	{
-		if (exec(command) == -1)
-			return (-1);
-		command = command->next;
-	}
-	while (cmd)
-	{
-		printf("fds in cleanup: %d, %d, %d\n",
-			cmd->fds[0], cmd->fds[1], cmd->fd_in);
-		printf("pid => %d\n", cmd->pid);
-		waitpid(0, &g_exit, WUNTRACED);
-		cmd = cmd->next;
+		if (is_builtin(command->command) && !command->next)
+			exec_builtin(command, 0);
+		else
+		{
+			while (command && command->command)
+			{
+				if (exec(command) == -1)
+				{
+					printf("exec problem, fds => %d %d %d\n", command->fds[0], command->fds[1], command->fd_in);
+					return (-1);
+				}
+				command = command->next;
+			}
+			while (cmd)
+			{
+				waitpid(0, &g_exit, WUNTRACED);
+				cmd = cmd->next;
+			}
+		}
 	}
 	return (0);
 }
 
-void	set_fdin(t_command *cmd)
+void	set_fds(t_command *cmd)
 {
 	if (cmd)
 	{
+		cmd->fds[0] = -1;
+		cmd->fds[1] = -1;
 		cmd->fd_in = -1;
-		set_fdin(cmd->next);
+		set_fds(cmd->next);
 	}
 }
 
@@ -61,9 +71,9 @@ int	parse_and_dispatch(t_env *env, char *user_input)
 	parse_commands(cmd_lst);
 	parse_quotes(cmd_lst);
 	// __DEBUG_output_cmd_lst(cmd_lst);
-	set_fdin(cmd_lst);
+	set_fds(cmd_lst);
 	command_dispatcher(cmd_lst);
-	// close_all_fds(cmd_lst);
+	close_all_fds(cmd_lst);
 	cmd_lst_free(cmd_lst);
 	return (1);
 }
@@ -98,23 +108,10 @@ void	update_shlvl(t_env *env)
 	update_env(env, "SHLVL", ft_itoa(shlvl));
 }
 
-int	main(int ac, char **av, char **env)
+int	shell_loop(char *prompt, t_env *env)
 {
-	char				*user_input;
-	char				*prompt;
-	struct sigaction	sa;
-	t_env				*env_lst;
-
-	(void)ac;
-	(void)av;
-	if (!env[0])
-		return (0);
-	env_lst = env_to_lst(env);
-	update_shlvl(env_lst);
-	set_sigaction(&sa);
-	prompt = get_prompt(env_lst, 0);
-	if (!prompt)
-		return (0);
+	char	*user_input;
+	
 	while (1)
 	{
 		user_input = readline(prompt);
@@ -122,15 +119,32 @@ int	main(int ac, char **av, char **env)
 			break ;
 		if (!str_is_empty(user_input))
 		{
-			parse_and_dispatch(env_lst, user_input);
-			// command_dispatcher(env_lst, user_input);
+			parse_and_dispatch(env, user_input);
 			add_history(user_input);
-			prompt = get_prompt(env_lst, prompt);
+			prompt = get_prompt(env, prompt);
 			if (!prompt)
 				return (0);
 		}
 		free(user_input);
 	}
+	return (1);
+}
+
+int	main(int ac, char **av, char **env)
+{
+	char				*prompt;
+	struct sigaction	sa;
+	t_env				*env_lst;
+
+	(void)ac;
+	(void)av;
+	env_lst = env_to_lst(env);
+	update_shlvl(env_lst);
+	set_sigaction(&sa);
+	prompt = get_prompt(env_lst, 0);
+	if (!prompt)
+		return (0);
+	shell_loop(prompt, env_lst);
 	cleanup(prompt, env_lst);
 	exit (0);
 }
