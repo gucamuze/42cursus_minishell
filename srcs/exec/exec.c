@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 14:50:32 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/01 17:12:15 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/02 23:08:11 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ int	get_absolute_path(const char *command, const char *paths, char **abs_p)
 {
 	char			**paths_split;
 	unsigned int	i;
-	int				ret;
 
 	if (!access(command, F_OK))
 	{
@@ -32,7 +31,6 @@ int	get_absolute_path(const char *command, const char *paths, char **abs_p)
 		while (paths_split[++i])
 		{
 			*abs_p = ft_strjoin3(paths_split[i], "/", command);
-			ret = access(*abs_p, F_OK);
 			if (!access(*abs_p, F_OK))
 			{
 				free_split(paths_split);
@@ -90,7 +88,7 @@ int	exec(t_command *cmd)
 		fork_it(cmd->command, cmd, envp);
 	else
 	{
-		if (get_absolute_path(cmd->command, get_env_val(cmd->env, "PATH"), &path) == -1)
+		if (get_absolute_path(cmd->command, get_env_val(cmd->env, "PATH", 0), &path) == -1)
 			return (_exit_err(": command not found", cmd->command, 127, -1));			
 		fork_it(path, cmd, envp);
 		free(path);

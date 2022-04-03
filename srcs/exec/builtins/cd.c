@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 16:46:35 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/01 13:32:25 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/03 02:26:55 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,25 @@ char	*trim_useless_slashes(char *path)
 	return (path);
 }
 
+static int	update_pwds(t_command *cmd, char *pwd, char *oldpwd)
+{
+	if (!get_env_val(cmd->env, "PWD", 0))
+	{
+		printf("setting pwd...\n");
+		update_env(cmd->env, ft_strdup("PWD"), pwd);
+	}
+	else
+		update_env(cmd->env, "PWD", pwd);
+	if (!get_env_val(cmd->env, "OLDPWD", 0))
+	{
+		printf("setting oldpwd...\n");
+		update_env(cmd->env, ft_strdup("OLDPWD"), oldpwd);
+	}
+	else
+		update_env(cmd->env, "OLDPWD", oldpwd);
+	return (0);
+}
+
 static int	exec_cd(t_command *cmd)
 {
 	char	*oldpwd;
@@ -44,15 +63,15 @@ static int	exec_cd(t_command *cmd)
 
 	oldpwd = getcwd(0, 0);
 	if (!cmd->args[1])
-		cd_dir = get_env_val(cmd->env, "HOME");
+	{
+		cd_dir = get_env_val(cmd->env, "HOME", 0);
+		if (!cd_dir)
+			return (_exit_err(" HOME not set", "minishell: cd:", 1, 1));
+	}
 	else
 		cd_dir = trim_useless_slashes(cmd->args[1]);
 	if (!chdir(cd_dir))
-	{
-		update_env(cmd->env, "PWD", getcwd(0, 0));
-		update_env(cmd->env, "OLDPWD", oldpwd);
-		return (0);
-	}
+		return (update_pwds(cmd, getcwd(0, 0), oldpwd));
 	else
 		return (_error(cmd->args[1], 1));
 	if (cmd->args[1])

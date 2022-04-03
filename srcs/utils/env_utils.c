@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 18:30:56 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/01 16:49:22 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/03 02:09:30 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,9 +100,7 @@ void	update_env(t_env *env, char *var_name, char *value)
 	t_env	*iterator;
 
 	iterator = env;
-	while (iterator && 
-			!(!ft_strncmp(iterator->name, var_name, ft_strlen(var_name))
-			&& ft_strlen(iterator->name) == ft_strlen(var_name)))
+	while (iterator && ft_strcmp(iterator->name, var_name))
 		iterator = iterator->next;
 	if (iterator)
 	{
@@ -113,12 +111,17 @@ void	update_env(t_env *env, char *var_name, char *value)
 		envlst_add_back(&env, envlst_new(var_name, value));
 }
 
-char	*get_env_val(t_env *env, const char *var_name)
+// if mode == 1, string will be dupped, else it's just a pointer
+char	*get_env_val(t_env *env, const char *var_name, int mode)
 {
 	while (env)
 	{
 		if (!ft_strcmp(env->name, var_name))
+		{
+			if (mode)
+				return (ft_strdup(env->value));
 			return (env->value);
+		}
 		env = env->next;
 	}
 	return (0);

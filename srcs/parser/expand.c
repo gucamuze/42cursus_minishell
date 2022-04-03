@@ -6,35 +6,64 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/16 05:14:01 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/01 11:34:36 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/03 01:44:16 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+char	*lst_to_str(t_list *lst)
+{
+	t_list	*iterator;
+	size_t	strsize;
+	char	*str;
+
+	iterator = lst;
+	strsize = 0;
+	while (iterator)
+	{
+		strsize += ft_strlen(iterator->content);
+		iterator = iterator->next;
+	}
+	if (strsize > 42069)
+		return (_exit_var_overflow(&lst));		
+	str = ft_calloc(1, strsize + 1);
+	if (!str)
+		return (0);
+	iterator = lst;
+	while (iterator)
+	{
+		ft_strlcat(str, iterator->content, strsize + 1);
+		iterator = iterator->next;
+	}
+	// str[strsize] = 0;
+	ft_lstclear(&lst, free);
+	return (str);
+}
+
 // Returns the length of the env variable it expanded
-unsigned int expand_env_var(t_env *env, char *var, char **expanded)
+static unsigned int expand_env_var(t_env *env, char *str, char **expanded)
 {
 	int		i;
 	char	*tmp;
 
 	i = 0;
-	if (var[i++] == '$')
+	if (str[i++] == '$')
 	{
-		if (var[i++] == '?')
-			*expanded = ft_itoa(g_exit >> 8); // last exit code
+		if (str[i++] == '?')
+			*expanded = ft_itoa(g_exit >> 8);
 		else
 		{
 			i = 0;
-			while (var[++i] && ft_isalpha(var[i]))
+			while (str[++i] && ft_isalpha(str[i]))
 				;
-			tmp = ft_strncpy(&var[1], i - 1);
-			*expanded = get_env_val(env, tmp);
+			tmp = ft_strncpy(&str[1], i - 1);
+			*expanded = get_env_val(env, tmp, 1);
 			free(tmp);
 		}
 	}
-	else if (var[0] == '~') {
-		*expanded = get_env_val(env, "HOME");
+	else if (str[0] == '~') {
+		*expanded = get_env_val(env, "HOME", 1);
 		i = 1;
 	}
 	return (i);
@@ -43,27 +72,30 @@ unsigned int expand_env_var(t_env *env, char *var, char **expanded)
 // Does not currently expand the $? variable !
 char	*expand(t_env *env, char *str)
 {
-	char			expanded[2048];
-	char			*tmp;
 	int				i;
-	int				j;
-	unsigned int	k;
+	char			*tmp;
+	t_list			*lst;
 
 	i = 0;
-	j = 0;
-	ft_memset(expanded, 0, 2048);
+	lst = 0;
 	while (str[i])
 	{
 		if ((str[i] == '$' && str[i + 1]) || str[i] == '~')
 		{
-			k = expand_env_var(env, &str[i], &tmp);
+			if (i)
+			{
+				ft_lstadd_back(&lst, ft_lstnew(ft_strndup(str, i)));
+				str += i;
+			}
+			str += expand_env_var(env, str, &tmp);
 			if (tmp)
-				while (*tmp)
-					expanded[j++] = *tmp++;
-			i += k;
+				ft_lstadd_back(&lst, ft_lstnew(tmp));
+			i = 0;
 		}
 		else
-			expanded[j++] = str[i++];
+			i++;
 	}
-	return (ft_strdup(expanded));
+	if (i)
+		ft_lstadd_back(&lst, ft_lstnew(ft_strndup(str, i)));
+	return (lst_to_str(lst));
 }

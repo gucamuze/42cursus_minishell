@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:10 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/01 17:11:25 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/03 02:47:43 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,67 +14,7 @@
 
 int	g_exit = 0;
 
-int	command_dispatcher(t_command *command)
-{
-	t_command	*cmd;
-	
-	cmd = command;
-	if (command && command->command)
-	{
-		if (is_builtin(command->command) && !command->next)
-			exec_builtin(command, 0);
-		else
-		{
-			while (command && command->command)
-			{
-				exec(command);
-				command = command->next;
-			}
-			while (cmd)
-			{
-				waitpid(0, &g_exit, WUNTRACED);
-				cmd = cmd->next;
-			}
-		}
-	}
-	return (0);
-}
-
-void	set_fds(t_command *cmd)
-{
-	if (cmd)
-	{
-		cmd->fds[0] = -1;
-		cmd->fds[1] = -1;
-		cmd->fd_in = -1;
-		set_fds(cmd->next);
-	}
-}
-
-int	parse_and_dispatch(t_env *env, char *user_input)
-{
-	t_list		*parsed_pipes;
-	t_command	*cmd_lst;
-
-	if (!check_unending_quotes(user_input))
-		return(!printf("Syntax error: invalid quotes !\n"));
-	parsed_pipes = parse_pipes(user_input);
-	if (!check_invalid_pipes(parsed_pipes))
-		return(!printf("Syntax error: invalid pipe !\n"));
-	cmd_lst = cmd_lst_create(env, parsed_pipes);
-	if (!parse_redirects(cmd_lst))
-		return (!printf("Syntax error: invalid redirect !\n"));
-	parse_commands(cmd_lst);
-	parse_quotes(cmd_lst);
-	// __DEBUG_output_cmd_lst(cmd_lst);
-	set_fds(cmd_lst);
-	command_dispatcher(cmd_lst);
-	close_all_fds(cmd_lst);
-	cmd_lst_free(cmd_lst);
-	return (1);
-}
-
-void	cleanup(char *prompt, t_env *env)
+void	cleanup(char *prompt, t_env *env, char **history)
 {
 	t_env	*env_tmp;
 
@@ -92,6 +32,8 @@ void	cleanup(char *prompt, t_env *env)
 			env = env_tmp;
 		}
 	}
+	if (history)
+		free_split(history);
 	rl_clear_history();
 }
 
@@ -99,9 +41,12 @@ void	update_shlvl(t_env *env)
 {
 	int	shlvl;
 
-	shlvl = ft_atoi(get_env_val(env, "SHLVL"));
+	shlvl = ft_atoi(get_env_val(env, "SHLVL", 0));
 	shlvl++;
-	update_env(env, "SHLVL", ft_itoa(shlvl));
+	if (!get_env_val(env, "SHLVL", 0))
+		update_env(env, ft_strdup("SHLVL"), ft_itoa(shlvl));
+	else
+		update_env(env, "SHLVL", ft_itoa(shlvl));
 }
 
 int	shell_loop(char *prompt, t_env *env)
@@ -115,13 +60,14 @@ int	shell_loop(char *prompt, t_env *env)
 			break ;
 		if (!str_is_empty(user_input))
 		{
-			parse_and_dispatch(env, user_input);
+			parse_and_dispatch(&env, user_input);
 			add_history(user_input);
+			add_to_persistent_history(user_input, env);
 			prompt = get_prompt(env, prompt);
+			free(user_input);
 			if (!prompt)
 				return (0);
 		}
-		free(user_input);
 	}
 	return (1);
 }
@@ -131,16 +77,20 @@ int	main(int ac, char **av, char **env)
 	char				*prompt;
 	struct sigaction	sa;
 	t_env				*env_lst;
+	char				**history;
 
 	(void)ac;
 	(void)av;
 	env_lst = env_to_lst(env);
 	update_shlvl(env_lst);
-	set_sigaction(&sa);
+	set_sigaction(&sa, 0);
 	prompt = get_prompt(env_lst, 0);
 	if (!prompt)
 		return (0);
+	history = 0;
+	if (env)
+		import_history(history, env_lst);
 	shell_loop(prompt, env_lst);
-	cleanup(prompt, env_lst);
+	cleanup(prompt, env_lst, history);
 	exit (0);
 }

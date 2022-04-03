@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:29 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/01 16:10:48 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/03 02:48:10 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ typedef struct s_data
 }	t_data;
 
 // EXEC
+// dispatcher
+int				parse_and_dispatch(t_env **env, char *user_input);
 // exec
 int				exec(t_command *cmd);
 // exec_fd_utils
@@ -107,24 +109,27 @@ void			redir_lst_add_back(t_redirect **cmd_lst, t_redirect *new);
 // env_utils
 char			*get_env_name_from_string(char *str);
 char			*get_env_value_from_string(char *str);
-unsigned int	expand_env_var(t_env *env, char *var, char **expanded);
 char			**envlst_to_tab(t_env *env);
 t_env			*env_to_lst(char **env);
 void			update_env(t_env *env, char *var_name, char *value);
-char			*get_env_val(t_env *env, const char *var_name);
+char			*get_env_val(t_env *env, const char *var_name, int mode);
 void			print_env(t_env *env, int fd);
 // quotes_utils
 unsigned int	is_quote(char c);
 unsigned int	get_next_quote_pos(char *str);
 int				check_unending_quotes(char *command);
 // error_handling_utils
+char			*_exit_var_overflow(t_list **lst);
 int				_error(const char *s, int ret);
 int				_exit_err(char *err_msg, char *command, int exit_code, int ret);
+// history
+int				add_to_persistent_history(char *str, t_env *env);
+char			**create_history(int fd);
+int				import_history(char **history, t_env *env);
+
 // END UTILS
 
 // PARSER
-// parser
-char			**create_args(t_env *env, const char *user_input);
 // parse_quotes
 void			parse_quotes(t_command *cmd_lst);
 // parse_pipes
@@ -139,13 +144,14 @@ void			update_command(char *str);
 // parse_command
 unsigned int	parse_commands(t_command *cmd_lst);
 // expand
+char			*lst_to_str(t_list *lst);
 char			*expand(t_env *env, char *str);
 // END PARSER
 
 // prompt
 char			*get_prompt(t_env *env, char *prev_prompt);
 // signals
-void			set_sigaction(struct sigaction *sa);
+void			set_sigaction(struct sigaction *sa, int mode);
 // ft_split
 char			*ft_strndup(const char *s, unsigned int n);
 void			free_split(char **split);
