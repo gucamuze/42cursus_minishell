@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:29 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/03 02:48:10 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/03 03:06:44 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,7 @@ char			*expand(t_env *env, char *str);
 // prompt
 char			*get_prompt(t_env *env, char *prev_prompt);
 // signals
-void			set_sigaction(struct sigaction *sa, int mode);
+void			set_signals(int mode);
 // ft_split
 char			*ft_strndup(const char *s, unsigned int n);
 void			free_split(char **split);

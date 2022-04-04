@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:10 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/03 02:47:43 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/03 03:08:41 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ int	shell_loop(char *prompt, t_env *env)
 int	main(int ac, char **av, char **env)
 {
 	char				*prompt;
-	struct sigaction	sa;
 	t_env				*env_lst;
 	char				**history;
 
@@ -83,7 +82,7 @@ int	main(int ac, char **av, char **env)
 	(void)av;
 	env_lst = env_to_lst(env);
 	update_shlvl(env_lst);
-	set_sigaction(&sa, 0);
+	set_signals(0);
 	prompt = get_prompt(env_lst, 0);
 	if (!prompt)
 		return (0);

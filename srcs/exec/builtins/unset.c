@@ -6,35 +6,11 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:51:26 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/03 02:58:57 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/03 03:01:04 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// static void	unset_exec(t_command *cmd, t_env *iterator, int i)
-// {
-// 	t_env	*prev;
-
-// 	prev = 0;
-// 	while (iterator)
-// 	{
-// 		if (!ft_strncmp(cmd->args[i], iterator->name, ft_strlen(cmd->args[i]))
-// 			&& ft_strlen(cmd->args[i]) == ft_strlen(iterator->name))
-// 		{
-// 			if (!prev)
-// 				cmd->env = iterator->next;
-// 			else
-// 				prev->next = iterator->next;
-// 			free(iterator->name);
-// 			free(iterator->value);
-// 			free(iterator);
-// 			break ;			
-// 		}
-// 		prev = iterator;
-// 		iterator = iterator->next;
-// 	}
-// }
 
 static void	unset_exec(t_command *cmd, char *var_name)
 {

@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 14:50:32 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/02 23:08:11 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/03 03:35:02 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ static int	fork_it(const char *exec_name, t_command *cmd, char **envp)
 		return (_error("fork", 0));
 	else if (pid == 0)
 	{
+		set_signals(1);
 		close(cmd->fds[0]);
 		dup2(cmd->fd_in, STDIN_FILENO);
 		dup2(cmd->fds[1], STDOUT_FILENO);

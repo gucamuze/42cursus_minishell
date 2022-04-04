@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/03 01:09:01 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/03 02:56:57 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/03 03:55:53 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ static int	command_dispatcher(t_command *command)
 			}
 			while (cmd)
 			{
-				waitpid(0, &g_exit, WUNTRACED);
+				wait(&g_exit);
+				printf("waitpid for command %s done, status %d\n", cmd->command, g_exit);
 				cmd = cmd->next;
 			}
 		}
@@ -62,10 +63,10 @@ int	parse_and_dispatch(t_env **env, char *user_input)
 	t_command	*cmd_lst;
 
 	if (!check_unending_quotes(user_input))
-		return(!printf("Syntax error: invalid quotes !\n"));
+		return (!printf("Syntax error: invalid quotes !\n"));
 	parsed_pipes = parse_pipes(user_input);
 	if (!check_invalid_pipes(parsed_pipes))
-		return(!printf("Syntax error: invalid pipe !\n"));
+		return (!printf("Syntax error: invalid pipe !\n"));
 	cmd_lst = cmd_lst_create(*env, parsed_pipes);
 	if (!parse_redirects(cmd_lst))
 		return (!printf("Syntax error: invalid redirect !\n"));
@@ -76,5 +77,6 @@ int	parse_and_dispatch(t_env **env, char *user_input)
 	close_all_fds(cmd_lst);
 	reassign_env(env, cmd_lst);
 	cmd_lst_free(cmd_lst);
+	set_signals(0);
 	return (1);
 }
