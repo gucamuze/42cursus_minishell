@@ -6,7 +6,7 @@
 /*   By: malbrand <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 16:00:27 by malbrand          #+#    #+#             */
-/*   Updated: 2022/04/05 17:01:42 by malbrand         ###   ########.fr       */
+/*   Updated: 2022/04/05 18:39:20 by malbrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static char	*change_name(char *s, int point)
 	i = 0;
 	j = 0;
 	len = ft_strlen(s) + point + 1;
-	file_name = (char *)malloc(sizeof(char) * len);
+	file_name = (char *)malloc(sizeof(char) * len + 1);
 	if (file_name == NULL)
 		return (NULL);
 	while (i < point)
@@ -66,6 +66,11 @@ int	herdoc(t_redirect *iterator)
 	file_name = setup_filename(iterator->redir_name);
 	fd = open(file_name, O_CREAT | O_TRUNC | O_WRONLY, 0664);
 	s = readline(">");
+	if (!s)
+	{
+		close(fd);
+		return (-1);
+	}
 	len = ft_strlen(s);
 	while (s != NULL && ft_strncmp(s, iterator->redir_name, len) != 0)
 	{
