@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:29 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/05 11:04:00 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/05 14:31:35 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 # include <errno.h>
 # include <fcntl.h>
 # include <unistd.h>
+
+# define D_PATH "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 
 extern int	g_exit;
 // Env
@@ -125,7 +127,6 @@ int				_exit_err(char *err_msg, char *command, int exit_code, int ret);
 // history
 int				add_to_persistent_history(char *str, t_env *env);
 int				import_history(t_env *env);
-
 // END UTILS
 
 // PARSER

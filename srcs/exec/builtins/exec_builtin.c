@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 17:46:16 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/03 03:45:36 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/05 14:55:54 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,6 @@ int	exec_builtin(t_command *cmd, int mode)
 	if (!cmd->next)
 		close(cmd->fds[0]);
 	if (mode)
-	{
 		printf("exiting child with status %d\n", g_exit);
-		exit(g_exit);
-	}
-	return (1);
+	exit(g_exit);
 }

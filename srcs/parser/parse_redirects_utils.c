@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/16 05:33:20 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/16 05:51:46 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/05 14:48:08 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,7 @@
 
 unsigned int	is_valid_redir_char(char c)
 {
-	if (c == ' ' || c == '<' || c == '>')
-		return (0);
-	return (1);
+	return (!(c == ' ' || c == '<' || c == '>'));
 }
 
 // The char *str parameter should be right after the last redirect character

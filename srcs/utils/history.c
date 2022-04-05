@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/03 01:05:01 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/05 11:02:51 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/05 14:10:37 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ int	add_to_persistent_history(char *str, t_env *env)
 			return (-1);
 		ft_putendl_fd(str, fd);
 		free(history_path);
+		close(fd);
 		return (0);
 	}
 	return (-1);
@@ -65,10 +66,9 @@ int	import_history(t_env *env)
 	{
 		history_path = ft_strjoin(homedir, "/.ms_history");
 		fd = open(history_path, O_RDONLY, 0644);
-		if (fd == -1)
-			return (_error(history_path, -1));
 		create_history(fd);
 		free(history_path);
+		close(fd);
 		return (0);
 	}
 	return (-1);

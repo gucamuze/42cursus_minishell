@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/03 01:09:01 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/03 03:55:53 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/05 14:39:22 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ static int	command_dispatcher(t_command *command)
 			while (cmd)
 			{
 				wait(&g_exit);
-				printf("waitpid for command %s done, status %d\n", cmd->command, g_exit);
 				cmd = cmd->next;
 			}
 		}
@@ -73,6 +72,7 @@ int	parse_and_dispatch(t_env **env, char *user_input)
 	parse_commands(cmd_lst);
 	parse_quotes(cmd_lst);
 	set_fds(cmd_lst);
+	__DEBUG_output_cmd_lst(cmd_lst);
 	command_dispatcher(cmd_lst);
 	close_all_fds(cmd_lst);
 	reassign_env(env, cmd_lst);

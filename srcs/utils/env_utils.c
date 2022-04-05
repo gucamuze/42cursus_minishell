@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 18:30:56 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/03 02:09:30 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/05 14:06:58 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ t_env	*env_to_lst(char **env)
 	{
 		envlst_add_back(&lst, envlst_new(ft_strdup("PWD"), getcwd(0, 0)));
 		envlst_add_back(&lst, envlst_new(ft_strdup("SHLVL"), ft_strdup("0")));
+		envlst_add_back(&lst, envlst_new(ft_strdup("PATH"), ft_strdup(D_PATH)));
 	}
 	return (lst);
 }

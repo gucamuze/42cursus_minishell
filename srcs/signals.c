@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 15:45:10 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/03 03:39:36 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/05 14:25:45 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	main_handler(int sig)
 {
 	if (sig == SIGINT)
 	{
-		printf("MAIN SIGINT\n");
+		// printf("MAIN SIGINT\n");
 		g_exit = 130 << 8;
 		write(0, "\n", 1);
 		rl_on_new_line();

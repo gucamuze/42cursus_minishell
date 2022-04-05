@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/16 05:14:01 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/05 10:51:08 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/05 15:08:22 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ char	*lst_to_str(t_list *lst)
 		ft_strlcat(str, iterator->content, strsize + 1);
 		iterator = iterator->next;
 	}
-	// str[strsize] = 0;
 	ft_lstclear(&lst, free);
 	return (str);
 }
