@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/16 05:14:01 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/05 15:08:22 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/05 16:10:18 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ char	*lst_to_str(t_list *lst)
 		strsize += ft_strlen(iterator->content);
 		iterator = iterator->next;
 	}
-	if (strsize > 42069)
-		return (_exit_var_overflow(&lst));		
+	// if (strsize > 42069)
+	// 	return (_exit_var_overflow(&lst));		
 	str = ft_calloc(1, strsize + 1);
 	if (!str)
 		return (0);
@@ -62,7 +62,8 @@ static unsigned int expand_env_var(t_env *env, char *str, char **expanded)
 			free(tmp);
 		}
 	}
-	else if (str[0] == '~') {
+	else if (str[0] == '~')
+	{
 		*expanded = get_env_val(env, "HOME", 1);
 		i = 1;
 	}
