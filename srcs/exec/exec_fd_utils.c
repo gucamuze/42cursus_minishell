@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 20:05:05 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/05 18:36:11 by malbrand         ###   ########.fr       */
+/*   Updated: 2022/04/05 19:07:34 by malbrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,10 @@ static int	setup_fd_input(t_redirect *red)
 	if (red->redir_type == 2)
 		fd = open(red->redir_name, O_RDONLY, 0644);
 	else
+	{
+		red->tmp_herdoc = NULL;
 		fd = herdoc(red);
+	}
 	return (fd);
 }
 
@@ -104,8 +107,10 @@ unsigned int	close_all_fds(t_command *cmd)
 	{
 		if (iterator->redir_type == 3)
 		{
-			unlink(iterator->tmp_herdoc);
-			free(iterator->tmp_herdoc);
+			if (iterator->tmp_herdoc && access(iterator->tmp_herdoc, F_OK) != -1)
+				unlink(iterator->tmp_herdoc);
+			if (iterator->tmp_herdoc)
+				free(iterator->tmp_herdoc);
 		}
 		iterator = iterator->next;
 	}

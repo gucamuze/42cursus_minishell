@@ -6,7 +6,7 @@
 /*   By: malbrand <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 16:00:27 by malbrand          #+#    #+#             */
-/*   Updated: 2022/04/05 18:39:20 by malbrand         ###   ########.fr       */
+/*   Updated: 2022/04/05 19:17:39 by malbrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,18 @@ static char	*setup_filename(char *s)
 	return (file_name);
 }
 
+static int	free_herdoc(char *s, int fd, char *file_name)
+{
+	if (!s)
+	{
+		close(fd);
+		unlink(file_name);
+		free(file_name);
+		return (-1);
+	}
+	return (0);
+}
+
 int	herdoc(t_redirect *iterator)
 {
 	int		fd;
@@ -66,11 +78,8 @@ int	herdoc(t_redirect *iterator)
 	file_name = setup_filename(iterator->redir_name);
 	fd = open(file_name, O_CREAT | O_TRUNC | O_WRONLY, 0664);
 	s = readline(">");
-	if (!s)
-	{
-		close(fd);
+	if (free_herdoc(s, fd, file_name) == -1)
 		return (-1);
-	}
 	len = ft_strlen(s);
 	while (s != NULL && ft_strncmp(s, iterator->redir_name, len) != 0)
 	{
@@ -78,6 +87,8 @@ int	herdoc(t_redirect *iterator)
 		write(fd, "\n", 1);
 		free(s);
 		s = readline(">");
+		if (free_herdoc(s, fd, file_name) == -1)
+			return (-1);
 		len = ft_strlen(s);
 	}
 	close (fd);
