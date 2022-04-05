@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/03 01:05:01 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/05 14:10:37 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/05 18:58:54 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,16 +35,19 @@ int	add_to_persistent_history(char *str, t_env *env)
 
 static int 	create_history(int fd)
 {
-	char			buffer[2048];
+	char			buffer[1024];
 	char			**split;
 	char			*str;
 	t_list			*lst;
 	unsigned int	i;
 
 	lst = 0;
-	memset(&buffer[0], 0, 2048);
-	while (read(fd, &buffer[0], 2048) > 0)
+	memset(&buffer[0], 0, 1024);
+	while (read(fd, &buffer[0], 1023) > 0)
+	{
 		ft_lstadd_back(&lst, ft_lstnew(ft_strdup(buffer)));
+		memset(&buffer[0], 0, 1024);
+	}
 	str = lst_to_str(lst);
 	split = ft_split(str, '\n');
 	free(str);

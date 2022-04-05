@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 15:45:10 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/05 14:25:45 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/05 20:28:59 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,33 +25,42 @@ void	main_handler(int sig)
 	}
 }
 
-void	exec_handler(int sig)
+static void	child_handler(int sig)
 {
 	if (sig == SIGINT)
 	{
-		printf("EXEC SIGINT\n");
-		g_exit = 130 << 8;
 		exit(130);
 	}
 	else if (sig == SIGQUIT)
 	{
-		g_exit = 131 << 8;
 		exit(131);
 	}
 }
 
-// Mode 0 for main sequence, 1 for execution mode
+static void	parent_handler(int sig)
+{
+	if (sig == SIGINT)
+		g_exit = 130 << 8;
+	else if (sig == SIGQUIT)
+		g_exit = 131 << 8;
+}
+
+// Mode 0 for main sequence, 1 for exec child, 2 for exec parent
 void	set_signals(int mode)
 {
-	if (!mode)
+	if (mode == 0)
 	{
 		signal(SIGQUIT, SIG_IGN);
 		signal(SIGINT, &main_handler);
 	}
+	else if (mode == 1)
+	{
+		signal(SIGQUIT, &child_handler);
+		signal(SIGINT, &child_handler);
+	}
 	else
 	{
-		// sa.sa_handler = &exec_handler;
-		signal(SIGQUIT, &exec_handler);
-		signal(SIGINT, &exec_handler);
+		signal(SIGQUIT, &parent_handler);
+		signal(SIGINT, &parent_handler);
 	}
 }

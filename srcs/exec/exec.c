@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 14:50:32 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/05 10:55:36 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/05 21:24:28 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,12 +61,13 @@ static int	fork_it(const char *exec_name, t_command *cmd, char **envp)
 	}
 	else
 	{
+		cmd->pid = pid;
+		set_signals(2);
 		close(cmd->fds[1]);
 		if (cmd->fd_in != -1)
 			close(cmd->fd_in);
 		if (!cmd->next)
 			close(cmd->fds[0]);
-		cmd->pid = pid;
 	}
 	return (0);
 }

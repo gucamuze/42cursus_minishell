@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:10 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/05 11:03:38 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/05 19:12:35 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	update_shlvl(t_env *env)
 		update_env(env, "SHLVL", ft_itoa(shlvl));
 }
 
-int	shell_loop(char *prompt, t_env *env)
+int	shell_loop(char *prompt, t_env **env)
 {
 	char	*user_input;
 	
@@ -58,10 +58,10 @@ int	shell_loop(char *prompt, t_env *env)
 			break ;
 		if (!str_is_empty(user_input))
 		{
-			parse_and_dispatch(&env, user_input);
+			parse_and_dispatch(env, user_input);
 			add_history(user_input);
-			add_to_persistent_history(user_input, env);
-			prompt = get_prompt(env, prompt);
+			add_to_persistent_history(user_input, *env);
+			prompt = get_prompt(*env, prompt);
 			free(user_input);
 			if (!prompt)
 				return (0);
@@ -85,7 +85,7 @@ int	main(int ac, char **av, char **env)
 		return (0);
 	if (env)
 		import_history(env_lst);
-	shell_loop(prompt, env_lst);
+	shell_loop(prompt, &env_lst);
 	cleanup(prompt, env_lst);
-	exit (0);
+	exit(0);
 }

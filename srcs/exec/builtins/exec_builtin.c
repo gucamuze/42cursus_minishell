@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 17:46:16 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/05 15:58:52 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/05 19:18:21 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	exec_builtin(t_command *cmd, int mode)
 	if (!mode)
 		if (pipe(cmd->fds) == -1 || !setup_input_redir(cmd)
 			|| !setup_output_redir(cmd))
-			return (-1); // should close the pipe fd
+			return (-1);
 	if (!ft_strcmp(cmd->command, "cd"))
 		g_exit = _cd(cmd) << 8;
 	else if (!ft_strcmp(cmd->command, "pwd"))
@@ -52,9 +52,6 @@ int	exec_builtin(t_command *cmd, int mode)
 	if (!cmd->next)
 		close(cmd->fds[0]);
 	if (mode)
-	{
-		printf("exiting child with status %d\n", g_exit);
 		exit(g_exit);
-	}
 	return (1);
 }
