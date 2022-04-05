@@ -6,12 +6,13 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/16 05:14:01 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/03 01:44:16 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/05 10:51:08 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// Frees the list given as parameter
 char	*lst_to_str(t_list *lst)
 {
 	t_list	*iterator;

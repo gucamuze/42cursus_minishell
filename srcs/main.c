@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:10 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/03 03:08:41 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/05 11:03:38 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	g_exit = 0;
 
-void	cleanup(char *prompt, t_env *env, char **history)
+void	cleanup(char *prompt, t_env *env)
 {
 	t_env	*env_tmp;
 
@@ -32,8 +32,6 @@ void	cleanup(char *prompt, t_env *env, char **history)
 			env = env_tmp;
 		}
 	}
-	if (history)
-		free_split(history);
 	rl_clear_history();
 }
 
@@ -76,7 +74,6 @@ int	main(int ac, char **av, char **env)
 {
 	char				*prompt;
 	t_env				*env_lst;
-	char				**history;
 
 	(void)ac;
 	(void)av;
@@ -86,10 +83,9 @@ int	main(int ac, char **av, char **env)
 	prompt = get_prompt(env_lst, 0);
 	if (!prompt)
 		return (0);
-	history = 0;
 	if (env)
-		import_history(history, env_lst);
+		import_history(env_lst);
 	shell_loop(prompt, env_lst);
-	cleanup(prompt, env_lst, history);
+	cleanup(prompt, env_lst);
 	exit (0);
 }

@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 14:50:32 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/03 03:35:02 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/05 10:55:36 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@ int	get_absolute_path(const char *command, const char *paths, char **abs_p)
 		*abs_p = ft_strdup(command);
 		return (1);
 	}
-	// if (!paths)
-	// 	return (-1);
 	if (paths)
 	{
 		paths_split = ft_split(paths, ':');

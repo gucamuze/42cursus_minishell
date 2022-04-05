@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 22:32:01 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/02 23:30:20 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/05 10:53:01 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 char	*_exit_var_overflow(t_list **lst)
 {
 	ft_lstclear(lst, free);
-	ft_putendl_fd("minishell: maximum env variable size exceeded", 2);
-	kill(0, SIGKILL);
+	ft_putendl_fd("minishell: maximum variable size exceeded", 2);
+	// kill(0, SIGKILL);
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/03 01:05:01 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/03 02:17:02 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/05 11:02:51 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,13 @@ int	add_to_persistent_history(char *str, t_env *env)
 		if (fd == -1)
 			return (-1);
 		ft_putendl_fd(str, fd);
+		free(history_path);
 		return (0);
 	}
 	return (-1);
 }
 
-char	**create_history(int fd)
+static int 	create_history(int fd)
 {
 	char			buffer[2048];
 	char			**split;
@@ -49,16 +50,16 @@ char	**create_history(int fd)
 	i = 0;
 	while (split[i])
 		add_history(split[i++]);
-	return (split);
+	free_split(split);
+	return (1);
 }
 
-int	import_history(char **history, t_env *env)
+int	import_history(t_env *env)
 {
 	pid_t	fd;
 	char	*history_path;
 	char	*homedir;
 	
-	(void)history;
 	homedir = get_env_val(env, "HOME", 0);
 	if (homedir)
 	{
@@ -66,7 +67,8 @@ int	import_history(char **history, t_env *env)
 		fd = open(history_path, O_RDONLY, 0644);
 		if (fd == -1)
 			return (_error(history_path, -1));
-		history = create_history(fd);
+		create_history(fd);
+		free(history_path);
 		return (0);
 	}
 	return (-1);
