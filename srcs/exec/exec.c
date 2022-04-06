@@ -6,37 +6,42 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 14:50:32 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/06 19:05:38 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/06 22:29:20 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	get_absolute_path(const char *command, const char *paths, char **abs_p)
+static int	try_paths(const char *command, const char *paths, char **abs_p)
 {
 	char			**paths_split;
 	unsigned int	i;
 
+	paths_split = ft_split(paths, ':');
+	i = -1;
+	while (paths_split[++i])
+	{
+		*abs_p = ft_strjoin3(paths_split[i], "/", command);
+		if (!access(*abs_p, F_OK))
+		{
+			free_split(paths_split);
+			return (1);
+		}
+		free(*abs_p);
+	}
+	free_split(paths_split);
+	return (-1);
+}
+
+int	get_absolute_path(const char *command, const char *paths, char **abs_p)
+{
 	if (!access(command, F_OK))
 	{
 		*abs_p = ft_strdup(command);
 		return (1);
 	}
 	if (paths)
-	{
-		paths_split = ft_split(paths, ':');
-		i = -1;
-		while (paths_split[++i])
-		{
-			*abs_p = ft_strjoin3(paths_split[i], "/", command);
-			if (!access(*abs_p, F_OK))
-			{
-				free_split(paths_split);
-				return (1);
-			}
-			free(*abs_p);
-		}
-	}
+		return (try_paths(command, paths, abs_p));
 	return (-1);
 }
 
@@ -101,7 +106,10 @@ int	exec(t_command *cmd, t_data *data)
 	{
 		if (get_absolute_path(cmd->command,
 				get_env_val(cmd->env, "PATH", 0), &path) == -1)
+		{
+			free_split(envp);
 			return (_exit_err(": command not found", cmd, 127, -1));
+		}
 		fork_it(path, cmd, envp, data);
 		free(path);
 	}

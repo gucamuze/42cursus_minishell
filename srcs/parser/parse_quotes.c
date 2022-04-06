@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 18:57:05 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/06 17:17:53 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/06 22:43:24 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,13 +67,18 @@ static int	extract_and_expand(t_env *env, char **str)
 {
 	t_list	*lst;
 	t_list	*iterator;
+	char	*expanded_str;
 
 	lst = extract_to_lst(*str);
 	iterator = lst;
 	while (iterator)
 	{
 		if (iterator->content[0] != '\'')
-			iterator->content = expand(env, iterator->content);
+		{
+			expanded_str = expand(env, iterator->content);
+			free(iterator->content);
+			iterator->content = expanded_str;
+		}
 		if (!iterator->content)
 			return (-1);
 		delete_quotes(iterator->content);

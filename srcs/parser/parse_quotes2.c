@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 17:16:22 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/06 17:17:45 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/06 21:52:19 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,10 @@ char	**realloc_if_needed(char **args)
 	while (split[i])
 		i++;
 	if (i <= 1)
+	{
+		free_split(split);
 		return (args);
+	}
 	j = 1;
 	while (args[j])
 		j++;
@@ -48,8 +51,8 @@ char	**realloc_if_needed(char **args)
 	if (!final_split)
 		return (args);
 	final_split = merge_splits(split, args, final_split);
-	free(args);
-	free(split);
+	free_split(args);
+	free_split(split);
 	return (final_split);
 }
 

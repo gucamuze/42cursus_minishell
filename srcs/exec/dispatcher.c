@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/03 01:09:01 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/06 18:58:54 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/06 19:43:47 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ int	parse_and_dispatch(t_env **env, char *user_input, t_data *data)
 	parse_commands(cmd_lst);
 	parse_quotes(cmd_lst);
 	set_fds(cmd_lst);
-	data->env = (*env);
+	data->env = *env;
 	data->user = user_input;
 	command_dispatcher(cmd_lst, data);
 	close_all_fds(cmd_lst);

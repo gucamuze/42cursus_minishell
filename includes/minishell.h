@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:29 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/06 18:57:10 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/06 21:40:56 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ typedef struct s_redirect
 {
 	unsigned int		redir_type;
 	char				*redir_name;
-	char				*tmp_herdoc;
 	struct s_redirect	*next;
 }	t_redirect;
 
@@ -92,7 +91,7 @@ unsigned int	_export(t_command *cmd);
 // exit
 unsigned int	ft_exit(t_command *cmd, t_data *data, int mode);
 // herdoc
-int				herdoc(t_redirect *redir);
+int				heredoc(t_redirect *redir);
 // END BUILTINS
 
 // UTILS
