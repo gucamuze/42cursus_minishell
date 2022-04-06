@@ -6,7 +6,7 @@
 #    By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/07/15 02:21:09 by gucamuze          #+#    #+#              #
-#    Updated: 2022/04/05 18:25:33 by malbrand         ###   ########.fr        #
+#    Updated: 2022/04/06 15:39:41 by malbrand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,7 @@ EXEC_W_PATH		=	$(addprefix ${EXEC_PATH}, ${EXEC})
 EXEC_OFILES		=	$(EXEC_W_PATH:.c=.o)
 ALL_OFILES		+=	$(EXEC_OFILES)
 			
-BUILTINS		=	exec_builtin.c cd.c echo.c pwd.c unset.c export.c env.c
+BUILTINS		=	exec_builtin.c cd.c echo.c pwd.c unset.c export.c env.c exit.c
 BUILTINS_W_PATH	=	$(addprefix ${BUILTINS_PATH}, ${BUILTINS})
 BUILTINS_OFILES	=	$(BUILTINS_W_PATH:.c=.o)
 ALL_OFILES		+=	$(BUILTINS_OFILES)

@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 17:46:16 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/05 18:27:50 by malbrand         ###   ########.fr       */
+/*   Updated: 2022/04/06 15:59:51 by malbrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ unsigned int	is_builtin(const char *command)
 }
 
 // mode 0 for standalone, mode 1 for forked
-int	exec_builtin(t_command *cmd, int mode)
+int	exec_builtin(t_command *cmd, int mode, t_data *data)
 {
 	if (!mode)
 		if (pipe(cmd->fds) == -1 || !setup_input_redir(cmd)
@@ -45,7 +45,7 @@ int	exec_builtin(t_command *cmd, int mode)
 	else if (!ft_strcmp(cmd->command, "echo"))
 		g_exit = _echo(cmd) << 8;
 	else if (!ft_strcmp(cmd->command, "exit"))
-		;
+		g_exit = ft_exit(cmd, data, mode);
 	close(cmd->fds[1]);
 	if (cmd->fd_in != -1)
 		close(cmd->fd_in);
