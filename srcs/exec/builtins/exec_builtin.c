@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 17:46:16 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/06 18:57:31 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/06 19:07:04 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	exec_builtin(t_command *cmd, int mode, t_data *data)
 	else if (!ft_strcmp(cmd->command, "echo"))
 		cmd->exit_code = _echo(cmd);
 	else if (!ft_strcmp(cmd->command, "exit"))
-		g_exit = ft_exit(cmd, data, mode);
+		cmd->exit_code = ft_exit(cmd, data, mode);
 	close(cmd->fds[1]);
 	if (cmd->fd_in != -1)
 		close(cmd->fd_in);
