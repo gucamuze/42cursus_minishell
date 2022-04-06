@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/03 01:05:01 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/05 18:58:54 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/06 17:22:12 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	add_to_persistent_history(char *str, t_env *env)
 	pid_t	fd;
 	char	*history_path;
 	char	*homedir;
-	
+
 	homedir = get_env_val(env, "HOME", 0);
 	if (homedir)
 	{
@@ -33,7 +33,7 @@ int	add_to_persistent_history(char *str, t_env *env)
 	return (-1);
 }
 
-static int 	create_history(int fd)
+static int	create_history(int fd)
 {
 	char			buffer[1024];
 	char			**split;
@@ -63,7 +63,7 @@ int	import_history(t_env *env)
 	pid_t	fd;
 	char	*history_path;
 	char	*homedir;
-	
+
 	homedir = get_env_val(env, "HOME", 0);
 	if (homedir)
 	{
@@ -76,4 +76,3 @@ int	import_history(t_env *env)
 	}
 	return (-1);
 }
-

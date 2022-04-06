@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 13:24:53 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/06 17:04:00 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/06 17:20:54 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ t_command	*cmd_lst_create(t_env *env, t_list *parsed_pipes)
 	cmd_lst = 0;
 	while (parsed_pipes)
 	{
-		cmdlst_add_back(&cmd_lst, cmdlst_new(env, ft_strdup(parsed_pipes->content)));
+		cmdlst_add_back(&cmd_lst, cmdlst_new(env,
+				ft_strdup(parsed_pipes->content)));
 		free_terator = parsed_pipes->next;
 		free(parsed_pipes->content);
 		free(parsed_pipes);

@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/16 05:14:01 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/06 17:01:24 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/06 17:27:54 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ static unsigned int	expand_env_var(t_env *env, char *str, char **expanded)
 	return (i);
 }
 
-// Does not currently expand the $? variable !
 char	*expand(t_env *env, char *str)
 {
 	int				i;
@@ -82,11 +81,8 @@ char	*expand(t_env *env, char *str)
 		if ((str[i] == '$' && str[i + 1]) || str[i] == '~')
 		{
 			if (i)
-			{
 				ft_lstadd_back(&lst, ft_lstnew(ft_strndup(str, i)));
-				str += i;
-			}
-			str += expand_env_var(env, str, &tmp);
+			str += expand_env_var(env, str + i, &tmp) + i;
 			if (tmp)
 				ft_lstadd_back(&lst, ft_lstnew(tmp));
 			i = 0;

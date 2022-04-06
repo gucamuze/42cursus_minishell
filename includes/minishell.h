@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:29 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/06 17:04:52 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/06 17:19:07 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ int				check_unending_quotes(char *command);
 // error_handling_utils
 char			*_exit_var_overflow(t_list **lst);
 int				_error(const char *s, int ret);
-int				_exit_err(char *err_msg, t_command *cmd, int exit_code, int ret);
+int				_exit_err(char *err_msg, t_command *cmd, int code, int ret);
 // history
 int				add_to_persistent_history(char *str, t_env *env);
 int				import_history(t_env *env);
@@ -133,9 +133,12 @@ int				import_history(t_env *env);
 // PARSER
 // parse_quotes
 void			parse_quotes(t_command *cmd_lst);
+// parse_quotes2
+char			**realloc_if_needed(char **args);
+void			delete_quotes(char *str);
 // parse_pipes
 int				check_invalid_pipes(t_list *parsed_pipes);
-t_list 			*parse_pipes(char *user_input);
+t_list			*parse_pipes(char *user_input);
 // parse_redirects
 int				parse_redirects(t_command *cmd_lst);
 // parse_redirects_utils

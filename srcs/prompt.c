@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 18:22:30 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/05 18:34:11 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/06 17:22:36 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ char	*get_prompt(t_env *env, char *prev_prompt)
 	char	*pwd;
 	char	*home;
 
-	// pwd = getcwd(0, 0);
 	pwd = get_env_val(env, "PWD", 1);
 	home = get_env_val(env, "HOME", 0);
 	prompt = 0;

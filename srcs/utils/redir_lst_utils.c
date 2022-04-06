@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 23:37:17 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/15 23:50:48 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/06 17:22:23 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ t_redirect	*redir_lst_new(unsigned int redir_type, char *redir_name)
 void	redir_lst_add_back(t_redirect **cmd_lst, t_redirect *new)
 {
 	t_redirect	*last;
-	
+
 	if (*cmd_lst)
 	{
 		last = redir_lst_last(*cmd_lst);

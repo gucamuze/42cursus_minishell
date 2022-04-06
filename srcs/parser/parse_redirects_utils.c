@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/16 05:33:20 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/06 17:02:46 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/06 17:23:20 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,5 +57,5 @@ void	update_command(char *str)
 	if (!str[j])
 		str[0] = 0;
 	else
-		ft_memmove(str, &str[j], ft_strlen(&str[j]) + 1); // memory magic, +1 to include the null char
+		ft_memmove(str, &str[j], ft_strlen(&str[j]) + 1);
 }
