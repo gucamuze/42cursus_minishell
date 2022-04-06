@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/17 21:46:07 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/06 17:50:46 by malbrand         ###   ########.fr       */
+/*   Updated: 2022/04/06 18:14:34 by malbrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	ft_atoi(const char *nptr)
 {
 	int					sign;
-	long long int		result;
+	int					result;
 	char				decimals;
 
 	sign = 1;
