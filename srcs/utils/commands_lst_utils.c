@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands_lst_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgeny <rgeny@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 17:13:41 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/06 15:43:55 by rgeny            ###   ########.fr       */
+/*   Updated: 2022/04/06 17:03:57 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ t_command	*cmdlst_new(t_env *env, char *command)
 void	cmdlst_add_back(t_command **cmd_lst, t_command *new)
 {
 	t_command	*last;
-	
+
 	if (*cmd_lst)
 	{
 		last = cmdlst_last(*cmd_lst);

@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/16 05:14:01 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/06 16:47:31 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/06 17:01:24 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ char	*lst_to_str(t_list *lst)
 }
 
 // Returns the length of the env variable it expanded
-static unsigned int expand_env_var(t_env *env, char *str, char **expanded)
+static unsigned int	expand_env_var(t_env *env, char *str, char **expanded)
 {
 	int		i;
 	char	*tmp;

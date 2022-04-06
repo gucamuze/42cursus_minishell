@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 04:39:56 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/25 15:00:51 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/06 17:04:07 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ t_env	*envlst_new(char *var_name, char *var_value)
 void	envlst_add_back(t_env **env, t_env *new)
 {
 	t_env	*last;
-	
+
 	if (*env)
 	{
 		last = envlst_last(*env);

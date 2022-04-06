@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/16 00:12:56 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/16 05:33:11 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/06 17:02:58 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static unsigned int	create_output_redirect(t_command *cmd, char *str)
 	unsigned int	j;
 	unsigned int	type;
 	char			*name;
-	
+
 	j = 1;
 	type = 0;
 	if (str[j] == '>')
@@ -38,7 +38,7 @@ static unsigned int	create_input_redirect(t_command *cmd, char *str)
 	unsigned int	j;
 	unsigned int	type;
 	char			*name;
-	
+
 	j = 1;
 	type = 2;
 	if (str[j] == '<')
@@ -54,7 +54,7 @@ static unsigned int	create_input_redirect(t_command *cmd, char *str)
 	return (1);
 }
 
-static unsigned int create_redirects(t_command *cmd, char *str)
+static unsigned int	create_redirects(t_command *cmd, char *str)
 {
 	while (*str)
 	{

@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:51:26 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/05 19:07:54 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/06 16:57:49 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static void	unset_exec(t_command *cmd, char *var_name)
 {
 	t_env	*prev;
 	t_env	*iterator;
-	
+
 	prev = 0;
 	iterator = cmd->env;
 	while (iterator)
@@ -30,7 +30,7 @@ static void	unset_exec(t_command *cmd, char *var_name)
 			free(iterator->name);
 			free(iterator->value);
 			free(iterator);
-			break ;			
+			break ;
 		}
 		prev = iterator;
 		iterator = iterator->next;

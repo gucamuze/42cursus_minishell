@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 20:05:05 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/05 14:57:48 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/06 17:00:19 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	setup_output_redir(t_command *cmd)
 {
 	int			fd;
 	t_redirect	*iterator;
-	
+
 	fd = -1;
 	iterator = cmd->redirects;
 	while (iterator)
@@ -51,7 +51,7 @@ int	setup_input_redir(t_command *cmd)
 {
 	int			fd;
 	t_redirect	*iterator;
-	
+
 	fd = -1;
 	iterator = cmd->redirects;
 	if (cmd->next)

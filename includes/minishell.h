@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:29 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/06 16:46:44 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/06 17:04:52 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@
 # include <unistd.h>
 
 # define D_PATH "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-# define C_CYAN printf("\033[1;36m");
-# define C_END printf("\033[0m");
 
 extern int	g_exit;
 // Env

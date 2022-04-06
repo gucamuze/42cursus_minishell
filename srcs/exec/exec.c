@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 14:50:32 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/06 16:46:57 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/06 17:01:04 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,9 @@ int	exec(t_command *cmd)
 		fork_it(cmd->command, cmd, envp);
 	else
 	{
-		if (get_absolute_path(cmd->command, get_env_val(cmd->env, "PATH", 0), &path) == -1)
-			return (_exit_err(": command not found", cmd, 127, -1));			
+		if (get_absolute_path(cmd->command,
+				get_env_val(cmd->env, "PATH", 0), &path) == -1)
+			return (_exit_err(": command not found", cmd, 127, -1));
 		fork_it(path, cmd, envp);
 		free(path);
 	}

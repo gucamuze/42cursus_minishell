@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 18:57:05 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/05 17:15:08 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/06 17:15:13 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ static t_list	*extract_to_lst(char *str)
 		}
 		if (is_quote(str[i]))
 		{
-			ft_lstadd_back(&lst, ft_lstnew(ft_strndup(str, get_next_quote_pos(str) + 1)));
+			ft_lstadd_back(&lst, ft_lstnew(
+					ft_strndup(str, get_next_quote_pos(str) + 1)));
 			str += get_next_quote_pos(str) + 1;
 		}
 	}
@@ -108,6 +109,7 @@ static char	**merge_splits(char **split1, char **split2, char **final_split)
 	i = 1;
 	while (split2[i])
 		final_split[j++] = ft_strdup(split2[i++]);
+	final_split[j] = 0;
 	return (final_split);
 }
 
@@ -141,7 +143,7 @@ void	parse_quotes(t_command *cmd_lst)
 {
 	unsigned int	i;
 	t_redirect		*iterator;
-	
+
 	while (cmd_lst)
 	{
 		i = 0;

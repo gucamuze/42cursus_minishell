@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:10 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/05 19:12:35 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/06 17:04:57 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	update_shlvl(t_env *env)
 int	shell_loop(char *prompt, t_env **env)
 {
 	char	*user_input;
-	
+
 	while (1)
 	{
 		user_input = readline(prompt);

@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/17 00:38:16 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/17 06:17:05 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/06 17:01:46 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ static t_list	*command_to_lst(char *str)
 	unsigned int	j;
 
 	lst = 0;
-	// printf("str {%s} to lst\n", str);
 	while (*str)
 	{
 		j = 0;
@@ -44,7 +43,7 @@ static char	**lst_to_args(t_list *lst)
 	size_t	args_size;
 	size_t	i;
 	char	**args;
-	
+
 	args_size = ft_lstsize(lst);
 	i = 0;
 	args = malloc((args_size + 1) * sizeof(char *));
@@ -63,7 +62,7 @@ static char	**lst_to_args(t_list *lst)
 static void	free_tmp_lst(t_list *lst)
 {
 	t_list	*tmp;
-	
+
 	while (lst)
 	{
 		tmp = lst->next;

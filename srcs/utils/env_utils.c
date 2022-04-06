@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 18:30:56 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/05 14:06:58 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/06 17:05:05 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char	*get_env_name_from_string(char *str)
 				ft_memcpy(env_name, str, i);
 				env_name[i] = 0;
 			}
-			break ;	
+			break ;
 		}
 		i++;
 	}
@@ -41,7 +41,7 @@ char	**envlst_to_tab(t_env *env)
 	char	**tab;
 	size_t	size;
 	size_t	i;
-	
+
 	size = envlst_size(env);
 	tab = malloc((size + 1) * sizeof(char *));
 	if (!tab)
@@ -61,7 +61,7 @@ t_env	*env_to_lst(char **env)
 	t_env	*lst;
 	char	*var_name;
 	char	*var_value;
-	
+
 	lst = NULL;
 	if (*env)
 	{

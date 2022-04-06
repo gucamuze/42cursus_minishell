@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/03 01:09:01 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/06 16:46:53 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/06 16:58:41 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static int	command_dispatcher(t_command *command)
 {
 	t_command	*cmd;
 	int			pid_ret;
-	
+
 	cmd = command;
 	pid_ret = 0;
 	if (command && command->command)
