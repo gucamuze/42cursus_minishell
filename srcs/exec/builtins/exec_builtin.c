@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 17:46:16 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/06 16:58:12 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/06 17:50:48 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,13 @@ unsigned int	is_builtin(const char *command)
 		|| !ft_strcmp(command, "exit"))
 		return (1);
 	return (0);
+}
+
+int	norming_makes_code_ugly(int mode, int exit_code)
+{
+	if (mode)
+		exit(exit_code);
+	return (1);
 }
 
 // mode 0 for standalone, mode 1 for forked
@@ -51,7 +58,5 @@ int	exec_builtin(t_command *cmd, int mode)
 		close(cmd->fd_in);
 	if (!cmd->next)
 		close(cmd->fds[0]);
-	if (mode)
-		exit(cmd->exit_code);
-	return (1);
+	return (norming_makes_code_ugly(mode, cmd->exit_code));
 }

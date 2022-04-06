@@ -6,34 +6,39 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 20:05:05 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/06 17:00:19 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/06 17:54:14 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	setup_output_redir(t_command *cmd)
+static int	output_redir_loop(t_redirect *iterator, int *fd)
 {
-	int			fd;
-	t_redirect	*iterator;
-
-	fd = -1;
-	iterator = cmd->redirects;
 	while (iterator)
 	{
 		if (iterator->redir_type == 0 || iterator->redir_type == 1)
 		{
-			if (fd != -1)
-				close(fd);
+			if (*fd != -1)
+				close(*fd);
 			if (iterator->redir_type == 0)
-				fd = open(iterator->redir_name, 01101, 0644);
+				*fd = open(iterator->redir_name, 01101, 0644);
 			else
-				fd = open(iterator->redir_name, 02101, 0644);
-			if (fd == -1)
+				*fd = open(iterator->redir_name, 02101, 0644);
+			if (*fd == -1)
 				return (_error(iterator->redir_name, 0));
 		}
 		iterator = iterator->next;
 	}
+	return (1);
+}
+
+int	setup_output_redir(t_command *cmd)
+{
+	int			fd;
+
+	fd = -1;
+	if (!output_redir_loop(cmd->redirects, &fd))
+		return (0);
 	if (fd > -1)
 	{
 		close(cmd->fds[1]);

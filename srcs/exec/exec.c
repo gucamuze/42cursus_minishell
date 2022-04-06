@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 14:50:32 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/06 17:01:04 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/06 17:59:58 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,30 @@ int	get_absolute_path(const char *command, const char *paths, char **abs_p)
 	return (-1);
 }
 
+static int	exec_child(const char *exec_name, t_command *cmd, char **envp)
+{
+	set_signals(1);
+	close(cmd->fds[0]);
+	dup2(cmd->fd_in, STDIN_FILENO);
+	dup2(cmd->fds[1], STDOUT_FILENO);
+	if (is_builtin(exec_name))
+		exec_builtin(cmd, 1);
+	else if (execve(exec_name, cmd->args, envp) == -1)
+		return (_error("execve", -1));
+	return (0);
+}
+
+static void	exec_parent(t_command *cmd, pid_t pid)
+{
+	cmd->pid = pid;
+	set_signals(2);
+	close(cmd->fds[1]);
+	if (cmd->fd_in != -1)
+		close(cmd->fd_in);
+	if (!cmd->next)
+		close(cmd->fds[0]);
+}
+
 static int	fork_it(const char *exec_name, t_command *cmd, char **envp)
 {
 	pid_t	pid;
@@ -49,25 +73,11 @@ static int	fork_it(const char *exec_name, t_command *cmd, char **envp)
 		return (_error("fork", 0));
 	else if (pid == 0)
 	{
-		set_signals(1);
-		close(cmd->fds[0]);
-		dup2(cmd->fd_in, STDIN_FILENO);
-		dup2(cmd->fds[1], STDOUT_FILENO);
-		if (is_builtin(exec_name))
-			exec_builtin(cmd, 1);
-		else if (execve(exec_name, cmd->args, envp) == -1)
-			return (_error("execve", -1));
+		if (exec_child(exec_name, cmd, envp) == -1)
+			return (-1);
 	}
 	else
-	{
-		cmd->pid = pid;
-		set_signals(2);
-		close(cmd->fds[1]);
-		if (cmd->fd_in != -1)
-			close(cmd->fd_in);
-		if (!cmd->next)
-			close(cmd->fds[0]);
-	}
+		exec_parent(cmd, pid);
 	return (0);
 }
 
