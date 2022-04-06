@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 14:50:32 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/05 21:24:28 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/06 16:46:57 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,7 @@ static int	fork_it(const char *exec_name, t_command *cmd, char **envp)
 		if (is_builtin(exec_name))
 			exec_builtin(cmd, 1);
 		else if (execve(exec_name, cmd->args, envp) == -1)
-			// return (_error(exec_name, -1));
-			return (_error("caca", -1));
+			return (_error("execve", -1));
 	}
 	else
 	{
@@ -80,7 +79,7 @@ int	exec(t_command *cmd)
 	if (pipe(cmd->fds) == -1)
 		return (-1);
 	if (!setup_input_redir(cmd) || !setup_output_redir(cmd))
-		return (-1); // should close the pipe fd
+		return (-1);
 	envp = envlst_to_tab(cmd->env);
 	if (!envp)
 		return (-1);
@@ -89,7 +88,7 @@ int	exec(t_command *cmd)
 	else
 	{
 		if (get_absolute_path(cmd->command, get_env_val(cmd->env, "PATH", 0), &path) == -1)
-			return (_exit_err(": command not found", cmd->command, 127, -1));			
+			return (_exit_err(": command not found", cmd, 127, -1));			
 		fork_it(path, cmd, envp);
 		free(path);
 	}

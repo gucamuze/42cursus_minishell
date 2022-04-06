@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands_lst_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgeny <rgeny@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 17:13:41 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/17 05:53:16 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/06 15:43:55 by rgeny            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ t_command	*cmdlst_new(t_env *env, char *command)
 	new->args = 0;
 	new->env = env;
 	new->redirects = 0;
+	new->exit_code = 0;
 	new->next = 0;
 	return (new);
 }

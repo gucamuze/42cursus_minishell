@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 16:46:35 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/03 02:26:55 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/06 16:47:06 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ static int	exec_cd(t_command *cmd)
 	{
 		cd_dir = get_env_val(cmd->env, "HOME", 0);
 		if (!cd_dir)
-			return (_exit_err(" HOME not set", "minishell: cd:", 1, 1));
+			return (_exit_err(" HOME not set", cmd, 1, 1));
 	}
 	else
 		cd_dir = trim_useless_slashes(cmd->args[1]);

@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:29 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/05 18:35:17 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/06 16:46:44 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ typedef struct s_command
 	char				**args;
 	t_env				*env;
 	t_redirect			*redirects;
+	int					exit_code;
 	struct s_command	*next;
 }	t_command;
 
@@ -125,7 +126,7 @@ int				check_unending_quotes(char *command);
 // error_handling_utils
 char			*_exit_var_overflow(t_list **lst);
 int				_error(const char *s, int ret);
-int				_exit_err(char *err_msg, char *command, int exit_code, int ret);
+int				_exit_err(char *err_msg, t_command *cmd, int exit_code, int ret);
 // history
 int				add_to_persistent_history(char *str, t_env *env);
 int				import_history(t_env *env);

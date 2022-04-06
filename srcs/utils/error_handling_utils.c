@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 22:32:01 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/05 10:53:01 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/06 16:47:00 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,11 @@ char	*_exit_var_overflow(t_list **lst)
 	return (0);
 }
 
-int	_exit_err(char *err_msg, char *command, int exit_code, int ret)
+int	_exit_err(char *err_msg, t_command *cmd, int exit_code, int ret)
 {
-	ft_putstr_fd(command, 2);
+	ft_putstr_fd(cmd->command, 2);
 	ft_putendl_fd(err_msg, 2);
-	g_exit = exit_code << 8;
+	cmd->exit_code = exit_code;
 	return (ret);
 }
 

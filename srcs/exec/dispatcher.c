@@ -6,11 +6,35 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/03 01:09:01 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/05 21:49:28 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/06 16:46:53 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	wait_and_set_errors(t_command *cmd)
+{
+	int			exit_code;
+	t_command	*last;
+
+	exit_code = -1;
+	while (cmd)
+	{
+		if (!cmd->next)
+			last = cmd;
+		waitpid(cmd->pid, &exit_code, 0);
+		if (WIFEXITED(exit_code))
+			exit_code = WEXITSTATUS(exit_code);
+		cmd = cmd->next;
+	}
+	if (g_exit != 130 << 8 && g_exit != 131 << 8)
+	{
+		if (last->exit_code == 127)
+			g_exit = 127 << 8;
+		else
+			g_exit = exit_code << 8;
+	}
+}
 
 static int	command_dispatcher(t_command *command)
 {
@@ -22,7 +46,10 @@ static int	command_dispatcher(t_command *command)
 	if (command && command->command)
 	{
 		if (is_builtin(command->command) && !command->next)
+		{
 			exec_builtin(command, 0);
+			g_exit = command->exit_code << 8;
+		}
 		else
 		{
 			while (command && command->command)
@@ -30,14 +57,7 @@ static int	command_dispatcher(t_command *command)
 				exec(command);
 				command = command->next;
 			}
-			while (cmd)
-			{
-				if (g_exit == 130 || g_exit == 131)
-					waitpid(cmd->pid, 0, 0);
-				else
-					waitpid(cmd->pid, &pid_ret, WUNTRACED);
-				cmd = cmd->next;
-			}
+			wait_and_set_errors(cmd);
 		}
 		set_signals(0);
 	}

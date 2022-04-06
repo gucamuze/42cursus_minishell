@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 17:46:16 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/05 19:18:21 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/06 16:47:20 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,17 +33,17 @@ int	exec_builtin(t_command *cmd, int mode)
 			|| !setup_output_redir(cmd))
 			return (-1);
 	if (!ft_strcmp(cmd->command, "cd"))
-		g_exit = _cd(cmd) << 8;
+		cmd->exit_code = _cd(cmd);
 	else if (!ft_strcmp(cmd->command, "pwd"))
-		g_exit = _pwd(cmd) << 8;
+		cmd->exit_code = _pwd(cmd);
 	else if (!ft_strcmp(cmd->command, "env"))
-		g_exit = _env(cmd) << 8;
+		cmd->exit_code = _env(cmd);
 	else if (!ft_strcmp(cmd->command, "unset"))
-		g_exit = _unset(cmd) << 8;
+		cmd->exit_code = _unset(cmd);
 	else if (!ft_strcmp(cmd->command, "export"))
-		g_exit = _export(cmd) << 8;
+		cmd->exit_code = _export(cmd);
 	else if (!ft_strcmp(cmd->command, "echo"))
-		g_exit = _echo(cmd) << 8;
+		cmd->exit_code = _echo(cmd);
 	else if (!ft_strcmp(cmd->command, "exit"))
 		;
 	close(cmd->fds[1]);
@@ -52,6 +52,6 @@ int	exec_builtin(t_command *cmd, int mode)
 	if (!cmd->next)
 		close(cmd->fds[0]);
 	if (mode)
-		exit(g_exit);
+		exit(cmd->exit_code);
 	return (1);
 }
