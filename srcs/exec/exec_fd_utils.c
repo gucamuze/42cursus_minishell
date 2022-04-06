@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 20:05:05 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/06 17:54:14 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/06 19:00:03 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,21 @@ int	setup_output_redir(t_command *cmd)
 	return (1);
 }
 
+static int	setup_fd_input(t_redirect *red)
+{
+	int	fd;
+
+	fd = 0;
+	if (red->redir_type == 2)
+		fd = open(red->redir_name, O_RDONLY, 0644);
+	else
+	{
+		red->tmp_herdoc = NULL;
+		fd = herdoc(red);
+	}
+	return (fd);
+}
+
 int	setup_input_redir(t_command *cmd)
 {
 	int			fd;
@@ -63,11 +78,11 @@ int	setup_input_redir(t_command *cmd)
 		cmd->next->fd_in = cmd->fds[0];
 	while (iterator)
 	{
-		if (iterator->redir_type == 2)
+		if (iterator->redir_type == 2 || iterator->redir_type == 3)
 		{
 			if (fd != -1)
 				close(fd);
-			fd = open(iterator->redir_name, O_RDONLY, 0644);
+			fd = setup_fd_input(iterator);
 			if (fd == -1)
 				return (_error(iterator->redir_name, 0));
 		}
@@ -80,6 +95,9 @@ int	setup_input_redir(t_command *cmd)
 
 unsigned int	close_all_fds(t_command *cmd)
 {
+	t_redirect	*iterator;
+
+	iterator = cmd->redirects;
 	while (cmd)
 	{
 		if (cmd->fds[0] > 2)
@@ -89,6 +107,17 @@ unsigned int	close_all_fds(t_command *cmd)
 		if (cmd->fd_in > 2)
 			close(cmd->fd_in);
 		cmd = cmd->next;
+	}
+	while (iterator)
+	{
+		if (iterator->redir_type == 3)
+		{
+			if (iterator->tmp_herdoc && access(iterator->tmp_herdoc, 0) != -1)
+				unlink(iterator->tmp_herdoc);
+			if (iterator->tmp_herdoc)
+				free(iterator->tmp_herdoc);
+		}
+		iterator = iterator->next;
 	}
 	return (0);
 }

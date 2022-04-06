@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:10 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/06 17:04:57 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/06 19:05:19 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ void	update_shlvl(t_env *env)
 
 int	shell_loop(char *prompt, t_env **env)
 {
+	t_data	data;
 	char	*user_input;
 
 	while (1)
@@ -58,7 +59,8 @@ int	shell_loop(char *prompt, t_env **env)
 			break ;
 		if (!str_is_empty(user_input))
 		{
-			parse_and_dispatch(env, user_input);
+			data.prompt = prompt;
+			parse_and_dispatch(env, user_input, &data);
 			add_history(user_input);
 			add_to_persistent_history(user_input, *env);
 			prompt = get_prompt(*env, prompt);

@@ -6,7 +6,7 @@
 #    By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/07/15 02:21:09 by gucamuze          #+#    #+#              #
-#    Updated: 2022/04/06 17:55:18 by gucamuze         ###   ########.fr        #
+#    Updated: 2022/04/06 19:04:27 by gucamuze         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,12 +25,12 @@ LIBFT_PATH		=	./libft/
 LIBFT_A			=	./libft/libft.a
 INCLUDES		=	-Iincludes -lreadline $(LIBFT_A)
 			
-EXEC			=	dispatcher.c exec.c exec_fd_utils.c
+EXEC			=	dispatcher.c exec.c exec_fd_utils.c herdoc.c
 EXEC_W_PATH		=	$(addprefix ${EXEC_PATH}, ${EXEC})
 EXEC_OFILES		=	$(EXEC_W_PATH:.c=.o)
 ALL_OFILES		+=	$(EXEC_OFILES)
 			
-BUILTINS		=	exec_builtin.c cd.c echo.c pwd.c unset.c export.c env.c
+BUILTINS		=	exec_builtin.c cd.c echo.c pwd.c unset.c export.c env.c exit.c
 BUILTINS_W_PATH	=	$(addprefix ${BUILTINS_PATH}, ${BUILTINS})
 BUILTINS_OFILES	=	$(BUILTINS_W_PATH:.c=.o)
 ALL_OFILES		+=	$(BUILTINS_OFILES)

@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/03 01:09:01 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/06 16:58:41 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/06 18:58:54 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static void	wait_and_set_errors(t_command *cmd)
 	}
 }
 
-static int	command_dispatcher(t_command *command)
+static int	command_dispatcher(t_command *command, t_data *data)
 {
 	t_command	*cmd;
 	int			pid_ret;
@@ -47,14 +47,14 @@ static int	command_dispatcher(t_command *command)
 	{
 		if (is_builtin(command->command) && !command->next)
 		{
-			exec_builtin(command, 0);
+			exec_builtin(command, 0, data);
 			g_exit = command->exit_code << 8;
 		}
 		else
 		{
 			while (command && command->command)
 			{
-				exec(command);
+				exec(command, data);
 				command = command->next;
 			}
 			wait_and_set_errors(cmd);
@@ -85,7 +85,7 @@ static void	reassign_env(t_env **env, t_command *cmd)
 	*env = cmd->env;
 }
 
-int	parse_and_dispatch(t_env **env, char *user_input)
+int	parse_and_dispatch(t_env **env, char *user_input, t_data *data)
 {
 	t_list		*parsed_pipes;
 	t_command	*cmd_lst;
@@ -101,7 +101,9 @@ int	parse_and_dispatch(t_env **env, char *user_input)
 	parse_commands(cmd_lst);
 	parse_quotes(cmd_lst);
 	set_fds(cmd_lst);
-	command_dispatcher(cmd_lst);
+	data->env = (*env);
+	data->user = user_input;
+	command_dispatcher(cmd_lst, data);
 	close_all_fds(cmd_lst);
 	reassign_env(env, cmd_lst);
 	cmd_lst_free(cmd_lst);

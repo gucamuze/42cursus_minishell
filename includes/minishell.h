@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:29 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/06 17:19:07 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/06 18:57:10 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ typedef struct s_redirect
 {
 	unsigned int		redir_type;
 	char				*redir_name;
+	char				*tmp_herdoc;
 	struct s_redirect	*next;
 }	t_redirect;
 
@@ -57,15 +58,16 @@ typedef struct s_command
 // Future struct to use for free in case of an unexpected exit or sigdie 
 typedef struct s_data
 {
-	t_env		**env;
-	t_command	*cmd_lst;
+	char		*prompt;
+	char		*user;
+	t_env		*env;
 }	t_data;
 
 // EXEC
 // dispatcher
-int				parse_and_dispatch(t_env **env, char *user_input);
+int				parse_and_dispatch(t_env **env, char *user_input, t_data *data);
 // exec
-int				exec(t_command *cmd);
+int				exec(t_command *cmd, t_data *data);
 // exec_fd_utils
 unsigned int	close_all_fds(t_command *cmd);
 int				setup_input_redir(t_command *cmd);
@@ -74,7 +76,7 @@ int				setup_output_redir(t_command *cmd);
 
 // BUILTINS
 unsigned int	is_builtin(const char *command);
-int				exec_builtin(t_command *cmd, int mode);
+int				exec_builtin(t_command *cmd, int mode, t_data *data);
 // cd
 unsigned int	_cd(t_command *cmd);
 // echo
@@ -88,7 +90,9 @@ unsigned int	_unset(t_command *cmd);
 // export
 unsigned int	_export(t_command *cmd);
 // exit
-// unsigned int	exit();
+unsigned int	ft_exit(t_command *cmd, t_data *data, int mode);
+// herdoc
+int				herdoc(t_redirect *redir);
 // END BUILTINS
 
 // UTILS
@@ -164,5 +168,5 @@ unsigned int	str_is_empty(char *str);
 int				ft_strcmp(const char *s1, const char *s2);
 char			*ft_strjoin3(const char *s1, const char *s2, const char *s3);
 char			*ft_strncpy(char *str, size_t size);
-
+void			cleanup(char *prompt, t_env *env);
 #endif
