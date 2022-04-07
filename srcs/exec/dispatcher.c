@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/03 01:09:01 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/07 19:47:17 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/07 20:33:45 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,13 +99,13 @@ int	parse_and_dispatch(t_env **env, char *user_input, t_data *data)
 	t_command	*cmd_lst;
 
 	if (!check_unending_quotes(user_input))
-		return (!printf("Syntax error: invalid quotes !\n"));
+		return (dispatcher_error(0, 0, 0));
 	parsed_pipes = parse_pipes(user_input);
 	if (!check_invalid_pipes(parsed_pipes))
-		return (!printf("Syntax error: invalid pipe !\n"));
+		return (dispatcher_error(parsed_pipes, 0, 1));
 	cmd_lst = cmd_lst_create(*env, parsed_pipes);
 	if (!parse_redirects(cmd_lst))
-		return (!printf("Syntax error: invalid redirect !\n"));
+		return (dispatcher_error(parsed_pipes, cmd_lst, 2));
 	parse_commands(cmd_lst);
 	parse_quotes(cmd_lst);
 	set_fds(cmd_lst);

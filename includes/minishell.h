@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:29 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/07 19:55:17 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/07 20:41:34 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,9 @@
 # include <unistd.h>
 
 # define D_PATH "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+# define INVALID_QUOTES "Syntax error: invalid quotes !\n"
+# define INVALID_PIPES "Syntax error: invalid pipe !\n"
+# define INVALID_REDIRECT "Syntax error: invalid redirect !\n"
 
 extern int	g_exit;
 // Env
@@ -111,6 +114,7 @@ t_command		*cmd_lst_create(t_env *env, t_list *parsed_pipes);
 void			__DEBUG_output_cmd_lst(t_command *cmd);
 void			__DEBUG_output_split(char **split);
 // commands_lst_utils
+void			cmd_lst_free_if_error(t_command *cmd_lst);
 t_command		*cmdlst_new(t_env *env, char *command);
 void			cmdlst_add_back(t_command **cmd_lst, t_command *new);
 // redir_lst_utils
@@ -133,6 +137,7 @@ int				check_unending_quotes(char *command);
 char			*_exit_var_overflow(t_list **lst);
 int				_error(const char *s, int ret);
 int				_exit_err(char *err_msg, t_command *cmd, int code, int ret);
+int				dispatcher_error(t_list *pipes, t_command *cmd_lst, int mode);
 // history
 int				add_to_persistent_history(char *str, t_env *env);
 int				import_history(t_env *env);

@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/16 00:08:07 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/07 20:16:11 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/07 20:23:43 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ t_list	*parse_pipes_loop(char *user_input, t_list *lst, int i, int j)
 		else if (user_input[i] == '\'' || user_input[i] == '\"')
 		{
 			j = 1;
-			while (user_input[i + j] != user_input[i])
+			while (user_input[i + j] && user_input[i + j] != user_input[i])
 				j++;
 			i += j;
 		}

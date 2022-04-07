@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 17:13:41 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/06 22:30:27 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/07 20:41:22 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,22 @@ void	cmd_lst_free(t_command *cmd_lst)
 	{
 		if (cmd_lst->args)
 			free_split(cmd_lst->args);
+		if (cmd_lst->redirects)
+			redir_lst_free(cmd_lst->redirects);
+		if (cmd_lst->next)
+			cmd_lst_free(cmd_lst->next);
+		free(cmd_lst);
+	}
+}
+
+void	cmd_lst_free_if_error(t_command *cmd_lst)
+{
+	if (cmd_lst)
+	{
+		if (cmd_lst->args)
+			free_split(cmd_lst->args);
+		if (cmd_lst->command)
+			free(cmd_lst->command);
 		if (cmd_lst->redirects)
 			redir_lst_free(cmd_lst->redirects);
 		if (cmd_lst->next)

@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 22:32:01 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/06 17:21:57 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/07 20:41:42 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,4 +34,22 @@ int	_error(const char *s, int ret)
 	ft_putstr_fd("minishell: ", 2);
 	perror(s);
 	return (ret);
+}
+
+// 0 for quotes, 1 for pipes, 2 for redirects
+int	dispatcher_error(t_list *pipes, t_command *cmd_lst, int mode)
+{
+	if (mode == 1)
+		if (pipes)
+			ft_lstclear(&pipes, free);
+	if (mode == 2)
+		if (cmd_lst)
+			cmd_lst_free_if_error(cmd_lst);
+	if (mode == 0)
+		ft_putstr_fd(INVALID_QUOTES, 2);
+	if (mode == 1)
+		ft_putstr_fd(INVALID_PIPES, 2);
+	if (mode == 2)
+		ft_putstr_fd(INVALID_REDIRECT, 2);
+	return (0);
 }
