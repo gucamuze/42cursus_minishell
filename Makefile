@@ -6,7 +6,7 @@
 #    By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/07/15 02:21:09 by gucamuze          #+#    #+#              #
-#    Updated: 2022/04/06 21:41:14 by gucamuze         ###   ########.fr        #
+#    Updated: 2022/04/07 11:14:03 by malbrand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ LIBFT_PATH		=	./libft/
 LIBFT_A			=	./libft/libft.a
 INCLUDES		=	-Iincludes -lreadline $(LIBFT_A)
 			
-EXEC			=	dispatcher.c exec.c exec_fd_utils.c heredoc.c
+EXEC			=	dispatcher.c exec.c exec_fd_utils.c heredoc.c path.c
 EXEC_W_PATH		=	$(addprefix ${EXEC_PATH}, ${EXEC})
 EXEC_OFILES		=	$(EXEC_W_PATH:.c=.o)
 ALL_OFILES		+=	$(EXEC_OFILES)

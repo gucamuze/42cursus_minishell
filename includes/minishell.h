@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:29 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/07 04:47:16 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/07 11:18:47 by malbrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,9 @@ int				exec(t_command *cmd, t_data *data);
 unsigned int	close_all_fds(t_command *cmd);
 int				setup_input_redir(t_command *cmd);
 int				setup_output_redir(t_command *cmd);
+// path
+int				get_absolute_path(
+					const char *command, const char *paths, char **abs_p);
 // END EXEC
 
 // BUILTINS

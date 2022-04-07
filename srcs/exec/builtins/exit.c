@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 15:34:08 by malbrand          #+#    #+#             */
-/*   Updated: 2022/04/07 10:59:51 by malbrand         ###   ########.fr       */
+/*   Updated: 2022/04/07 11:21:50 by malbrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ static void	exit_num(t_command *cmd, long long int l_nb,
 
 static void	free_exit(t_command *cmd, t_data *data)
 {
-	free_exit(cmd, data);
 	cleanup(data);
 	close_all_fds(cmd);
 	cmd_lst_free(cmd);
@@ -107,6 +106,7 @@ unsigned int	ft_exit(t_command *cmd, t_data *data, int mode)
 			g_exit = 2;
 		}
 		printf("\n");
+		free_exit(cmd, data);
 	}
 	return (0);
 }
