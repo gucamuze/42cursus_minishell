@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malbrand <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 15:34:08 by malbrand          #+#    #+#             */
-/*   Updated: 2022/04/06 18:51:27 by malbrand         ###   ########.fr       */
+/*   Updated: 2022/04/07 04:53:00 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,8 +96,7 @@ unsigned int	ft_exit(t_command *cmd, t_data *data, int mode)
 			g_exit = 2;
 		}
 		printf("\n");
-		cleanup(data->prompt, data->env);
-		free(data->user);
+		cleanup(data);
 		close_all_fds(cmd);
 		cmd_lst_free(cmd);
 		exit(g_exit);

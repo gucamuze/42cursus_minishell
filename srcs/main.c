@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:10 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/06 19:12:25 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/07 05:21:18 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,35 @@
 
 int	g_exit = 0;
 
-void	cleanup(char *prompt, t_env *env)
+void	cleanup(t_data *data)
 {
 	t_env	*env_tmp;
 
-	env_tmp = env;
-	if (prompt)
-		free(prompt);
-	if (env)
+	env_tmp = *data->env;
+	if (data)
 	{
-		while (env)
+		if (data->prompt)
+			free(data->prompt);
+		if (data->env && *data->env)
 		{
-			env_tmp = env->next;
-			free(env->name);
-			free(env->value);
-			free(env);
-			env = env_tmp;
+			while (*data->env)
+			{
+				env_tmp = (*data->env)->next;
+				free((*data->env)->name);
+				free((*data->env)->value);
+				free(*data->env);
+				*data->env = env_tmp;
+			}
+			free(data->env);
 		}
+		if (data->user_input)
+			free(data->user_input);
+		free(data);
 	}
 	rl_clear_history();
 }
 
-void	update_shlvl(t_env *env)
+static void	update_shlvl(t_env *env)
 {
 	int	shlvl;
 
@@ -47,47 +54,66 @@ void	update_shlvl(t_env *env)
 		update_env(env, "SHLVL", ft_itoa(shlvl));
 }
 
-int	shell_loop(char *prompt, t_env **env)
+static int	shell_loop(t_data *data)
 {
-	t_data	data;
-	char	*user_input;
+	char	*oldprompt;
 
 	while (1)
 	{
-		user_input = readline(prompt);
-		if (!user_input)
+		data->user_input = readline(data->prompt);
+		if (!data->user_input)
 			break ;
-		if (!str_is_empty(user_input))
+		if (!str_is_empty(data->user_input))
 		{
-			data.prompt = prompt;
-			parse_and_dispatch(env, user_input, &data);
-			add_history(user_input);
-			add_to_persistent_history(user_input, *env);
-			prompt = get_prompt(*env, prompt);
-			free(user_input);
-			if (!prompt)
+			oldprompt = data->prompt;
+			parse_and_dispatch(data->env, data->user_input, data);
+			add_history(data->user_input);
+			add_to_persistent_history(data->user_input, *data->env);
+			data->prompt = get_prompt(*data->env, oldprompt);
+			free(data->user_input);
+			if (!data->prompt)
 				return (0);
 		}
+		else
+			free(data->user_input);
 	}
 	return (1);
 }
 
+t_data	*setup_data(void)
+{
+	t_data	*data;
+	
+	data = malloc(sizeof(t_data));
+	if (!data)
+		return (0);
+	data->env = malloc(sizeof(t_env *));
+	if (!data->env)
+	{
+		free(data);
+		return (0);
+	}
+	return (data);
+}
+
 int	main(int ac, char **av, char **env)
 {
-	char				*prompt;
-	t_env				*env_lst;
+	t_data				*data;
 
 	(void)ac;
 	(void)av;
-	env_lst = env_to_lst(env);
-	update_shlvl(env_lst);
+	data = setup_data();
+	if (!data)
+		return (0);
+	*data->env = env_to_lst(env);
+	update_shlvl(*data->env);
 	set_signals(0);
-	prompt = get_prompt(env_lst, 0);
-	if (!prompt)
+	data->prompt = get_prompt(*data->env, 0);
+	if (!data->prompt)
 		return (0);
 	if (env)
-		import_history(env_lst);
-	shell_loop(prompt, &env_lst);
-	cleanup(prompt, env_lst);
+		import_history(*data->env);
+	shell_loop(data);
+	cleanup(data);
 	exit(0);
 }
