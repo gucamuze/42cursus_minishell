@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/03 01:09:01 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/07 04:52:31 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/07 15:30:01 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,21 +41,32 @@ static int	command_dispatcher(t_command *command, t_data *data)
 	t_command	*cmd;
 
 	cmd = command;
-	if (command && command->command)
+	if (command)
 	{
-		if (is_builtin(command->command) && !command->next)
+		if (command->command)
 		{
-			exec_builtin(command, 0, data);
-			g_exit = command->exit_code << 8;
+			if (is_builtin(command->command) && !command->next)
+			{
+				exec_builtin(command, 0, data);
+				g_exit = command->exit_code << 8;
+			}
+			else
+			{
+				while (command && command->command)
+				{
+					exec(command, data);
+					command = command->next;
+				}
+				wait_and_set_errors(cmd);
+			}
 		}
 		else
 		{
-			while (command && command->command)
-			{
-				exec(command, data);
-				command = command->next;
-			}
-			wait_and_set_errors(cmd);
+			if (pipe(command->fds) == -1)
+				return (-1);
+			if (!setup_input_redir(command) || !setup_output_redir(command))
+				return (-1);
+			command = command->next;
 		}
 		set_signals(0);
 	}
