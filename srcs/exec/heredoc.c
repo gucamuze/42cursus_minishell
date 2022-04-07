@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 16:00:27 by malbrand          #+#    #+#             */
-/*   Updated: 2022/04/06 22:42:15 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/07 18:12:24 by malbrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ int	heredoc(t_redirect *redirect)
 		set_signals(2);
 		waitpid(pid, &fork_ret, 0);
 		set_signals(0);
+
 		if (fork_ret >> 8 == 130 || fork_ret >> 8 == 131)
 			return (-2);
 		if (fork_ret >> 8 == -1)

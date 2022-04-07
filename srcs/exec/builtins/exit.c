@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 15:34:08 by malbrand          #+#    #+#             */
-/*   Updated: 2022/04/07 13:12:27 by malbrand         ###   ########.fr       */
+/*   Updated: 2022/04/07 17:33:51 by malbrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ static unsigned long long int	ft_atoul(const char *nptr)
 {
 	int							sign;
 	unsigned long long int		result;
+	unsigned long long int		verif;
+	
 
 	sign = 1;
 	result = 0;
@@ -42,8 +44,11 @@ static unsigned long long int	ft_atoul(const char *nptr)
 			sign = -1;
 	while (*nptr >= '0' && *nptr <= '9')
 	{
+		verif = result;
 		result = result * 10 + (*nptr++ - 48);
 	}
+	if (result < verif)
+		return (9223372036854775808u);
 	return (sign * result);
 }
 

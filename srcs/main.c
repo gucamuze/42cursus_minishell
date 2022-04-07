@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:10 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/07 13:12:33 by malbrand         ###   ########.fr       */
+/*   Updated: 2022/04/07 18:12:56 by malbrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,5 +116,5 @@ int	main(int ac, char **av, char **env)
 		import_history(*data->env);
 	shell_loop(data);
 	cleanup(data);
-	exit(0);
+	exit(g_exit << 8);
 }
