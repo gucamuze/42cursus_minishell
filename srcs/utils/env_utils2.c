@@ -6,11 +6,21 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 17:54:40 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/06 17:55:05 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/07 20:59:18 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	reassign_env(t_env **env, t_command *cmd)
+{
+	if (cmd->next)
+	{
+		while (cmd->next)
+			cmd = cmd->next;
+	}
+	*env = cmd->env;
+}
 
 // !! var_name and value MUST BE malloc'd if value is 
 // to be created and not updated !!

@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/03 01:09:01 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/07 20:33:45 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/07 21:00:05 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ static void	wait_and_set_errors(t_command *cmd)
 	}
 	if (g_exit != 130 << 8 && g_exit != 131 << 8)
 	{
-		printf("exit code = %d\n", exit_code);
 		if (last->exit_code == 127)
 			g_exit = 127 << 8;
 		else
@@ -37,35 +36,38 @@ static void	wait_and_set_errors(t_command *cmd)
 	}
 }
 
-static int	command_dispatcher(t_command *command, t_data *data)
+static void	execute(t_command *cmd_lst, t_data *data)
 {
 	t_command	*cmd;
 
-	cmd = command;
-	if (command)
+	cmd = cmd_lst;
+	if (is_builtin(cmd_lst->command) && !cmd_lst->next)
 	{
-		if (command->command)
+		exec_builtin(cmd_lst, 0, data);
+		g_exit = cmd_lst->exit_code << 8;
+	}
+	else
+	{
+		while (cmd_lst && cmd_lst->command)
 		{
-			if (is_builtin(command->command) && !command->next)
-			{
-				exec_builtin(command, 0, data);
-				g_exit = command->exit_code << 8;
-			}
-			else
-			{
-				while (command && command->command)
-				{
-					exec(command, data);
-					command = command->next;
-				}
-				wait_and_set_errors(cmd);
-			}
+			exec(cmd_lst, data);
+			cmd_lst = cmd_lst->next;
 		}
+		wait_and_set_errors(cmd);
+	}
+}
+
+static int	command_dispatcher(t_command *cmd_lst, t_data *data)
+{
+	if (cmd_lst)
+	{
+		if (cmd_lst->command)
+			execute(cmd_lst, data);
 		else
 		{
-			if (!setup_input_redir(command) || !setup_output_redir(command))
+			if (!setup_input_redir(cmd_lst) || !setup_output_redir(cmd_lst))
 				return (-1);
-			command = command->next;
+			cmd_lst = cmd_lst->next;
 		}
 		set_signals(0);
 	}
@@ -81,16 +83,6 @@ static void	set_fds(t_command *cmd)
 		cmd->fd_in = -1;
 		set_fds(cmd->next);
 	}
-}
-
-static void	reassign_env(t_env **env, t_command *cmd)
-{
-	if (cmd->next)
-	{
-		while (cmd->next)
-			cmd = cmd->next;
-	}
-	*env = cmd->env;
 }
 
 int	parse_and_dispatch(t_env **env, char *user_input, t_data *data)

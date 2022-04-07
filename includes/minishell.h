@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:29 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/07 20:41:34 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/07 20:59:31 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,7 @@ t_env			*env_to_lst(char **env);
 void			update_env(t_env *env, char *var_name, char *value);
 char			*get_env_val(t_env *env, const char *var_name, int mode);
 void			print_env(t_env *env, int fd);
+void			reassign_env(t_env **env, t_command *cmd);
 // quotes_utils
 unsigned int	is_quote(char c);
 unsigned int	get_next_quote_pos(char *str);
@@ -142,8 +143,8 @@ int				dispatcher_error(t_list *pipes, t_command *cmd_lst, int mode);
 int				add_to_persistent_history(char *str, t_env *env);
 int				import_history(t_env *env);
 // heredoc_utils
-char		*change_name(char *s, int point);
-char		*setup_filename(char *s);
+char			*change_name(char *s, int point);
+char			*setup_filename(char *s);
 // END UTILS
 
 // PARSER
