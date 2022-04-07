@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:10 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/07 12:48:30 by malbrand         ###   ########.fr       */
+/*   Updated: 2022/04/07 13:12:33 by malbrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,6 @@ void	cleanup(t_data *data)
 		}
 		if (data->user_input)
 			free(data->user_input);
-		if (data->envp)
-		{
-			free_split(data->envp);
-			data->envp = NULL;
-		}
 		free(data);
 	}
 	rl_clear_history();

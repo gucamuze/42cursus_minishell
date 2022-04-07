@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 15:34:08 by malbrand          #+#    #+#             */
-/*   Updated: 2022/04/07 11:21:50 by malbrand         ###   ########.fr       */
+/*   Updated: 2022/04/07 13:12:27 by malbrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,11 @@ static void	exit_num(t_command *cmd, long long int l_nb,
 
 static void	free_exit(t_command *cmd, t_data *data)
 {
+	if (data->envp)
+	{
+		free_split(data->envp);
+		data->envp = NULL;
+	}
 	cleanup(data);
 	close_all_fds(cmd);
 	cmd_lst_free(cmd);
