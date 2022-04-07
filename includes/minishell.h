@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:29 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/07 20:59:31 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/07 21:03:15 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ unsigned int	is_builtin(const char *command);
 int				exec_builtin(t_command *cmd, int mode, t_data *data);
 // cd
 unsigned int	_cd(t_command *cmd);
+int				exec_cd_(t_command *cmd, int exit, char *oldpwd);
 // echo
 unsigned int	_echo(t_command *cmd);
 // pwd

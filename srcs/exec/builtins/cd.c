@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 16:46:35 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/07 05:50:12 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/07 20:59:06 by malbrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,14 +62,14 @@ static int	exec_cd(t_command *cmd)
 	{
 		cd_dir = get_env_val(cmd->env, "HOME", 0);
 		if (!cd_dir)
-			return (_exit_err(" HOME not set", cmd, 1, 1));
+			return (exec_cd_(cmd, 1, oldpwd));
 	}
 	else
 		cd_dir = trim_useless_slashes(cmd->args[1]);
 	if (!chdir(cd_dir))
 		return (update_pwds(cmd, getcwd(0, 0), oldpwd));
 	else
-		return (_error(cmd->args[1], 1));
+		return (exec_cd_(cmd, 0, oldpwd));
 	if (cmd->args[1])
 	{
 		ft_putstr_fd("cd: no such file or directory: ", cmd->fds[1]);
