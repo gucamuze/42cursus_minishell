@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 20:05:05 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/06 19:00:03 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/06 21:41:19 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,15 +55,16 @@ int	setup_output_redir(t_command *cmd)
 static int	setup_fd_input(t_redirect *red)
 {
 	int	fd;
+	int	heredoc_ret;
 
-	fd = 0;
-	if (red->redir_type == 2)
-		fd = open(red->redir_name, O_RDONLY, 0644);
-	else
+	fd = -1;
+	if (red->redir_type == 3)
 	{
-		red->tmp_herdoc = NULL;
-		fd = herdoc(red);
+		heredoc_ret = heredoc(red);
+		if (heredoc_ret < 0)
+			return (heredoc_ret);
 	}
+	fd = open(red->redir_name, O_RDONLY, 0644);
 	return (fd);
 }
 
@@ -85,6 +86,8 @@ int	setup_input_redir(t_command *cmd)
 			fd = setup_fd_input(iterator);
 			if (fd == -1)
 				return (_error(iterator->redir_name, 0));
+			if (fd == -2)
+				return (0);
 		}
 		iterator = iterator->next;
 	}
@@ -111,12 +114,8 @@ unsigned int	close_all_fds(t_command *cmd)
 	while (iterator)
 	{
 		if (iterator->redir_type == 3)
-		{
-			if (iterator->tmp_herdoc && access(iterator->tmp_herdoc, 0) != -1)
-				unlink(iterator->tmp_herdoc);
-			if (iterator->tmp_herdoc)
-				free(iterator->tmp_herdoc);
-		}
+			if (iterator->redir_name && access(iterator->redir_name, 0) != -1)
+				unlink(iterator->redir_name);
 		iterator = iterator->next;
 	}
 	return (0);

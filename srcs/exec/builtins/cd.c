@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 16:46:35 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/06 16:47:06 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/07 05:50:12 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,17 +40,13 @@ char	*trim_useless_slashes(char *path)
 static int	update_pwds(t_command *cmd, char *pwd, char *oldpwd)
 {
 	if (!get_env_val(cmd->env, "PWD", 0))
-	{
-		printf("setting pwd...\n");
 		update_env(cmd->env, ft_strdup("PWD"), pwd);
-	}
 	else
 		update_env(cmd->env, "PWD", pwd);
+	if (!oldpwd)
+		oldpwd = ft_strdup(pwd);
 	if (!get_env_val(cmd->env, "OLDPWD", 0))
-	{
-		printf("setting oldpwd...\n");
 		update_env(cmd->env, ft_strdup("OLDPWD"), oldpwd);
-	}
 	else
 		update_env(cmd->env, "OLDPWD", oldpwd);
 	return (0);
@@ -61,7 +57,7 @@ static int	exec_cd(t_command *cmd)
 	char	*oldpwd;
 	char	*cd_dir;
 
-	oldpwd = getcwd(0, 0);
+	oldpwd = get_env_val(cmd->env, "PWD", 1);
 	if (!cmd->args[1])
 	{
 		cd_dir = get_env_val(cmd->env, "HOME", 0);

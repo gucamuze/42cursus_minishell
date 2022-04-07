@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:29 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/06 18:57:10 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/07 04:47:16 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ typedef struct s_redirect
 {
 	unsigned int		redir_type;
 	char				*redir_name;
-	char				*tmp_herdoc;
 	struct s_redirect	*next;
 }	t_redirect;
 
@@ -59,8 +58,8 @@ typedef struct s_command
 typedef struct s_data
 {
 	char		*prompt;
-	char		*user;
-	t_env		*env;
+	char		*user_input;
+	t_env		**env;
 }	t_data;
 
 // EXEC
@@ -92,7 +91,7 @@ unsigned int	_export(t_command *cmd);
 // exit
 unsigned int	ft_exit(t_command *cmd, t_data *data, int mode);
 // herdoc
-int				herdoc(t_redirect *redir);
+int				heredoc(t_redirect *redir);
 // END BUILTINS
 
 // UTILS
@@ -168,5 +167,5 @@ unsigned int	str_is_empty(char *str);
 int				ft_strcmp(const char *s1, const char *s2);
 char			*ft_strjoin3(const char *s1, const char *s2, const char *s3);
 char			*ft_strncpy(char *str, size_t size);
-void			cleanup(char *prompt, t_env *env);
+void			cleanup(t_data *data);
 #endif

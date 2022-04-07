@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/03 01:09:01 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/06 18:58:54 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/07 04:52:31 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,8 @@ static void	wait_and_set_errors(t_command *cmd)
 static int	command_dispatcher(t_command *command, t_data *data)
 {
 	t_command	*cmd;
-	int			pid_ret;
 
 	cmd = command;
-	pid_ret = 0;
 	if (command && command->command)
 	{
 		if (is_builtin(command->command) && !command->next)
@@ -101,8 +99,8 @@ int	parse_and_dispatch(t_env **env, char *user_input, t_data *data)
 	parse_commands(cmd_lst);
 	parse_quotes(cmd_lst);
 	set_fds(cmd_lst);
-	data->env = (*env);
-	data->user = user_input;
+	data->env = env;
+	data->user_input = user_input;
 	command_dispatcher(cmd_lst, data);
 	close_all_fds(cmd_lst);
 	reassign_env(env, cmd_lst);

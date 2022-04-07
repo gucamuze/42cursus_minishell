@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/25 18:10:24 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/03/28 21:20:14 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/06 22:09:08 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,15 @@
 
 void	ft_lstclear(t_list **lst, void (*del)(void *))
 {
-	t_list	*elem;
-	t_list	*tmp;
+	t_list	*iterator;
 
-	if (*lst)
+	if (!*lst)
+		return ;
+	while (*lst)
 	{
-		elem = *lst;
-		while (elem)
-		{
-			(*del)(elem->content);
-			tmp = elem->next;
-			free(elem);
-			elem = tmp;
-		}
+		iterator = (*lst)->next;
+		ft_lstdelone(*lst, del);
+		*lst = iterator;
 	}
-	*lst = NULL;
+	*lst = 0;
 }

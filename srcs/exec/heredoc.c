@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   herdoc.c                                           :+:      :+:    :+:   */
+/*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malbrand <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 16:00:27 by malbrand          #+#    #+#             */
-/*   Updated: 2022/04/05 19:17:39 by malbrand         ###   ########.fr       */
+/*   Updated: 2022/04/06 22:42:15 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,17 +26,10 @@ static char	*change_name(char *s, int point)
 	if (file_name == NULL)
 		return (NULL);
 	while (i < point)
-	{
-		file_name[i] = '.';
-		i++;
-	}
+		file_name[i++] = '.';
 	while (i < len)
-	{
-		file_name[i] = s[j];
-		i++;
-		j++;
-	}
-	file_name[i] = '\0';
+		file_name[i++] = s[j++];
+	file_name[i] = 0;
 	return (file_name);
 }
 
@@ -56,43 +49,51 @@ static char	*setup_filename(char *s)
 	return (file_name);
 }
 
-static int	free_herdoc(char *s, int fd, char *file_name)
+static int	forked_heredoc(t_redirect *redirect)
 {
-	if (!s)
-	{
-		close(fd);
-		unlink(file_name);
-		free(file_name);
-		return (-1);
-	}
-	return (0);
-}
-
-int	herdoc(t_redirect *iterator)
-{
-	int		fd;
-	int		len;
 	char	*s;
 	char	*file_name;
+	int		fd;
 
-	file_name = setup_filename(iterator->redir_name);
-	fd = open(file_name, O_CREAT | O_TRUNC | O_WRONLY, 0664);
-	s = readline(">");
-	if (free_herdoc(s, fd, file_name) == -1)
-		return (-1);
-	len = ft_strlen(s);
-	while (s != NULL && ft_strncmp(s, iterator->redir_name, len) != 0)
+	set_signals(1);
+	file_name = setup_filename(redirect->redir_name);
+	fd = open(file_name, 01101, 0664);
+	if (fd == -1)
+		exit(_error(redirect->redir_name, -1));
+	s = readline("heredoc> ");
+	while (s != NULL && ft_strcmp(s, redirect->redir_name))
 	{
-		write(fd, s, len);
-		write(fd, "\n", 1);
+		ft_putendl_fd(s, fd);
 		free(s);
-		s = readline(">");
-		if (free_herdoc(s, fd, file_name) == -1)
-			return (-1);
-		len = ft_strlen(s);
+		s = readline("heredoc> ");
 	}
-	close (fd);
-	fd = open(file_name, O_RDONLY, 0644);
-	iterator->tmp_herdoc = file_name;
-	return (fd);
+	if (s == NULL)
+		write(1, "\n", 1);
+	close(fd);
+	free(redirect->redir_name);
+	redirect->redir_name = file_name;
+	exit(0);
+}
+
+int	heredoc(t_redirect *redirect)
+{
+	pid_t	pid;
+	int		fork_ret;
+
+	pid = fork();
+	if (pid == -1)
+		return (-1);
+	if (pid == 0)
+		forked_heredoc(redirect);
+	else
+	{
+		set_signals(2);
+		waitpid(pid, &fork_ret, 0);
+		set_signals(0);
+		if (fork_ret >> 8 == 130 || fork_ret >> 8 == 131)
+			return (-2);
+		if (fork_ret >> 8 == -1)
+			return (-1);
+	}
+	return (0);
 }

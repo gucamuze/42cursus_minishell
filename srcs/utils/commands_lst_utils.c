@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 17:13:41 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/06 17:03:57 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/06 22:30:27 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ t_command	*cmdlst_new(t_env *env, char *command)
 	new->env = env;
 	new->redirects = 0;
 	new->exit_code = 0;
+	new->pid = 0;
 	new->next = 0;
 	return (new);
 }
