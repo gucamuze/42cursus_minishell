@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:10 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/07 05:21:18 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/07 05:53:13 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ static int	shell_loop(t_data *data)
 t_data	*setup_data(void)
 {
 	t_data	*data;
-	
+
 	data = malloc(sizeof(t_data));
 	if (!data)
 		return (0);
