@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 17:46:16 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/06 20:48:58 by malbrand         ###   ########.fr       */
+/*   Updated: 2022/04/07 11:41:40 by malbrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,15 @@ unsigned int	is_builtin(const char *command)
 	return (0);
 }
 
-int	norming_makes_code_ugly(int mode, int exit_code)
+int	norming_makes_code_ugly(int mode, int exit_code, t_command *cmd, t_data *data)
 {
 	if (mode)
+	{
+		cleanup(data);
+		close_all_fds(cmd);
+		cmd_lst_free(cmd);
 		exit(exit_code);
+	}
 	return (1);
 }
 
@@ -58,5 +63,5 @@ int	exec_builtin(t_command *cmd, int mode, t_data *data)
 		close(cmd->fd_in);
 	if (!cmd->next)
 		close(cmd->fds[0]);
-	return (norming_makes_code_ugly(mode, cmd->exit_code));
+	return (norming_makes_code_ugly(mode, cmd->exit_code, cmd, data));
 }

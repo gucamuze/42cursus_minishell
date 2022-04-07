@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 14:50:32 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/07 11:13:35 by malbrand         ###   ########.fr       */
+/*   Updated: 2022/04/07 12:50:19 by malbrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,29 +57,29 @@ static int	fork_it(
 
 int	exec(t_command *cmd, t_data *data)
 {
-	char	**envp;
 	char	*path;
 
 	if (pipe(cmd->fds) == -1)
 		return (-1);
 	if (!setup_input_redir(cmd) || !setup_output_redir(cmd))
 		return (-1);
-	envp = envlst_to_tab(cmd->env);
-	if (!envp)
+	data->envp = envlst_to_tab(cmd->env);
+	if (!data->envp)
 		return (-1);
 	if (is_builtin(cmd->command))
-		fork_it(cmd->command, cmd, envp, data);
+		fork_it(cmd->command, cmd, data->envp, data);
 	else
 	{
 		if (get_absolute_path(cmd->command,
 				get_env_val(cmd->env, "PATH", 0), &path) == -1)
 		{
-			free_split(envp);
+			free_split(data->envp);
 			return (_exit_err(": command not found", cmd, 127, -1));
 		}
-		fork_it(path, cmd, envp, data);
+		fork_it(path, cmd, data->envp, data);
 		free(path);
 	}
-	free_split(envp);
+	free_split(data->envp);
+	data->envp = NULL;
 	return (0);
 }

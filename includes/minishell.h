@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:29 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/07 11:18:47 by malbrand         ###   ########.fr       */
+/*   Updated: 2022/04/07 12:46:32 by malbrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ typedef struct s_data
 {
 	char		*prompt;
 	char		*user_input;
+	char		**envp;
 	t_env		**env;
 }	t_data;
 
