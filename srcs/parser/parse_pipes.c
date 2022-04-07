@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/16 00:08:07 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/06 17:33:50 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/07 20:16:11 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ t_list	*parse_pipes_loop(char *user_input, t_list *lst, int i, int j)
 				j++;
 			i += j;
 		}
-		i++;
+		else
+			i++;
 		if (!user_input[i])
 			ft_lstadd_back(&lst, ft_lstnew(ft_strndup(user_input, i)));
 	}

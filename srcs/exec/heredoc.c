@@ -6,58 +6,36 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 16:00:27 by malbrand          #+#    #+#             */
-/*   Updated: 2022/04/07 18:12:24 by malbrand         ###   ########.fr       */
+/*   Updated: 2022/04/07 20:21:25 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*change_name(char *s, int point)
+int	setup_heredocs(t_command *cmd_lst)
 {
-	int		i;
-	int		j;
-	int		len;
-	char	*file_name;
+	t_redirect	*iterator;
 
-	i = 0;
-	j = 0;
-	len = ft_strlen(s) + point + 1;
-	file_name = (char *)malloc(sizeof(char) * len + 1);
-	if (file_name == NULL)
-		return (NULL);
-	while (i < point)
-		file_name[i++] = '.';
-	while (i < len)
-		file_name[i++] = s[j++];
-	file_name[i] = 0;
-	return (file_name);
-}
-
-static char	*setup_filename(char *s)
-{
-	int		point;
-	char	*file_name;
-
-	point = 0;
-	file_name = ft_strdup(s);
-	while (access(file_name, F_OK) != -1)
+	while (cmd_lst)
 	{
-		point++;
-		free(file_name);
-		file_name = change_name(s, point);
+		iterator = cmd_lst->redirects;
+		while (iterator)
+		{
+			if (iterator->redir_type == 3)
+				cmd_lst->fd_in = heredoc(cmd_lst, iterator);
+			iterator = iterator->next;
+		}
+		cmd_lst = cmd_lst->next;
 	}
-	return (file_name);
+	return (0);
 }
 
-static int	forked_heredoc(t_redirect *redirect)
+static int	forked_heredoc(t_command *cmd, t_redirect *redirect, int fd)
 {
 	char	*s;
-	char	*file_name;
-	int		fd;
 
+	(void)cmd;
 	set_signals(1);
-	file_name = setup_filename(redirect->redir_name);
-	fd = open(file_name, 01101, 0664);
 	if (fd == -1)
 		exit(_error(redirect->redir_name, -1));
 	s = readline("heredoc> ");
@@ -70,31 +48,43 @@ static int	forked_heredoc(t_redirect *redirect)
 	if (s == NULL)
 		write(1, "\n", 1);
 	close(fd);
-	free(redirect->redir_name);
-	redirect->redir_name = file_name;
 	exit(0);
 }
 
-int	heredoc(t_redirect *redirect)
+static int	parent_heredoc(t_redirect *redir, char *file, pid_t pid, int fd)
 {
-	pid_t	pid;
 	int		fork_ret;
 
+	set_signals(2);
+	waitpid(pid, &fork_ret, 0);
+	set_signals(0);
+	if (g_exit >> 8 == 130 || g_exit >> 8 == 131)
+	{
+		free(file);
+		return (-2);
+	}
+	if (fork_ret >> 8 == -1)
+		return (-1);
+	free(redir->redir_name);
+	redir->redir_name = file;
+	close(fd);
+	return (fd);
+}
+
+int	heredoc(t_command *cmd, t_redirect *redirect)
+{
+	char	*file_name;
+	int		fd;
+	pid_t	pid;
+
+	file_name = setup_filename(redirect->redir_name);
+	fd = open(file_name, 01101, 0664);
 	pid = fork();
 	if (pid == -1)
 		return (-1);
 	if (pid == 0)
-		forked_heredoc(redirect);
+		forked_heredoc(cmd, redirect, fd);
 	else
-	{
-		set_signals(2);
-		waitpid(pid, &fork_ret, 0);
-		set_signals(0);
-
-		if (fork_ret >> 8 == 130 || fork_ret >> 8 == 131)
-			return (-2);
-		if (fork_ret >> 8 == -1)
-			return (-1);
-	}
-	return (0);
+		return (parent_heredoc(redirect, file_name, pid, fd));
+	return (-1);
 }

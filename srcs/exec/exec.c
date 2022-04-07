@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 14:50:32 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/07 12:50:19 by malbrand         ###   ########.fr       */
+/*   Updated: 2022/04/07 18:49:00 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ static int	exec_child(
 	close(cmd->fds[0]);
 	dup2(cmd->fd_in, STDIN_FILENO);
 	dup2(cmd->fds[1], STDOUT_FILENO);
+	close(cmd->fds[1]);
 	if (is_builtin(exec_name))
 		exec_builtin(cmd, 1, data);
 	else if (execve(exec_name, cmd->args, envp) == -1)
@@ -62,7 +63,7 @@ int	exec(t_command *cmd, t_data *data)
 	if (pipe(cmd->fds) == -1)
 		return (-1);
 	if (!setup_input_redir(cmd) || !setup_output_redir(cmd))
-		return (-1);
+		return (close_all_fds(cmd));
 	data->envp = envlst_to_tab(cmd->env);
 	if (!data->envp)
 		return (-1);

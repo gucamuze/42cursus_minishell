@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/03 01:09:01 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/07 15:30:01 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/07 19:47:17 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ static void	wait_and_set_errors(t_command *cmd)
 	}
 	if (g_exit != 130 << 8 && g_exit != 131 << 8)
 	{
+		printf("exit code = %d\n", exit_code);
 		if (last->exit_code == 127)
 			g_exit = 127 << 8;
 		else
@@ -62,8 +63,6 @@ static int	command_dispatcher(t_command *command, t_data *data)
 		}
 		else
 		{
-			if (pipe(command->fds) == -1)
-				return (-1);
 			if (!setup_input_redir(command) || !setup_output_redir(command))
 				return (-1);
 			command = command->next;
@@ -112,6 +111,7 @@ int	parse_and_dispatch(t_env **env, char *user_input, t_data *data)
 	set_fds(cmd_lst);
 	data->env = env;
 	data->user_input = user_input;
+	setup_heredocs(cmd_lst);
 	command_dispatcher(cmd_lst, data);
 	close_all_fds(cmd_lst);
 	reassign_env(env, cmd_lst);

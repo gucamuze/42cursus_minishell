@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:29 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/07 12:46:32 by malbrand         ###   ########.fr       */
+/*   Updated: 2022/04/07 19:55:17 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,8 @@ unsigned int	_export(t_command *cmd);
 // exit
 unsigned int	ft_exit(t_command *cmd, t_data *data, int mode);
 // herdoc
-int				heredoc(t_redirect *redir);
+int				setup_heredocs(t_command *cmd_lst);
+int				heredoc(t_command *cmd, t_redirect *redir);
 // END BUILTINS
 
 // UTILS
@@ -135,6 +136,9 @@ int				_exit_err(char *err_msg, t_command *cmd, int code, int ret);
 // history
 int				add_to_persistent_history(char *str, t_env *env);
 int				import_history(t_env *env);
+// heredoc_utils
+char		*change_name(char *s, int point);
+char		*setup_filename(char *s);
 // END UTILS
 
 // PARSER

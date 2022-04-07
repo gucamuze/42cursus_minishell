@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 20:05:05 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/06 21:41:19 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/07 19:51:10 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,29 +41,25 @@ int	setup_output_redir(t_command *cmd)
 		return (0);
 	if (fd > -1)
 	{
-		close(cmd->fds[1]);
+		if (cmd->fds[1] != -1)
+			close(cmd->fds[1]);
 		cmd->fds[1] = fd;
 	}
 	else if (!cmd->next)
 	{
-		close(cmd->fds[1]);
+		if (cmd->fds[1] != -1)
+			close(cmd->fds[1]);
 		cmd->fds[1] = dup(STDOUT_FILENO);
 	}
 	return (1);
 }
 
-static int	setup_fd_input(t_redirect *red)
+static int	setup_fd_input(t_command *cmd, t_redirect *red)
 {
 	int	fd;
-	int	heredoc_ret;
 
 	fd = -1;
-	if (red->redir_type == 3)
-	{
-		heredoc_ret = heredoc(red);
-		if (heredoc_ret < 0)
-			return (heredoc_ret);
-	}
+	(void)cmd;
 	fd = open(red->redir_name, O_RDONLY, 0644);
 	return (fd);
 }
@@ -83,7 +79,7 @@ int	setup_input_redir(t_command *cmd)
 		{
 			if (fd != -1)
 				close(fd);
-			fd = setup_fd_input(iterator);
+			fd = setup_fd_input(cmd, iterator);
 			if (fd == -1)
 				return (_error(iterator->redir_name, 0));
 			if (fd == -2)
