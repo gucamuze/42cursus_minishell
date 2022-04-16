@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:29 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/07 21:03:15 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/08 02:32:58 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ typedef struct s_data
 	char		*prompt;
 	char		*user_input;
 	char		**envp;
+	t_command	*first_cmd;
 	t_env		**env;
 }	t_data;
 
@@ -99,8 +100,8 @@ unsigned int	_export(t_command *cmd);
 // exit
 unsigned int	ft_exit(t_command *cmd, t_data *data, int mode);
 // herdoc
-int				setup_heredocs(t_command *cmd_lst);
-int				heredoc(t_command *cmd, t_redirect *redir);
+int				setup_heredocs(t_data *data, t_command *cmd_lst);
+int				heredoc(t_data *data, t_redirect *redir);
 // END BUILTINS
 
 // UTILS
@@ -152,7 +153,7 @@ char			*setup_filename(char *s);
 // parse_quotes
 void			parse_quotes(t_command *cmd_lst);
 // parse_quotes2
-char			**realloc_if_needed(char **args);
+char			**realloc_if_needed(char **args, unsigned int i);
 void			delete_quotes(char *str);
 // parse_pipes
 int				check_invalid_pipes(t_list *parsed_pipes);
@@ -183,4 +184,8 @@ int				ft_strcmp(const char *s1, const char *s2);
 char			*ft_strjoin3(const char *s1, const char *s2, const char *s3);
 char			*ft_strncpy(char *str, size_t size);
 void			cleanup(t_data *data);
+
+// DEBUG
+void			__DEBUG_output_cmd_lst(t_command *cmd);
+
 #endif

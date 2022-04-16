@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/03 01:09:01 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/07 21:00:05 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/08 02:26:51 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,11 @@ static int	command_dispatcher(t_command *cmd_lst, t_data *data)
 			execute(cmd_lst, data);
 		else
 		{
+			if (pipe(cmd_lst->fds) == -1)
+				return (-1);
 			if (!setup_input_redir(cmd_lst) || !setup_output_redir(cmd_lst))
 				return (-1);
-			cmd_lst = cmd_lst->next;
+			command_dispatcher(cmd_lst->next, data);
 		}
 		set_signals(0);
 	}
@@ -103,7 +105,8 @@ int	parse_and_dispatch(t_env **env, char *user_input, t_data *data)
 	set_fds(cmd_lst);
 	data->env = env;
 	data->user_input = user_input;
-	setup_heredocs(cmd_lst);
+	data->first_cmd = cmd_lst;
+	setup_heredocs(data, cmd_lst);
 	command_dispatcher(cmd_lst, data);
 	close_all_fds(cmd_lst);
 	reassign_env(env, cmd_lst);

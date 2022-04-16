@@ -6,36 +6,41 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 17:16:22 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/06 21:52:19 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/08 01:43:23 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	**merge_splits(char **split1, char **split2, char **final_split)
+static char	**merge_splits(
+	char **args, char **split, char **final_split, unsigned int i)
 {
-	unsigned int	i;
 	unsigned int	j;
+	unsigned int	k;
 
-	i = 0;
 	j = 0;
-	while (split1[i])
-		final_split[j++] = ft_strdup(split1[i++]);
-	i = 1;
-	while (split2[i])
-		final_split[j++] = ft_strdup(split2[i++]);
+	k = 0;
+	while (j < i)
+	{
+		final_split[j] = ft_strdup(args[j]);
+		j++;
+	}
+	while (split[k])
+		final_split[j++] = ft_strdup(split[k++]);
+	while (args[++i])
+		final_split[j++] = ft_strdup(args[i]);
 	final_split[j] = 0;
 	return (final_split);
 }
 
-char	**realloc_if_needed(char **args)
+char	**realloc_if_needed(char **args, unsigned int index)
 {
 	char			**split;
 	char			**final_split;
 	unsigned int	i;
 	unsigned int	j;
 
-	split = ft_split(args[0], ' ');
+	split = ft_split(args[index], ' ');
 	i = 0;
 	while (split[i])
 		i++;
@@ -44,13 +49,13 @@ char	**realloc_if_needed(char **args)
 		free_split(split);
 		return (args);
 	}
-	j = 1;
+	j = 0;
 	while (args[j])
 		j++;
 	final_split = malloc((i + j) * sizeof(char *));
 	if (!final_split)
 		return (args);
-	final_split = merge_splits(split, args, final_split);
+	final_split = merge_splits(args, split, final_split, index);
 	free_split(args);
 	free_split(split);
 	return (final_split);

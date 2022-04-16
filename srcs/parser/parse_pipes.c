@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/16 00:08:07 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/07 20:23:43 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/07 23:35:46 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,17 @@
 
 int	check_invalid_pipes(t_list *parsed_pipes)
 {
-	while (parsed_pipes)
+	if (parsed_pipes)
 	{
-		if (str_is_empty(parsed_pipes->content))
-			return (0);
-		parsed_pipes = parsed_pipes->next;
+		while (parsed_pipes)
+		{
+			if (str_is_empty(parsed_pipes->content))
+				return (0);
+			parsed_pipes = parsed_pipes->next;
+		}
+		return (1);
 	}
-	return (1);
+	return (0);
 }
 
 t_list	*parse_pipes_loop(char *user_input, t_list *lst, int i, int j)
@@ -31,7 +35,7 @@ t_list	*parse_pipes_loop(char *user_input, t_list *lst, int i, int j)
 		{
 			ft_lstadd_back(&lst, ft_lstnew(ft_strndup(user_input, i)));
 			user_input += i + 1;
-			i = 0;
+			i = -1;
 		}
 		else if (user_input[i] == '\'' || user_input[i] == '\"')
 		{
@@ -40,8 +44,7 @@ t_list	*parse_pipes_loop(char *user_input, t_list *lst, int i, int j)
 				j++;
 			i += j;
 		}
-		else
-			i++;
+		i++;
 		if (!user_input[i])
 			ft_lstadd_back(&lst, ft_lstnew(ft_strndup(user_input, i)));
 	}

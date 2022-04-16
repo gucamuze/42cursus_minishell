@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:43:10 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/07 18:37:40 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/08 00:25:26 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ t_data	*setup_data(void)
 		free(data);
 		return (0);
 	}
+	data->first_cmd = NULL;
 	data->envp = NULL;
 	return (data);
 }

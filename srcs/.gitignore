@@ -1,2 +1,2 @@
 *.o
-utils/__DEBUG.c
+utils/debug.c

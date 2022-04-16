@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 18:57:05 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/06 22:43:24 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/08 01:46:27 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,30 +90,36 @@ static int	extract_and_expand(t_env *env, char **str)
 	return (0);
 }
 
+static void	parse_redirects_quotes(t_command *cmd_lst, t_redirect *iterator)
+{
+	while (iterator)
+	{
+		extract_and_expand(cmd_lst->env, &iterator->redir_name);
+		iterator = iterator->next;
+	}
+}
+
 void	parse_quotes(t_command *cmd_lst)
 {
 	unsigned int	i;
-	t_redirect		*iterator;
 
 	while (cmd_lst)
 	{
-		i = 0;
-		while (cmd_lst->args[i])
+		i = -1;
+		while (cmd_lst->args[++i])
 		{
-			extract_and_expand(cmd_lst->env, &cmd_lst->args[i]);
-			if (i == 0)
-				cmd_lst->args = realloc_if_needed(cmd_lst->args);
-			i++;
+			if ((!ft_strchr(cmd_lst->args[i], '\'')
+					&& !ft_strchr(cmd_lst->args[i], '\"')
+					&& ft_strchr(cmd_lst->args[i], '$')))
+			{
+				extract_and_expand(cmd_lst->env, &cmd_lst->args[i]);
+				cmd_lst->args = realloc_if_needed(cmd_lst->args, i);
+			}
+			else
+				extract_and_expand(cmd_lst->env, &cmd_lst->args[i]);
 		}
 		if (cmd_lst->redirects)
-		{
-			iterator = cmd_lst->redirects;
-			while (iterator)
-			{
-				extract_and_expand(cmd_lst->env, &iterator->redir_name);
-				iterator = iterator->next;
-			}
-		}
+			parse_redirects_quotes(cmd_lst, cmd_lst->redirects);
 		cmd_lst->command = cmd_lst->args[0];
 		cmd_lst = cmd_lst->next;
 	}

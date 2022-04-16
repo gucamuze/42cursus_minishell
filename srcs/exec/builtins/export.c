@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:51:34 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/07 13:18:44 by malbrand         ###   ########.fr       */
+/*   Updated: 2022/04/07 23:52:44 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,13 @@ unsigned int	_export(t_command *cmd)
 		if (env_name)
 		{
 			env_value = ft_strdup(&cmd->args[i][ft_strlen(env_name) + 1]);
-			update_env(cmd->env, env_name, env_value);
+			if (get_env_val(cmd->env, env_name, 0) != NULL)
+			{
+				update_env(cmd->env, env_name, env_value);
+				free(env_name);
+			}
+			else
+				update_env(cmd->env, env_name, env_value);
 		}
 		i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: gucamuze <gucamuze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 14:50:32 by gucamuze          #+#    #+#             */
-/*   Updated: 2022/04/07 18:49:00 by gucamuze         ###   ########.fr       */
+/*   Updated: 2022/04/08 03:44:35 by gucamuze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,13 @@ static int	exec_child(
 	close(cmd->fds[0]);
 	dup2(cmd->fd_in, STDIN_FILENO);
 	dup2(cmd->fds[1], STDOUT_FILENO);
-	close(cmd->fds[1]);
 	if (is_builtin(exec_name))
 		exec_builtin(cmd, 1, data);
 	else if (execve(exec_name, cmd->args, envp) == -1)
-		return (_error("execve", -1));
+	{
+		close_all_fds(cmd);
+		exit(_error("execve", -1));
+	}
 	return (0);
 }
 
@@ -46,7 +48,7 @@ static int	fork_it(
 	pid = fork();
 	if (pid == -1)
 		return (_error("fork", 0));
-	else if (pid == 0)
+	if (pid == 0)
 	{
 		if (exec_child(exec_name, cmd, envp, data) == -1)
 			return (-1);
